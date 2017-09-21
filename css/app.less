@@ -1,0 +1,66 @@
+@width: 1024;
+@height: 768;
+@page-margin: 50px;
+@tab-size: 4;
+
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+
+:root {
+	--width: @width;
+	--height: @height;
+	--scale: 1;
+	--current: 0;
+	--total: 0;
+	box-sizing: border-box;
+	counter-reset: slide;
+	font-size: 32px;
+	-moz-tab-size: @tab-size;
+	tab-size: @tab-size;
+}
+
+body {
+	margin: 0;
+
+	@media screen and (orientation: portrait) and (max-width: 768px) {
+		&::after {
+			content: "↻";
+			font-weight: bold;
+			position: fixed;
+			right: 0.5em;
+			top: 0.5em;
+			font-size: 200%;
+		}
+	}
+}
+
+.slide {
+	counter-increment: slide;
+	width: @width*1px;
+	height: @height*1px;
+	overflow: hidden;
+	page-break-after: always;
+	-webkit-print-color-adjust: exact;
+
+	pre {
+		counter-reset: line;
+
+		div {
+			counter-increment: line;
+		}
+	}
+
+	@media screen {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%) scale(var(--scale));
+		&:not(.current) { display: none; }
+	}
+}
+
+@page {
+	margin: @page-margin;
+	size: @width*1px+2*@page-margin @height*1px+2*@page-margin;
+}

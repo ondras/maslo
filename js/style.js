@@ -1,0 +1,11 @@
+export function load(href) {
+	let node = document.createElement("link");
+	node.rel = "stylesheet";
+	node.href = href;
+	document.head.appendChild(node);
+
+	return new Promise((resolve, reject) => {
+		node.onload = resolve;
+		node.onerror = reject;
+	});
+}

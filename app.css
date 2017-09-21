@@ -1,0 +1,59 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+:root {
+  --width: 1024;
+  --height: 768;
+  --scale: 1;
+  --current: 0;
+  --total: 0;
+  box-sizing: border-box;
+  counter-reset: slide;
+  font-size: 32px;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+body {
+  margin: 0;
+}
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  body::after {
+    content: "↻";
+    font-weight: bold;
+    position: fixed;
+    right: 0.5em;
+    top: 0.5em;
+    font-size: 200%;
+  }
+}
+.slide {
+  counter-increment: slide;
+  width: 1024px;
+  height: 768px;
+  overflow: hidden;
+  page-break-after: always;
+  -webkit-print-color-adjust: exact;
+}
+.slide pre {
+  counter-reset: line;
+}
+.slide pre div {
+  counter-increment: line;
+}
+@media screen {
+  .slide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(var(--scale));
+  }
+  .slide:not(.current) {
+    display: none;
+  }
+}
+@page {
+  margin: 50px;
+  size: 1124px 868px;
+}

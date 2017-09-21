@@ -1,0 +1,11 @@
+X html i markdown
+X css props na propagaci stavu do stylu (progress)
+X zpusob na generovani pdf: css pro tisk, @page
+X autoscale (global metadata)
+X code highlight
+X swipe-hammer
+- pointer/draw?
+- overview?
+- slide props
+X title?
+X url
