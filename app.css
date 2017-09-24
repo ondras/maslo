@@ -29,12 +29,18 @@ body {
   }
 }
 .slide {
-  counter-increment: slide;
   width: 1024px;
   height: 768px;
   overflow: hidden;
   page-break-after: always;
   -webkit-print-color-adjust: exact;
+  counter-increment: slide slide-before;
+}
+.slide.current {
+  counter-increment: slide slide-current;
+}
+.slide.current ~ .slide {
+  counter-increment: slide slide-after;
 }
 .slide pre {
   counter-reset: line;
@@ -50,7 +56,7 @@ body {
     transform: translate(-50%, -50%) scale(var(--scale));
   }
   .slide:not(.current) {
-    display: none;
+    visibility: hidden;
   }
 }
 @page {

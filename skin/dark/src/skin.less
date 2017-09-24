@@ -86,3 +86,27 @@ pre {
 		background: ~"url(bg-cyan.jpg) #000 center/cover";
 	}
 }
+
+@counter-style circle-empty {
+	system: additive;
+	additive-symbols: 1 "○", 0 "";
+}
+
+@counter-style circle-full {
+	system: additive;
+	additive-symbols: 1 "●", 0 "";
+}
+
+@media screen {
+	body::after {
+		font-size: 62.5%;
+		content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
+		color: @cyan;
+		display: block;
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}

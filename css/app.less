@@ -36,16 +36,22 @@ body {
 }
 
 .slide {
-	counter-increment: slide;
 	width: @width*1px;
 	height: @height*1px;
 	overflow: hidden;
 	page-break-after: always;
 	-webkit-print-color-adjust: exact;
 
+	counter-increment: slide slide-before;
+	&.current { 
+		counter-increment: slide slide-current;
+		& ~ .slide {
+			counter-increment: slide slide-after;
+		}
+	}
+
 	pre {
 		counter-reset: line;
-
 		div {
 			counter-increment: line;
 		}
@@ -56,7 +62,7 @@ body {
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%) scale(var(--scale));
-		&:not(.current) { display: none; }
+		&:not(.current) { visibility: hidden; }
 	}
 }
 

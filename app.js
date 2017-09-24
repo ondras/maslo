@@ -949,6 +949,6 @@ function init(selector) {
 	initStyles(node.dataset.skin).then(initSlides).then(initApp).catch(error);
 }
 
-init(document.currentScript.dataset.selector);
+init(document.currentScript.dataset.selector || "template");
 
 }());
