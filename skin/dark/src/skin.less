@@ -1,15 +1,15 @@
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu+Mono:400,700&subset=latin,latin-ext");
-// @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/agate.min.css");
-// @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css");
-//@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
+.hljs(@name) {
+	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/@{name}.min.css");
+}
 
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,700&subset=latin,latin-ext");
 @import "input.less";
+
+.hljs("vs2015"); // agate, dracula, gruvbox-dark
 
 @primary: hsl(180, 50%, 50%);
 @bg: contrast(@primary, #000, #fff, 40%);
 @fg: #fff-@bg;
-
 
 body {
 	font-family: ubuntu, sans-serif;
