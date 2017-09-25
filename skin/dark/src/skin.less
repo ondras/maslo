@@ -6,13 +6,16 @@
 
 @import "input.less";
 
-@cyan: hsl(180, 50%, 50%);
+@primary: hsl(180, 50%, 50%);
+@bg: contrast(@primary, #000, #fff, 40%);
+@fg: #fff-@bg;
+
 
 body {
 	font-family: ubuntu, sans-serif;
-	color: #ddd;
+	color: mix(@fg, @bg, 86.5%);;
 	@media screen {
-		background: ~"url(bg-cyan.jpg) #000 0 0 / 100vw 100vh";
+		background: ~"url(bg-cyan.jpg) @{bg} 0 0 / 100vw 100vh";
 	}
 }
 
@@ -23,17 +26,17 @@ code {
 }
 
 h1 {
-	color: @cyan;
+	color: @primary;
 	font-size: 200%;
 	margin: 1rem 0;
 }
 
 a, code {
-	color: #eee;
+	color: mix(@fg, @bg, 93.5%);
 }
 
 a:hover {
-	text-decoration-color: @cyan;
+	text-decoration-color: @primary;
 }
 
 li {
@@ -42,12 +45,12 @@ li {
 }
 
 pre {
-	@bg: rgba(255, 255, 255, 0.1);
+	@tint: fade(@fg, 10%);
 	padding: 0.25em 0;
 	line-height: 1.5;
 	margin-bottom: 0.5em;
-	border-left: 0.15em solid @cyan;
-	background-color: @bg;
+	border-left: 0.15em solid @primary;
+	background-color: @tint;
 
 	div {
 		&::before {
@@ -60,7 +63,7 @@ pre {
 		}
 
 		&:hover {
-			background-color: @bg;
+			background-color: @tint;
 		}
 	}
 }
@@ -83,7 +86,7 @@ pre {
 	}
 
 	@media print {
-		background: ~"url(bg-cyan.jpg) #000 center/cover";
+		background: ~"url(bg-cyan.jpg) @{bg} center/cover";
 	}
 }
 
@@ -101,7 +104,7 @@ pre {
 	body::after {
 		font-size: 62.5%;
 		content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
-		color: @cyan;
+		color: @primary;
 		display: block;
 		text-align: center;
 		position: fixed;

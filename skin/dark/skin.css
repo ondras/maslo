@@ -24,7 +24,7 @@
 }
 body {
   font-family: ubuntu, sans-serif;
-  color: #ddd;
+  color: #dddddd;
 }
 @media screen {
   body {
@@ -43,7 +43,7 @@ h1 {
 }
 a,
 code {
-  color: #eee;
+  color: #eeeeee;
 }
 a:hover {
   text-decoration-color: #40bfbf;
