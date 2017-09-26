@@ -1,30 +1,8 @@
-.hljs(@name) {
-	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/@{name}.min.css");
-}
-
-.hljs("vs2015"); // agate, dracula, gruvbox-dark
-
-.bg {
-	@O: 16px;
-	@E: fade(@primary, 20%);
-	background: @bg;
-	background-image: 
-		radial-gradient(fade(@bg, 60%), @bg),
-		repeating-linear-gradient(to right, @E 0, @E @O, @primary @O, @primary @O+1px),
-		repeating-linear-gradient(to bottom, @E 0, @E @O, @primary @O, @primary @O+1px)
-	;
-}
-
-
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,700&subset=latin,latin-ext");
-@import "input.less";
-
-@primary: hsl(180, 50%, 50%);
 @bg: contrast(@primary, #000, #fff, 40%);
 @fg: #fff-@bg;
 
 body {
-	font-family: ubuntu, sans-serif;
+	font-family: lato, sans-serif;
 	color: mix(@fg, @bg, 86.5%);
 	width: 100vw;
 	height: 100vh;
@@ -103,16 +81,6 @@ pre {
 	@media print {
 		background: ~"url(bg-cyan.jpg) @{bg} center/cover";
 	}
-}
-
-@counter-style circle-empty {
-	system: additive;
-	additive-symbols: 1 "○", 0 "";
-}
-
-@counter-style circle-full {
-	system: additive;
-	additive-symbols: 1 "●", 0 "";
 }
 
 @media screen {

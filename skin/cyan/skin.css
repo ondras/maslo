@@ -1,33 +1,43 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,700&subset=latin,latin-ext");
 .bg {
   background: #000;
   background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
 }
+@counter-style circle-empty {
+  system: additive;
+  additive-symbols: 1 "○", 0 "";
+}
+@counter-style circle-full {
+  system: additive;
+  additive-symbols: 1 "●", 0 "";
+}
 @font-face {
   font-family: input;
   font-weight: normal;
-  src: url(font/Input-Regular.ttf);
+  src: url(../font/Input-Regular.ttf);
 }
 @font-face {
   font-family: input;
   font-weight: bold;
-  src: url(font/Input-Bold.ttf);
+  src: url(../font/Input-Bold.ttf);
 }
 @font-face {
   font-family: input;
   font-weight: normal;
   font-style: italic;
-  src: url(font/Input-Italic.ttf);
+  src: url(../font/Input-Italic.ttf);
 }
 @font-face {
   font-family: input;
   font-weight: bold;
   font-style: italic;
-  src: url(font/Input-BoldItalic.ttf);
+  src: url(../font/Input-BoldItalic.ttf);
 }
 body {
-  font-family: ubuntu, sans-serif;
+  font-family: lato, sans-serif;
   color: #dddddd;
   width: 100vw;
   height: 100vh;
@@ -96,14 +106,6 @@ pre div:hover {
   .slide {
     background: url(bg-cyan.jpg) #000 center/cover;
   }
-}
-@counter-style circle-empty {
-  system: additive;
-  additive-symbols: 1 "○", 0 "";
-}
-@counter-style circle-full {
-  system: additive;
-  additive-symbols: 1 "●", 0 "";
 }
 @media screen {
   body::after {

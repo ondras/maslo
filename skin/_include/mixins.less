@@ -1,0 +1,29 @@
+.hljs(@name) {
+	@version: "9.12.0";
+	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
+}
+
+.bg {
+	@O: 16px;
+	@E: fade(@primary, 20%);
+	background: @bg;
+	background-image: 
+		radial-gradient(fade(@bg, 60%), @bg),
+		repeating-linear-gradient(to right, @E 0, @E @O, @primary @O, @primary @O+1px),
+		repeating-linear-gradient(to bottom, @E 0, @E @O, @primary @O, @primary @O+1px)
+	;
+}
+
+.font(@name, @widths: "400,400i,700,700i") {
+	@import url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
+}
+
+@counter-style circle-empty {
+	system: additive;
+	additive-symbols: 1 "○", 0 "";
+}
+
+@counter-style circle-full {
+	system: additive;
+	additive-symbols: 1 "●", 0 "";
+}

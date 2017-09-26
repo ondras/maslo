@@ -1,10 +1,10 @@
 LESSC := ../node_modules/.bin/lessc
-SKINS := dark
+SKINS := cyan
 SKINS := $(patsubst %,%/skin.css,$(SKINS))
 
 all: $(SKINS)
 
-%/skin.css: %/src/skin.less
+%/skin.css: %/skin.less _include/*.less
 	$(LESSC) $< > $@
 
 clean:

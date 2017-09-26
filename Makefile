@@ -27,9 +27,9 @@ clean:
 
 watch: all
 	while inotifywait -e MODIFY -r \
-		css/* \
-		js/* \
-		skin/*/src/* \
+		css/*.less \
+		js/*.js \
+		skin/*/*.less \
 		; do make $^ ; done
 
 .PHONY: all clean watch skin
