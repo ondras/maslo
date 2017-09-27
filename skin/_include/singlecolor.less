@@ -6,10 +6,7 @@ body {
 	color: mix(@fg, @bg, 86.5%);
 	width: 100vw;
 	height: 100vh;
-	@media screen {
-		background: ~"url(bg-cyan.jpg) @{bg} 0 0 / 100vw 100vh";
-		.bg;
-	}
+	@media screen { .bg; }
 }
 
 code {
@@ -78,9 +75,7 @@ pre {
 		}
 	}
 
-	@media print {
-		background: ~"url(bg-cyan.jpg) @{bg} center/cover";
-	}
+	@media print { .bg; }
 }
 
 @media screen {
