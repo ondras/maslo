@@ -7,7 +7,7 @@ import * as style from "style.js";
 
 function initStyles(skin = "dark") {
 	function loadApp() { return style.load("app.css"); }
-	function loadSkin() { return style.load(`skin/${skin}/skin.css`); }
+	function loadSkin() { return style.load(`skin/${skin}.css`); }
 
 	return loadApp().then(loadSkin);
 }

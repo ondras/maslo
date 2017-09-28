@@ -8,7 +8,7 @@
 	@E: fade(@primary, 20%);
 	background: @bg;
 	background-image: 
-		radial-gradient(fade(@bg, 60%), @bg),
+		radial-gradient(fade(@bg, 100%), fade(@bg, 60%)),
 		repeating-linear-gradient(to right, @E 0, @E @O, @primary @O, @primary @O+1px),
 		repeating-linear-gradient(to bottom, @E 0, @E @O, @primary @O, @primary @O+1px)
 	;

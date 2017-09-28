@@ -1,8 +1,10 @@
 LESSC := node_modules/.bin/lessc
 ROLLUP := node_modules/.bin/rollup
 HIGHLIGHT := vendor/highlight.min.js
+SKINS := $(wildcard css/skin/*.less)
+SKINS := $(patsubst css/skin/%.less,skin/%.css,$(SKINS))
 
-all: app.js app.css skin
+all: app.js app.css skins
 
 app.js: js/*.js $(HIGHLIGHT)
 	echo -n > $@
@@ -18,18 +20,20 @@ app.css: css/*.less
 $(HIGHLIGHT):
 	wget cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js -O $(HIGHLIGHT)
 
-skin:
-	$(MAKE) -C skin
+skins: $(SKINS)
+
+skin/%.css: css/skin/%.less css/_include/*.less
+	$(LESSC) $< > $@
 
 clean:
-	rm -rf app.js app.css skin.css $(HIGHLIGHT)
-	$(MAKE) -C skin clean
+	echo $(SKINS)
+	rm -rf app.js app.css $(HIGHLIGHT) $(SKINS)
 
 watch: all
 	while inotifywait -e MODIFY -r \
 		css/*.less \
+		css/*/*.less \
 		js/*.js \
-		skin/*/*.less \
 		; do make $^ ; done
 
 .PHONY: all clean watch skin

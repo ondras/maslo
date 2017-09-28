@@ -925,7 +925,7 @@ function load(href) {
 
 function initStyles(skin = "dark") {
 	function loadApp() { return load("app.css"); }
-	function loadSkin() { return load(`skin/${skin}/skin.css`); }
+	function loadSkin() { return load(`skin/${skin}.css`); }
 
 	return loadApp().then(loadSkin);
 }
