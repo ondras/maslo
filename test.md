@@ -2,7 +2,7 @@
 
   - JavaScript language follows the ECMAScript (ES) specification
   - ES versions are numbered both by year and edition
-  - Eight edition was finalized in June 2017
+  - Eighth edition was finalized in June 2017
   - Previous version (ES2016) brought only two minor features
   - Developers not always enthusiastic about bleeding-edge news
 
@@ -29,3 +29,19 @@ getData(function(err, data) {
 ---
 
 ![](https://f4.bcbits.com/img/0003971684_10.jpg)
+
+---
+
+# Slide N
+
+---
+
+# Slide N+1
+
+---
+
+# Slide N+2
+
+---
+
+# Slide N+3

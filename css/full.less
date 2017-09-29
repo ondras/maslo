@@ -1,0 +1,20 @@
+body.full {
+	.slide {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%) scale(var(--scale));
+		&:not(.current) { visibility: hidden; }
+	}
+
+	@media (orientation: portrait) and (max-width: 768px) {
+		&::before {
+			content: "↻";
+			font-weight: bold;
+			position: fixed;
+			right: 0.5em;
+			top: 0.5em;
+			font-size: 200%;
+		}
+	}
+}

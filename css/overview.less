@@ -1,0 +1,13 @@
+body.overview {
+	@scale: 0.3;
+
+	.slide {
+		float: left;
+		transform-origin: 0 0;
+		transform: scale(@scale);
+		margin-left: 1em;
+		margin-top: 1em;
+		margin-bottom: @height*(1-@scale)*-1px;
+		margin-right: @width*(1-@scale)*-1px;
+	}
+}

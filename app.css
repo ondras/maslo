@@ -9,24 +9,14 @@
   --scale: 1;
   --current: 0;
   --total: 0;
-  box-sizing: border-box;
-  counter-reset: slide;
-  font-size: 32px;
+  counter-reset: slide slide-before slide-current slide-after;
   -moz-tab-size: 4;
   tab-size: 4;
+  box-sizing: border-box;
+  font-size: 32px;
 }
 body {
   margin: 0;
-}
-@media screen and (orientation: portrait) and (max-width: 768px) {
-  body::after {
-    content: "↻";
-    font-weight: bold;
-    position: fixed;
-    right: 0.5em;
-    top: 0.5em;
-    font-size: 200%;
-  }
 }
 .slide {
   width: 1024px;
@@ -48,18 +38,55 @@ body {
 .slide pre div {
   counter-increment: line;
 }
+.slide pre div::before {
+  display: inline-block;
+  content: counter(line) ". ";
+  width: 5ch;
+  font-weight: normal;
+  text-align: right;
+}
+@page {
+  margin: 12px;
+  size: 1048px 792px;
+}
 @media screen {
-  .slide {
+  li {
+    margin: 0.5em 0;
+    line-height: 1.3;
+  }
+  pre {
+    line-height: 1.5;
+  }
+}
+@media screen {
+  body.full .slide {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(var(--scale));
   }
-  .slide:not(.current) {
+  body.full .slide:not(.current) {
     visibility: hidden;
   }
 }
-@page {
-  margin: 50px;
-  size: 1124px 868px;
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  body.full::before {
+    content: "↻";
+    font-weight: bold;
+    position: fixed;
+    right: 0.5em;
+    top: 0.5em;
+    font-size: 200%;
+  }
+}
+@media screen {
+  body.overview .slide {
+    float: left;
+    transform-origin: 0 0;
+    transform: scale(0.3);
+    margin-left: 1em;
+    margin-top: 1em;
+    margin-bottom: -537.6px;
+    margin-right: -716.8px;
+  }
 }

@@ -13,6 +13,7 @@ function initStyles(skin = "dark") {
 }
 
 function initApp() {
+	document.body.classList.add("full");
 	scale.init();
 	control.init();
 	title.init();

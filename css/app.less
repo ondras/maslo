@@ -1,6 +1,6 @@
 @width: 1024;
 @height: 768;
-@page-margin: 50px;
+@page-margin: 12px; // largest that works in ff (ignores @page size)
 @tab-size: 4;
 
 *, *::before, *::after {
@@ -13,26 +13,15 @@
 	--scale: 1;
 	--current: 0;
 	--total: 0;
-	box-sizing: border-box;
-	counter-reset: slide;
-	font-size: 32px;
+	counter-reset: slide slide-before slide-current slide-after;
 	-moz-tab-size: @tab-size;
 	tab-size: @tab-size;
+	box-sizing: border-box;
+	font-size: 32px;
 }
 
 body {
 	margin: 0;
-
-	@media screen and (orientation: portrait) and (max-width: 768px) {
-		&::after {
-			content: "↻";
-			font-weight: bold;
-			position: fixed;
-			right: 0.5em;
-			top: 0.5em;
-			font-size: 200%;
-		}
-	}
 }
 
 .slide {
@@ -54,15 +43,14 @@ body {
 		counter-reset: line;
 		div {
 			counter-increment: line;
+			&::before {
+				display: inline-block;
+				content: counter(line) ". ";
+				width: 5ch;
+				font-weight: normal;
+				text-align: right;
+			}
 		}
-	}
-
-	@media screen {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%) scale(var(--scale));
-		&:not(.current) { visibility: hidden; }
 	}
 }
 
@@ -70,3 +58,7 @@ body {
 	margin: @page-margin;
 	size: @width*1px+2*@page-margin @height*1px+2*@page-margin;
 }
+
+@import "typo.less" screen;
+@import "full.less" screen;
+@import "overview.less" screen;

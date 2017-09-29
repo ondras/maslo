@@ -4,7 +4,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
 .bg {
   background: #000;
-  background-image: radial-gradient(#000000, rgba(0, 0, 0, 0.6)), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
 }
 @counter-style circle-empty {
   system: additive;
@@ -39,14 +39,7 @@
 body {
   font-family: ubuntu, sans-serif;
   color: #dddddd;
-  width: 100vw;
-  height: 100vh;
-}
-@media screen {
-  body {
-    background: #000;
-    background-image: radial-gradient(#000000, rgba(0, 0, 0, 0.6)), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
-  }
+  background-color: #000;
 }
 code {
   font-weight: bold;
@@ -56,7 +49,8 @@ code {
 h1 {
   color: #40bfbf;
   font-size: 200%;
-  margin: 1rem 0;
+  margin: 0 0 1rem 0;
+  padding-top: 1rem;
 }
 a,
 code {
@@ -65,30 +59,20 @@ code {
 a:hover {
   text-decoration-color: #40bfbf;
 }
-li {
-  margin: 0.5em 0;
-  line-height: 1.3;
-}
 pre {
   padding: 0.25em 0;
-  line-height: 1.5;
-  margin-bottom: 0.5em;
   border-left: 0.15em solid #40bfbf;
   background-color: rgba(255, 255, 255, 0.1);
 }
 pre div::before {
-  display: inline-block;
-  content: counter(line) ". ";
-  width: 5ch;
-  font-weight: normal;
-  text-align: right;
   opacity: 0.5;
 }
 pre div:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 .slide {
-  border: 1px solid transparent;
+  background: #000;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
 }
 .slide > * {
   margin-left: 1.5rem;
@@ -101,11 +85,14 @@ pre div:hover {
   display: block;
   object-fit: contain;
 }
-@media print {
-  .slide {
-    background: #000;
-    background-image: radial-gradient(#000000, rgba(0, 0, 0, 0.6)), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
-  }
+body.overview .slide {
+  border-radius: 16px;
+}
+body.overview .slide:hover {
+  box-shadow: 0 0 0 16px rgba(255, 255, 255, 0.3);
+}
+body.overview .slide.current {
+  box-shadow: 0 0 0 16px #40bfbf;
 }
 @media screen {
   body::after {

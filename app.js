@@ -931,6 +931,7 @@ function initStyles(skin = "dark") {
 }
 
 function initApp() {
+	document.body.classList.add("full");
 	init$1();
 	init$2();
 	init$5();
