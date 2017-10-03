@@ -1,5 +1,8 @@
 body.overview {
 	@scale: 0.3;
+	@line: 6px/@scale;
+	background-color: #666;
+
 
 	.slide {
 		float: left;
@@ -9,5 +12,18 @@ body.overview {
 		margin-top: 1em;
 		margin-bottom: @height*(1-@scale)*-1px;
 		margin-right: @width*(1-@scale)*-1px;
+
+		box-shadow: 0 @line 2*@line fade(#000, 60%);
+		border-radius: @line;
+		cursor: pointer;
+
+		&:hover {
+			box-shadow: 0 0 0 @line fade(#fff, 25%);
+		}
+
+		&.current {
+			box-shadow: 0 0 0 @line fade(#fff, 75%);
+		}
 	}
+
 }

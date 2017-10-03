@@ -1,4 +1,5 @@
 import * as slides from "slides.js";
+import * as mouse from "mouse.js";
 
 function onKeyDown(e) {
     switch (e.code) {
@@ -17,6 +18,10 @@ function onKeyDown(e) {
         case "PageDown":
         case "Space":
             slides.show(slides.current.index+1);
+        break;
+
+        case "CapsLock":
+        	mouse.toggle();
         break;
     }
 }

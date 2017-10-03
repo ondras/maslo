@@ -59,6 +59,20 @@ body {
   }
 }
 @media screen {
+  #cursor {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 30, 30, 0.8);
+    border-radius: 50%;
+    width: 1em;
+    height: 1em;
+    z-index: 1;
+  }
+  body.cursor {
+    cursor: none;
+  }
+}
+@media screen {
   body.full .slide {
     position: absolute;
     left: 50%;
@@ -80,6 +94,9 @@ body {
   }
 }
 @media screen {
+  body.overview {
+    background-color: #666;
+  }
   body.overview .slide {
     float: left;
     transform-origin: 0 0;
@@ -88,5 +105,14 @@ body {
     margin-top: 1em;
     margin-bottom: -537.6px;
     margin-right: -716.8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  body.overview .slide:hover {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.25);
+  }
+  body.overview .slide.current {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.75);
   }
 }

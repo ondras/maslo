@@ -85,15 +85,6 @@ pre div:hover {
   display: block;
   object-fit: contain;
 }
-body.overview .slide {
-  border-radius: 16px;
-}
-body.overview .slide:hover {
-  box-shadow: 0 0 0 16px rgba(255, 255, 255, 0.3);
-}
-body.overview .slide.current {
-  box-shadow: 0 0 0 16px #40bfbf;
-}
 @media screen {
   body::after {
     font-size: 62.5%;

@@ -1,9 +1,11 @@
+import * as style from "style.js";
+import * as slides from "slides.js";
+
 import * as scale from "scale.js";
 import * as control from "control.js";
-import * as slides from "slides.js";
 import * as url from "url.js";
 import * as title from "title.js";
-import * as style from "style.js";
+import * as mouse from "mouse.js";
 
 function initStyles(skin = "dark") {
 	function loadApp() { return style.load("app.css"); }
@@ -14,10 +16,7 @@ function initStyles(skin = "dark") {
 
 function initApp() {
 	document.body.classList.add("full");
-	scale.init();
-	control.init();
-	title.init();
-	url.init();
+	[scale, control, title, mouse, url].forEach(c => c.init());
 }
 
 function error(e) {
