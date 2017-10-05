@@ -7,10 +7,10 @@ const META = {
 }
 
 function sync() {
-    let rw = window.innerWidth/width;
-    let rh = window.innerHeight/height;
-    let scale = Math.min(rw, rh);
-    root.style.setProperty("--scale", scale);
+	let rw = window.innerWidth/width;
+	let rh = window.innerHeight/height;
+	let scale = Math.min(rw, rh);
+	root.style.setProperty("--scale", scale);
 }
 
 export function init() {
@@ -18,10 +18,10 @@ export function init() {
 	Object.assign(meta, META);
 	document.head.appendChild(meta);
 
-    let style = getComputedStyle(root);
-    width = Number(style.getPropertyValue("--width"));
-    height = Number(style.getPropertyValue("--height"));
-    sync();
+	let style = getComputedStyle(root);
+	width = Number(style.getPropertyValue("--width"));
+	height = Number(style.getPropertyValue("--height"));
+	sync();
 
-    window.addEventListener("resize", e => sync());
+	window.addEventListener("resize", e => sync());
 }

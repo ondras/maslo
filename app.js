@@ -753,32 +753,32 @@ function highlight(str, lang) {
 
 // import markdownIt from "markdown-it";
 function newSlide(slides) {
-    let node = document.createElement("section");
-    node.classList.add("slide");
-    let slide = {node, index:slides.length};
-    slides.push(slide);
-    return slide;
+	let node = document.createElement("section");
+	node.classList.add("slide");
+	let slide = {node, index:slides.length};
+	slides.push(slide);
+	return slide;
 }
 
 function parse(source) {
-    let md = markdownit({highlight: highlight, html:true});
-    md.use(markdownItAttrs);
+	let md = markdownit({highlight: highlight, html:true});
+	md.use(markdownItAttrs);
 
-    let tmp = document.createElement("div");
-    tmp.innerHTML = md.render(source);
+	let tmp = document.createElement("div");
+	tmp.innerHTML = md.render(source);
 
-    let slides = [];
-    let slide = newSlide(slides);
+	let slides = [];
+	let slide = newSlide(slides);
 
-    Array.from(tmp.children).forEach(child => {
-        if (child.nodeName == "HR") {
-            slide = newSlide(slides);
-        } else {
-            slide.node.appendChild(child);
-        }
-    });
+	Array.from(tmp.children).forEach(child => {
+		if (child.nodeName == "HR") {
+			slide = newSlide(slides);
+		} else {
+			slide.node.appendChild(child);
+		}
+	});
 
-    return slides;
+	return slides;
 }
 
 function xhr(url) {
@@ -839,10 +839,10 @@ const META = {
 };
 
 function sync() {
-    let rw = window.innerWidth/width;
-    let rh = window.innerHeight/height;
-    let scale = Math.min(rw, rh);
-    root$1.style.setProperty("--scale", scale);
+	let rw = window.innerWidth/width;
+	let rh = window.innerHeight/height;
+	let scale = Math.min(rw, rh);
+	root$1.style.setProperty("--scale", scale);
 }
 
 function init$2() {
@@ -850,12 +850,12 @@ function init$2() {
 	Object.assign(meta, META);
 	document.head.appendChild(meta);
 
-    let style = getComputedStyle(root$1);
-    width = Number(style.getPropertyValue("--width"));
-    height = Number(style.getPropertyValue("--height"));
-    sync();
+	let style = getComputedStyle(root$1);
+	width = Number(style.getPropertyValue("--width"));
+	height = Number(style.getPropertyValue("--height"));
+	sync();
 
-    window.addEventListener("resize", e => sync());
+	window.addEventListener("resize", e => sync());
 }
 
 
@@ -863,12 +863,67 @@ var scale = Object.freeze({
 	init: init$2
 });
 
+const node = document.body;
+let current$1 = "";
+
+function setMode(mode) {
+	if (current$1 == mode) { return; }
+
+	try {
+		node.classList.remove(current$1);
+	} catch (e) {}
+
+	current$1 = mode;
+	node.classList.add(current$1);
+}
+
+function toggle$1() {
+	setMode(current$1 == "full" ? "overview" : "full");
+}
+
+function init$5() {
+	setMode("full");
+}
+
+
+var mode = Object.freeze({
+	get current () { return current$1; },
+	toggle: toggle$1,
+	init: init$5
+});
+
 let active = false;
 let cursor = null;
+
+function onMouseDown(e) {
+
+}
+
+function onMouseUp(e) {
+	
+}
 
 function onMouseMove(e) {
 	cursor.style.left = `${e.clientX}px`;
 	cursor.style.top = `${e.clientY}px`;
+}
+
+function onClick(e) {
+	if (current$1 != "overview") { return; }
+
+	let slide = slides.find(slide => {
+		let node = e.target;
+		while (node) {
+			if (node == slide.node) { return true; }
+			node = node.parentNode;
+		}
+		return false;
+	});
+
+	if (slide) {
+		show(slide.index);
+		toggle$1();
+	}
 }
 
 function toggle() {
@@ -886,7 +941,10 @@ function init$4() {
 	cursor = document.createElement("div");
 	cursor.id = "cursor";
 
+	window.addEventListener("mousedown", onMouseDown);
 	window.addEventListener("mousemove", onMouseMove);
+	window.addEventListener("mouseup", onMouseUp);
+	window.addEventListener("click", onClick);
 }
 
 
@@ -896,35 +954,35 @@ var mouse = Object.freeze({
 });
 
 function onKeyDown(e) {
-    switch (e.code) {
-        case "Home": show(0); break;
-        case "End": show(slides.length-1); break;
+	switch (e.code) {
+		case "Home": show(0); break;
+		case "End": show(slides.length-1); break;
 
-        case "ArrowLeft":
-        case "ArrowUp":
-        case "PageUp":
-        case "Backspace":
-            show(current.index-1);
-        break;
+		case "ArrowLeft":
+		case "ArrowUp":
+		case "PageUp":
+		case "Backspace":
+			show(current.index-1);
+		break;
 
-        case "ArrowRight":
-        case "ArrowDown":
-        case "PageDown":
-        case "Space":
-            show(current.index+1);
-        break;
+		case "ArrowRight":
+		case "ArrowDown":
+		case "PageDown":
+		case "Space":
+			show(current.index+1);
+		break;
 
-        case "CapsLock":
-        	toggle();
-        break;
-    }
+		case "CapsLock": toggle(); break;
+
+		case "Escape": toggle$1(); break;
+	}
 }
 
 function init$3() {
-    window.addEventListener("keydown", onKeyDown);
-    let hammer = new Hammer(window);
-    hammer.on("swipeleft", () => show(current.index+1));
-    hammer.on("swiperight", () => show(current.index-1));
+	window.addEventListener("keydown", onKeyDown);
+	let hammer = new Hammer(window);
+	hammer.on("swipeleft", () => show(current.index+1));
+	hammer.on("swiperight", () => show(current.index-1));
 }
 
 
@@ -933,50 +991,50 @@ var control = Object.freeze({
 });
 
 function onHashChange(e) {
-    show(get());
+	show(get());
 }
 
 function onSlideChange(e) {
-    set(current.index);
+	set(current.index);
 }
 
 function get() {
-    if (location.hash) {
-        return Number(location.hash.substring(1))-1;
-    } else {
-        return 0;
-    }
+	if (location.hash) {
+		return Number(location.hash.substring(1))-1;
+	} else {
+		return 0;
+	}
 }
 
 function set(index) {
-    location.hash = (index ? (index+1) : "");
+	location.hash = (index ? (index+1) : "");
 }
 
-function init$5() {
-    show(get());
+function init$6() {
+	show(get());
 
-    window.addEventListener("hashchange", onHashChange);
-    window.addEventListener("slide-change", onSlideChange);
+	window.addEventListener("hashchange", onHashChange);
+	window.addEventListener("slide-change", onSlideChange);
 }
 
 
 var url = Object.freeze({
-	init: init$5
+	init: init$6
 });
 
 const title = document.title;
 
 function onSlideChange$1(e) {
-    document.title = `(${current.index+1}) ${title}`;
+	document.title = `(${current.index+1}) ${title}`;
 }
 
-function init$6() {
-    window.addEventListener("slide-change", onSlideChange$1);
+function init$7() {
+	window.addEventListener("slide-change", onSlideChange$1);
 }
 
 
 var title$1 = Object.freeze({
-	init: init$6
+	init: init$7
 });
 
 function initStyles(skin = "dark") {
@@ -987,8 +1045,7 @@ function initStyles(skin = "dark") {
 }
 
 function initApp() {
-	document.body.classList.add("full");
-	[scale, control, title$1, mouse, url].forEach(c => c.init());
+	[scale, control, title$1, mouse, mode, url].forEach(c => c.init());
 }
 
 function error(e) {

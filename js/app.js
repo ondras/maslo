@@ -6,6 +6,7 @@ import * as control from "control.js";
 import * as url from "url.js";
 import * as title from "title.js";
 import * as mouse from "mouse.js";
+import * as mode from "mode.js";
 
 function initStyles(skin = "dark") {
 	function loadApp() { return style.load("app.css"); }
@@ -15,8 +16,7 @@ function initStyles(skin = "dark") {
 }
 
 function initApp() {
-	document.body.classList.add("full");
-	[scale, control, title, mouse, url].forEach(c => c.init());
+	[scale, control, title, mouse, mode, url].forEach(c => c.init());
 }
 
 function error(e) {
