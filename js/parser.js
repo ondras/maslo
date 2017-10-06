@@ -2,9 +2,8 @@
 import * as syntax from "syntax.js";
 
 function newSlide(slides) {
-	let node = document.createElement("section");
-	node.classList.add("slide");
-	let slide = {node, index:slides.length};
+	let slide = document.createElement("section");
+	slide.classList.add("slide");
 	slides.push(slide);
 	return slide;
 }
@@ -23,7 +22,7 @@ export function parse(source) {
 		if (child.nodeName == "HR") {
 			slide = newSlide(slides);
 		} else {
-			slide.node.appendChild(child);
+			slide.appendChild(child);
 		}
 	});
 

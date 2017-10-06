@@ -753,9 +753,8 @@ function highlight(str, lang) {
 
 // import markdownIt from "markdown-it";
 function newSlide(slides) {
-	let node = document.createElement("section");
-	node.classList.add("slide");
-	let slide = {node, index:slides.length};
+	let slide = document.createElement("section");
+	slide.classList.add("slide");
 	slides.push(slide);
 	return slide;
 }
@@ -774,7 +773,7 @@ function parse(source) {
 		if (child.nodeName == "HR") {
 			slide = newSlide(slides);
 		} else {
-			slide.node.appendChild(child);
+			slide.appendChild(child);
 		}
 	});
 
@@ -791,32 +790,42 @@ function xhr(url) {
 	});
 }
 
-let slides = [];
-let current = null;
+let nodes = [];
+let currentIndex = -1;
 
 const root = document.documentElement;
 
 function initFromString(str, node) {
-	slides = parse(str);
+	nodes = parse(str);
 
 	let fragment = document.createDocumentFragment();
-	slides.forEach(slide => {
-		fragment.appendChild(slide.node);
-	});
+	nodes.forEach(node => fragment.appendChild(node));
 
 	node.parentNode.replaceChild(fragment, node);
-	root.style.setProperty("--total", slides.length);
+	root.style.setProperty("--total", nodes.length);
+}
+
+function findIndex(node) {
+	return nodes.findIndex(slide => {
+		let tmp = node;
+		while (tmp) {
+			if (tmp == slide) { return true; }
+			tmp = tmp.parentNode;
+		}
+		return false;
+	});
 }
 
 function show(index) {
 	index = Math.max(index, 0);
-	index = Math.min(index, slides.length-1);
+	index = Math.min(index, nodes.length-1);
+	if (index == currentIndex) { return; }
 
-	slides.forEach((slide, i) => slide.node.classList.toggle("current", i == index));
-	current = slides[index];
+	currentIndex = index;
+	nodes.forEach((node, i) => node.classList.toggle("current", i == currentIndex));
 
 	window.dispatchEvent(new CustomEvent("slide-change"));
-	root.style.setProperty("--current", index+1);
+	root.style.setProperty("--current", currentIndex+1);
 }
 
 function init$1(node) {
@@ -864,21 +873,23 @@ var scale = Object.freeze({
 });
 
 const node = document.body;
-let current$1 = "";
+let current = "";
 
 function setMode(mode) {
-	if (current$1 == mode) { return; }
+	if (current == mode) { return; }
 
 	try {
-		node.classList.remove(current$1);
+		node.classList.remove(current);
 	} catch (e) {}
 
-	current$1 = mode;
-	node.classList.add(current$1);
+	current = mode;
+	node.classList.add(current);
+
+	window.dispatchEvent(new CustomEvent("mode-change"));
 }
 
 function toggle$1() {
-	setMode(current$1 == "full" ? "overview" : "full");
+	setMode(current == "full" ? "overview" : "full");
 }
 
 function init$5() {
@@ -887,54 +898,130 @@ function init$5() {
 
 
 var mode = Object.freeze({
-	get current () { return current$1; },
+	get current () { return current; },
 	toggle: toggle$1,
 	init: init$5
 });
 
+let path = [];
+let paths = [];
+let ctx = null;
+
+function drawPath(path) {
+	ctx.beginPath();
+	path.forEach((pos, index) => {
+		(index ? ctx.lineTo(pos[0], pos[1]) : ctx.moveTo(pos[0], pos[1]));
+	});
+	ctx.stroke();
+}
+
+function redraw() {
+	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	paths.forEach(drawPath);
+	if (path.length > 1) { drawPath(path); }
+}
+
+function start(pos) {
+	path.push(pos);
+}
+
+function stop() {
+	if (path.length > 1) { paths.push(path); }
+	path = [];
+}
+
+function add(pos) {
+	path.push(pos);
+	redraw();
+}
+
+function show$1(parent) {
+	parent.appendChild(ctx.canvas);
+}
+
+function hide() {
+	paths = [];
+	redraw();
+	ctx.canvas.parentNode.removeChild(ctx.canvas);
+}
+
+function init$6() {
+	let canvas = document.createElement("canvas");
+	ctx = canvas.getContext("2d");
+	ctx.strokeStyle = "red";
+	ctx.lineWidth = 10;
+	ctx.lineJoin = ctx.lineCap = "round";
+}
+
+
+var draw = Object.freeze({
+	start: start,
+	stop: stop,
+	add: add,
+	show: show$1,
+	hide: hide,
+	init: init$6
+});
+
 let active = false;
+let drawing = false;
 let cursor = null;
 
-function onMouseDown(e) {
+function eventToPosition(e) {
+	return [e.clientX, e.clientY];
+}
 
+function onMouseDown(e) {
+	if (!active || current == "overview") { return; }
+
+	drawing = true;
+	start(eventToPosition(e));
 }
 
 function onMouseUp(e) {
-	
+	stop();
+	drawing = false;
 }
 
 function onMouseMove(e) {
 	cursor.style.left = `${e.clientX}px`;
 	cursor.style.top = `${e.clientY}px`;
+
+	if (drawing) { add(eventToPosition(e)); }
 }
 
 function onClick(e) {
-	if (current$1 != "overview") { return; }
+	if (current != "overview") { return; }
 
-	let slide = slides.find(slide => {
-		let node = e.target;
-		while (node) {
-			if (node == slide.node) { return true; }
-			node = node.parentNode;
-		}
-		return false;
-	});
-
-	if (slide) {
-		show(slide.index);
+	let index = findIndex(e.target);
+	if (index > -1) {
+		show(index);
 		toggle$1();
 	}
 }
 
 function toggle() {
+	if (!active && current == "overview") { return; }
 	active = !active;
 
 	document.body.classList.toggle("cursor", active);
 	if (active) {
 		document.body.appendChild(cursor);
+		show$1(nodes[currentIndex]);
 	} else {
 		cursor.parentNode.removeChild(cursor);
+		hide();
 	}
+}
+
+function onModeChange(e) {
+	if (active && current == "overview") { toggle(); }
+}
+
+function onSlideChange(e) {
+	if (!active) { return; }
+	hide();
+	show$1(nodes[currentIndex]);
 }
 
 function init$4() {
@@ -945,6 +1032,9 @@ function init$4() {
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
 	window.addEventListener("click", onClick);
+
+	window.addEventListener("mode-change", onModeChange);
+	window.addEventListener("slide-change", onSlideChange);
 }
 
 
@@ -956,20 +1046,20 @@ var mouse = Object.freeze({
 function onKeyDown(e) {
 	switch (e.code) {
 		case "Home": show(0); break;
-		case "End": show(slides.length-1); break;
+		case "End": show(nodes.length-1); break;
 
 		case "ArrowLeft":
 		case "ArrowUp":
 		case "PageUp":
 		case "Backspace":
-			show(current.index-1);
+			show(currentIndex-1);
 		break;
 
 		case "ArrowRight":
 		case "ArrowDown":
 		case "PageDown":
 		case "Space":
-			show(current.index+1);
+			show(currentIndex+1);
 		break;
 
 		case "CapsLock": toggle(); break;
@@ -981,8 +1071,8 @@ function onKeyDown(e) {
 function init$3() {
 	window.addEventListener("keydown", onKeyDown);
 	let hammer = new Hammer(window);
-	hammer.on("swipeleft", () => show(current.index+1));
-	hammer.on("swiperight", () => show(current.index-1));
+	hammer.on("swipeleft", () => show(currentIndex+1));
+	hammer.on("swiperight", () => show(currentIndex-1));
 }
 
 
@@ -994,8 +1084,8 @@ function onHashChange(e) {
 	show(get());
 }
 
-function onSlideChange(e) {
-	set(current.index);
+function onSlideChange$1(e) {
+	set(currentIndex);
 }
 
 function get() {
@@ -1010,31 +1100,31 @@ function set(index) {
 	location.hash = (index ? (index+1) : "");
 }
 
-function init$6() {
+function init$7() {
 	show(get());
 
 	window.addEventListener("hashchange", onHashChange);
-	window.addEventListener("slide-change", onSlideChange);
-}
-
-
-var url = Object.freeze({
-	init: init$6
-});
-
-const title = document.title;
-
-function onSlideChange$1(e) {
-	document.title = `(${current.index+1}) ${title}`;
-}
-
-function init$7() {
 	window.addEventListener("slide-change", onSlideChange$1);
 }
 
 
-var title$1 = Object.freeze({
+var url = Object.freeze({
 	init: init$7
+});
+
+const title = document.title;
+
+function onSlideChange$2(e) {
+	document.title = `(${currentIndex+1}) ${title}`;
+}
+
+function init$8() {
+	window.addEventListener("slide-change", onSlideChange$2);
+}
+
+
+var title$1 = Object.freeze({
+	init: init$8
 });
 
 function initStyles(skin = "dark") {
@@ -1045,7 +1135,7 @@ function initStyles(skin = "dark") {
 }
 
 function initApp() {
-	[scale, control, title$1, mouse, mode, url].forEach(c => c.init());
+	[scale, control, title$1, mouse, draw, mode, url].forEach(c => c.init());
 }
 
 function error(e) {

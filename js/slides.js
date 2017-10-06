@@ -1,32 +1,42 @@
 import * as parser from "parser.js";
 import xhr from "xhr.js";
 
-export let slides = [];
-export let current = null;
+export let nodes = [];
+export let currentIndex = -1;
 
 const root = document.documentElement;
 
 function initFromString(str, node) {
-	slides = parser.parse(str);
+	nodes = parser.parse(str);
 
 	let fragment = document.createDocumentFragment();
-	slides.forEach(slide => {
-		fragment.appendChild(slide.node);
-	});
+	nodes.forEach(node => fragment.appendChild(node));
 
 	node.parentNode.replaceChild(fragment, node);
-	root.style.setProperty("--total", slides.length);
+	root.style.setProperty("--total", nodes.length);
+}
+
+export function findIndex(node) {
+	return nodes.findIndex(slide => {
+		let tmp = node;
+		while (tmp) {
+			if (tmp == slide) { return true; }
+			tmp = tmp.parentNode;
+		}
+		return false;
+	});
 }
 
 export function show(index) {
 	index = Math.max(index, 0);
-	index = Math.min(index, slides.length-1);
+	index = Math.min(index, nodes.length-1);
+	if (index == currentIndex) { return; }
 
-	slides.forEach((slide, i) => slide.node.classList.toggle("current", i == index));
-	current = slides[index];
+	currentIndex = index;
+	nodes.forEach((node, i) => node.classList.toggle("current", i == currentIndex));
 
 	window.dispatchEvent(new CustomEvent("slide-change"));
-	root.style.setProperty("--current", index+1);
+	root.style.setProperty("--current", currentIndex+1);
 }
 
 export function init(node) {

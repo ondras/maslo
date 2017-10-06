@@ -5,7 +5,7 @@ function onHashChange(e) {
 }
 
 function onSlideChange(e) {
-	set(slides.current.index);
+	set(slides.currentIndex);
 }
 
 function get() {

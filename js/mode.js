@@ -10,6 +10,8 @@ function setMode(mode) {
 
 	current = mode;
 	node.classList.add(current);
+
+	window.dispatchEvent(new CustomEvent("mode-change"));
 }
 
 export function toggle() {
