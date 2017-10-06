@@ -841,6 +841,7 @@ function init$1(node) {
 const root$1 = document.documentElement;
 let width;
 let height;
+let current = 1;
 
 const META = {
 	name: "viewport",
@@ -850,8 +851,8 @@ const META = {
 function sync() {
 	let rw = window.innerWidth/width;
 	let rh = window.innerHeight/height;
-	let scale = Math.min(rw, rh);
-	root$1.style.setProperty("--scale", scale);
+	current = Math.min(rw, rh);
+	root$1.style.setProperty("--scale", current);
 }
 
 function init$2() {
@@ -869,27 +870,28 @@ function init$2() {
 
 
 var scale = Object.freeze({
+	get current () { return current; },
 	init: init$2
 });
 
 const node = document.body;
-let current = "";
+let current$1 = "";
 
 function setMode(mode) {
-	if (current == mode) { return; }
+	if (current$1 == mode) { return; }
 
 	try {
-		node.classList.remove(current);
+		node.classList.remove(current$1);
 	} catch (e) {}
 
-	current = mode;
-	node.classList.add(current);
+	current$1 = mode;
+	node.classList.add(current$1);
 
 	window.dispatchEvent(new CustomEvent("mode-change"));
 }
 
 function toggle$1() {
-	setMode(current == "full" ? "overview" : "full");
+	setMode(current$1 == "full" ? "overview" : "full");
 }
 
 function init$5() {
@@ -898,7 +900,7 @@ function init$5() {
 
 
 var mode = Object.freeze({
-	get current () { return current; },
+	get current () { return current$1; },
 	toggle: toggle$1,
 	init: init$5
 });
@@ -921,6 +923,12 @@ function redraw() {
 	if (path.length > 1) { drawPath(path); }
 }
 
+function setupStyle() {
+	ctx.strokeStyle = "red";
+	ctx.lineWidth = 10;
+	ctx.lineJoin = ctx.lineCap = "round";
+}
+
 function start(pos) {
 	path.push(pos);
 }
@@ -937,6 +945,9 @@ function add(pos) {
 
 function show$1(parent) {
 	parent.appendChild(ctx.canvas);
+	ctx.canvas.width = parent.offsetWidth;
+	ctx.canvas.height = parent.offsetHeight;
+	setupStyle();
 }
 
 function hide() {
@@ -947,10 +958,8 @@ function hide() {
 
 function init$6() {
 	let canvas = document.createElement("canvas");
+	canvas.id = "draw";
 	ctx = canvas.getContext("2d");
-	ctx.strokeStyle = "red";
-	ctx.lineWidth = 10;
-	ctx.lineJoin = ctx.lineCap = "round";
 }
 
 
@@ -968,12 +977,14 @@ let drawing = false;
 let cursor = null;
 
 function eventToPosition(e) {
-	return [e.clientX, e.clientY];
+	let rect = nodes[currentIndex].getBoundingClientRect();
+	return [e.clientX-rect.left, e.clientY-rect.top].map(x => x/current);
 }
 
 function onMouseDown(e) {
-	if (!active || current == "overview") { return; }
+	e.stopPropagation(); // no hammer please
 
+	if (!active || current$1 == "overview") { return; }
 	drawing = true;
 	start(eventToPosition(e));
 }
@@ -987,11 +998,14 @@ function onMouseMove(e) {
 	cursor.style.left = `${e.clientX}px`;
 	cursor.style.top = `${e.clientY}px`;
 
-	if (drawing) { add(eventToPosition(e)); }
+	if (drawing) {
+		e.preventDefault(); // no text selection
+		add(eventToPosition(e));
+	}
 }
 
 function onClick(e) {
-	if (current != "overview") { return; }
+	if (current$1 != "overview") { return; }
 
 	let index = findIndex(e.target);
 	if (index > -1) {
@@ -1001,7 +1015,7 @@ function onClick(e) {
 }
 
 function toggle() {
-	if (!active && current == "overview") { return; }
+	if (!active && current$1 == "overview") { return; }
 	active = !active;
 
 	document.body.classList.toggle("cursor", active);
@@ -1015,7 +1029,7 @@ function toggle() {
 }
 
 function onModeChange(e) {
-	if (active && current == "overview") { toggle(); }
+	if (active && current$1 == "overview") { toggle(); }
 }
 
 function onSlideChange(e) {
@@ -1028,7 +1042,7 @@ function init$4() {
 	cursor = document.createElement("div");
 	cursor.id = "cursor";
 
-	window.addEventListener("mousedown", onMouseDown);
+	window.addEventListener("mousedown", onMouseDown, true); // before hammer
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
 	window.addEventListener("click", onClick);

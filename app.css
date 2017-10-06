@@ -73,6 +73,14 @@ body {
   }
 }
 @media screen {
+  #draw {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+  }
+}
+@media screen {
   body.full .slide {
     position: absolute;
     left: 50%;

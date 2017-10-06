@@ -1,18 +1,21 @@
 import * as mode from "mode.js";
 import * as slides from "slides.js";
 import * as draw from "draw.js";
+import * as scale from "scale.js";
 
 let active = false;
 let drawing = false;
 let cursor = null;
 
 function eventToPosition(e) {
-	return [e.clientX, e.clientY];
+	let rect = slides.nodes[slides.currentIndex].getBoundingClientRect();
+	return [e.clientX-rect.left, e.clientY-rect.top].map(x => x/scale.current);
 }
 
 function onMouseDown(e) {
-	if (!active || mode.current == "overview") { return; }
+	e.stopPropagation(); // no hammer please
 
+	if (!active || mode.current == "overview") { return; }
 	drawing = true;
 	draw.start(eventToPosition(e));
 }
@@ -26,7 +29,10 @@ function onMouseMove(e) {
 	cursor.style.left = `${e.clientX}px`;
 	cursor.style.top = `${e.clientY}px`;
 
-	if (drawing) { draw.add(eventToPosition(e)); }
+	if (drawing) {
+		e.preventDefault(); // no text selection
+		draw.add(eventToPosition(e));
+	}
 }
 
 function onClick(e) {
@@ -67,7 +73,7 @@ export function init() {
 	cursor = document.createElement("div");
 	cursor.id = "cursor";
 
-	window.addEventListener("mousedown", onMouseDown);
+	window.addEventListener("mousedown", onMouseDown, true); // before hammer
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
 	window.addEventListener("click", onClick);

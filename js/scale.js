@@ -1,5 +1,6 @@
 const root = document.documentElement;
 let width, height;
+export let current = 1;
 
 const META = {
 	name: "viewport",
@@ -9,8 +10,8 @@ const META = {
 function sync() {
 	let rw = window.innerWidth/width;
 	let rh = window.innerHeight/height;
-	let scale = Math.min(rw, rh);
-	root.style.setProperty("--scale", scale);
+	current = Math.min(rw, rh);
+	root.style.setProperty("--scale", current);
 }
 
 export function init() {

@@ -16,6 +16,12 @@ function redraw() {
 	if (path.length > 1) { drawPath(path); }
 }
 
+function setupStyle() {
+	ctx.strokeStyle = "red";
+	ctx.lineWidth = 10;
+	ctx.lineJoin = ctx.lineCap = "round";
+}
+
 export function start(pos) {
 	path.push(pos);
 }
@@ -32,6 +38,9 @@ export function add(pos) {
 
 export function show(parent) {
 	parent.appendChild(ctx.canvas);
+	ctx.canvas.width = parent.offsetWidth;
+	ctx.canvas.height = parent.offsetHeight;
+	setupStyle();
 }
 
 export function hide() {
@@ -42,8 +51,6 @@ export function hide() {
 
 export function init() {
 	let canvas = document.createElement("canvas");
+	canvas.id = "draw";
 	ctx = canvas.getContext("2d");
-	ctx.strokeStyle = "red";
-	ctx.lineWidth = 10;
-	ctx.lineJoin = ctx.lineCap = "round";
 }
