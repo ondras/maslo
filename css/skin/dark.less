@@ -1,10 +1,21 @@
-@bg: contrast(@primary, #000, #fff, 40%);
-@fg: #fff-@bg;
+@import "_include/mixins.less";
+@import "_include/input.less";
+
+.font("Ubuntu");
+.font("Lora");
+.font("Lato");
+.hljs("vs2015"); // agate, dracula, gruvbox-dark
+
+:root {
+	--bg: #000;
+	--fg: #eee;
+	--color: hsl(180, 50%, 50%)
+}
 
 body {
 	font-family: ubuntu, sans-serif;
-	color: mix(@fg, @bg, 86.5%);
-	background-color: @bg;
+	color: var(--fg);
+	background-color: var(--bg);
 }
 
 code {
@@ -14,24 +25,21 @@ code {
 }
 
 h1 {
-	color: @primary;
+	color: var(--color);
 	font-size: 200%;
+	line-height: 1;
 	margin: 0 0 1rem 0;
 	padding-top: 1rem; // works with print page breaks
 }
 
-a, code {
-	color: mix(@fg, @bg, 93.5%);
-}
-
 a:hover {
-	text-decoration-color: @primary;
+	text-decoration-color: var(--color);
 }
 
 pre {
-	@tint: fade(@fg, 10%);
+	@tint: rgba(255, 255, 255, 0.1);
 	padding: 0.25em 0;
-	border-left: 0.15em solid @primary;
+	border-left: 0.15em solid var(--color);
 	background-color: @tint;
 
 	div {
@@ -49,8 +57,9 @@ pre {
 	.bg;
 
 	> * {
-		margin-left: 1.5rem;
-		margin-right: 1.5rem;
+		@margin: ~"calc(6px * var(--grid))";
+		margin-left: @margin;
+		margin-right: @margin;
 	}
 
 
@@ -67,7 +76,7 @@ pre {
 	body::after {
 		font-size: 62.5%;
 		content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
-		color: @primary;
+		color: var(--color);
 		display: block;
 		text-align: center;
 		position: fixed;

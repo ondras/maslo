@@ -16,9 +16,10 @@ function redraw() {
 	if (path.length > 1) { drawPath(path); }
 }
 
-function setupStyle() {
-	ctx.strokeStyle = "red";
-	ctx.lineWidth = 10;
+function setupStyle(parent) {
+	let style = getComputedStyle(parent);
+	ctx.strokeStyle = style.getPropertyValue("--highlight");
+	ctx.lineWidth = style.getPropertyValue("--thickness");
 	ctx.lineJoin = ctx.lineCap = "round";
 }
 
@@ -40,7 +41,7 @@ export function show(parent) {
 	parent.appendChild(ctx.canvas);
 	ctx.canvas.width = parent.offsetWidth;
 	ctx.canvas.height = parent.offsetHeight;
-	setupStyle();
+	setupStyle(parent);
 }
 
 export function hide() {

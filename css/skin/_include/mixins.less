@@ -4,13 +4,14 @@
 }
 
 .bg {
-	@O: 16px;
-	@E: fade(@primary, 20%);
-	background: @bg;
+	@O: ~"calc(2px*var(--grid) - 1px)";
+	@pattern: transparent 0, transparent @O, var(--color) @O, var(--color) ~"calc(@{O} + 1px)";
+
+	background: var(--bg);
 	background-image: 
-		radial-gradient(fade(@bg, 60%), fade(@bg, 100%)),
-		repeating-linear-gradient(to right, @E 0, @E @O, @primary @O, @primary @O+1px),
-		repeating-linear-gradient(to bottom, @E 0, @E @O, @primary @O, @primary @O+1px)
+		radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)),
+		repeating-linear-gradient(to right, @pattern),
+		repeating-linear-gradient(to bottom, @pattern)
 	;
 }
 

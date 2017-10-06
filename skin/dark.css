@@ -3,8 +3,8 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
 .bg {
-  background: #000;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
+  background: var(--bg);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px)), repeating-linear-gradient(to bottom, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px));
 }
 @counter-style circle-empty {
   system: additive;
@@ -36,10 +36,15 @@
   font-style: italic;
   src: url(font/Input-BoldItalic.ttf);
 }
+:root {
+  --bg: #000;
+  --fg: #eee;
+  --color: #40bfbf;
+}
 body {
   font-family: ubuntu, sans-serif;
-  color: #dddddd;
-  background-color: #000;
+  color: var(--fg);
+  background-color: var(--bg);
 }
 code {
   font-weight: bold;
@@ -47,21 +52,18 @@ code {
   font-family: input, monospace;
 }
 h1 {
-  color: #40bfbf;
+  color: var(--color);
   font-size: 200%;
+  line-height: 1;
   margin: 0 0 1rem 0;
   padding-top: 1rem;
 }
-a,
-code {
-  color: #eeeeee;
-}
 a:hover {
-  text-decoration-color: #40bfbf;
+  text-decoration-color: var(--color);
 }
 pre {
   padding: 0.25em 0;
-  border-left: 0.15em solid #40bfbf;
+  border-left: 0.15em solid var(--color);
   background-color: rgba(255, 255, 255, 0.1);
 }
 pre div::before {
@@ -71,12 +73,12 @@ pre div:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 .slide {
-  background: #000;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px), repeating-linear-gradient(to bottom, rgba(64, 191, 191, 0.2) 0, rgba(64, 191, 191, 0.2) 16px, #40bfbf 16px, #40bfbf 17px);
+  background: var(--bg);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px)), repeating-linear-gradient(to bottom, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px));
 }
 .slide > * {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
+  margin-left: calc(6px * var(--grid));
+  margin-right: calc(6px * var(--grid));
 }
 .slide > p:first-child {
   margin: 0;
@@ -89,7 +91,7 @@ pre div:hover {
   body::after {
     font-size: 62.5%;
     content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
-    color: #40bfbf;
+    color: var(--color);
     display: block;
     text-align: center;
     position: fixed;

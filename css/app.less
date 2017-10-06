@@ -1,23 +1,17 @@
 @width: 1024;
 @height: 768;
 @page-margin: 12px; // largest that works in ff (ignores @page size)
-@tab-size: 4;
 
 *, *::before, *::after {
 	box-sizing: inherit;
 }
 
 :root {
-	--width: @width;
-	--height: @height;
-	--scale: 1;
-	--current: 0;
-	--total: 0;
 	counter-reset: slide slide-before slide-current slide-after;
-	-moz-tab-size: @tab-size;
-	tab-size: @tab-size;
 	box-sizing: border-box;
-	font-size: 32px;
+	-moz-tab-size: var(--tab-size);
+	tab-size: var(--tab-size);
+	font-size: ~"calc(var(--grid) * 4px)";
 }
 
 body {
@@ -59,7 +53,8 @@ body {
 	size: @width*1px+2*@page-margin @height*1px+2*@page-margin;
 }
 
-@import "typo.less" screen;
+@import "variables.less";
+@import "typo.less";
 @import "cursor.less" screen;
 @import "draw.less" screen;
 @import "full.less" screen;
