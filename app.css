@@ -8,7 +8,6 @@
   box-sizing: border-box;
   -moz-tab-size: var(--tab-size);
   tab-size: var(--tab-size);
-  font-size: calc(var(--grid) * 4px);
 }
 body {
   margin: 0;
@@ -41,8 +40,8 @@ body {
   text-align: right;
 }
 @page {
-  margin: 12px;
-  size: 1048px 792px;
+  margin: 0px;
+  size: 1024px 768px;
 }
 :root {
   --width: 1024;
@@ -50,14 +49,17 @@ body {
   --scale: 1;
   --current: 0;
   --total: 0;
-  --grid: 8;
+  --grid: 16px;
   --tab-size: 4;
   --thickness: 12;
   --highlight: rgba(255, 20, 20, 0.8);
+  --overview-scale: 0.3;
+  --overview-border: calc(var(--grid) / 4);
   --fg: #fff;
   --bg: #000;
 }
 body {
+  font-size: calc(2 * var(--grid));
   line-height: calc(1.5);
 }
 li {
@@ -108,24 +110,26 @@ li {
 }
 @media screen {
   body.overview {
+    --thickness: calc(var(--overview-border) / var(--overview-scale));
+    --offset: calc((1 - var(--overview-scale)) * -1px);
     background-color: #666;
   }
   body.overview .slide {
     float: left;
-    transform-origin: 0 0;
-    transform: scale(0.3);
-    margin-left: 1em;
-    margin-top: 1em;
-    margin-bottom: -537.6px;
-    margin-right: -716.8px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    border-radius: 20px;
     cursor: pointer;
+    transform-origin: 0 0;
+    transform: scale(var(--overview-scale));
+    margin-left: calc(2 * var(--grid));
+    margin-top: calc(2 * var(--grid));
+    margin-bottom: calc(768 * var(--offset));
+    margin-right: calc(1024 * var(--offset));
+    box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
+    border-radius: var(--thickness);
   }
   body.overview .slide:hover {
-    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.25);
   }
   body.overview .slide.current {
-    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.75);
   }
 }

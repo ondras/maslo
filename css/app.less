@@ -1,6 +1,5 @@
 @width: 1024;
 @height: 768;
-@page-margin: 12px; // largest that works in ff (ignores @page size)
 
 *, *::before, *::after {
 	box-sizing: inherit;
@@ -11,7 +10,6 @@
 	box-sizing: border-box;
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
-	font-size: ~"calc(var(--grid) * 4px)";
 }
 
 body {
@@ -49,6 +47,7 @@ body {
 }
 
 @page {
+	@page-margin: 0*12px; // largest that works in ff (ignores @page size)
 	margin: @page-margin;
 	size: @width*1px+2*@page-margin @height*1px+2*@page-margin;
 }

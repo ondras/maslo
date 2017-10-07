@@ -4,15 +4,15 @@
 }
 
 .bg {
-	@O: ~"calc(2px*var(--grid) - 1px)";
-	@pattern: transparent 0, transparent @O, var(--color) @O, var(--color) ~"calc(@{O} + 1px)";
+	@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid);
 
 	background: var(--bg);
 	background-image: 
-		radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)),
+		radial-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 1)),
 		repeating-linear-gradient(to right, @pattern),
 		repeating-linear-gradient(to bottom, @pattern)
 	;
+	background-position: ~"calc(var(--grid) / 2)" ~"calc(var(--grid) / 2)";
 }
 
 .font(@name, @widths: "400,400i,700,700i") {

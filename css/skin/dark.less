@@ -19,17 +19,18 @@ body {
 }
 
 code {
-	font-weight: bold;
-	font-size: 87.5%;
 	font-family: input, monospace;
+	font-weight: bold;
+	font-size: ~"calc(1.6 * var(--grid))";
+	line-height: calc(3 / 1.6);
 }
 
 h1 {
 	color: var(--color);
 	font-size: 200%;
 	line-height: 1;
-	margin: 0 0 1rem 0;
-	padding-top: 1rem; // works with print page breaks
+	margin: 0 0 0.5em 0;
+	padding-top: 0.5em; // works with print page breaks
 }
 
 a:hover {
@@ -38,8 +39,7 @@ a:hover {
 
 pre {
 	@tint: rgba(255, 255, 255, 0.1);
-	padding: 0.25em 0;
-	border-left: 0.15em solid var(--color);
+	border-left: ~"calc(var(--grid) / 4)" solid var(--color);
 	background-color: @tint;
 
 	div {
@@ -57,7 +57,7 @@ pre {
 	.bg;
 
 	> * {
-		@margin: ~"calc(6px * var(--grid))";
+		@margin: ~"calc(3 * var(--grid))";
 		margin-left: @margin;
 		margin-right: @margin;
 	}

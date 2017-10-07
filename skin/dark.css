@@ -4,7 +4,8 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
 .bg {
   background: var(--bg);
-  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px)), repeating-linear-gradient(to bottom, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px));
+  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid)), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid));
+  background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 @counter-style circle-empty {
   system: additive;
@@ -47,23 +48,23 @@ body {
   background-color: var(--bg);
 }
 code {
-  font-weight: bold;
-  font-size: 87.5%;
   font-family: input, monospace;
+  font-weight: bold;
+  font-size: calc(1.6 * var(--grid));
+  line-height: calc(1.875);
 }
 h1 {
   color: var(--color);
   font-size: 200%;
   line-height: 1;
-  margin: 0 0 1rem 0;
-  padding-top: 1rem;
+  margin: 0 0 0.5em 0;
+  padding-top: 0.5em;
 }
 a:hover {
   text-decoration-color: var(--color);
 }
 pre {
-  padding: 0.25em 0;
-  border-left: 0.15em solid var(--color);
+  border-left: calc(var(--grid) / 4) solid var(--color);
   background-color: rgba(255, 255, 255, 0.1);
 }
 pre div::before {
@@ -74,11 +75,12 @@ pre div:hover {
 }
 .slide {
   background: var(--bg);
-  background-image: radial-gradient(rgba(0, 0, 0, 0.6), #000000), repeating-linear-gradient(to right, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px)), repeating-linear-gradient(to bottom, transparent 0, transparent calc(2px*var(--grid) - 1px), var(--color) calc(2px*var(--grid) - 1px), var(--color) calc(calc(2px*var(--grid) - 1px) + 1px));
+  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid)), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid));
+  background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
 }
 .slide > * {
-  margin-left: calc(6px * var(--grid));
-  margin-right: calc(6px * var(--grid));
+  margin-left: calc(3 * var(--grid));
+  margin-right: calc(3 * var(--grid));
 }
 .slide > p:first-child {
   margin: 0;
