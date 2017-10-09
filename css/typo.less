@@ -4,5 +4,35 @@ body {
 }
 
 li {
+	@indent: ~"calc(2 * var(--grid))";
 	margin: 0.5em 0;
+	list-style: none;
+	text-indent: ~"calc(-1 * @{indent})";
+
+	&::before {
+		display: inline-block;
+		text-align: right;
+		width: @indent;
+		padding-right: var(--grid);
+		opacity: 0.75;
+	}
 }
+
+ul, ol {
+	padding: 0;
+}
+
+ol {
+	counter-reset: list-item;
+	> li {
+		counter-increment: list-item;
+		&::before {
+			content: counter(list-item) ".";
+		}
+	}
+}
+
+ul > li::before {
+	content: "•";
+}
+

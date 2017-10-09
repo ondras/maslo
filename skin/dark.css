@@ -5,7 +5,7 @@
 .bg {
   background: var(--bg);
   background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid)), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid));
-  background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+  background-position: 0 calc(var(--grid) / 2);
 }
 @counter-style circle-empty {
   system: additive;
@@ -76,11 +76,11 @@ pre div:hover {
 .slide {
   background: var(--bg);
   background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid)), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid));
-  background-position: calc(var(--grid) / 2) calc(var(--grid) / 2);
+  background-position: 0 calc(var(--grid) / 2);
 }
 .slide > * {
-  margin-left: calc(3 * var(--grid));
-  margin-right: calc(3 * var(--grid));
+  margin-left: calc(4 * var(--grid));
+  margin-right: calc(4 * var(--grid));
 }
 .slide > p:first-child {
   margin: 0;

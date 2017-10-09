@@ -8,6 +8,16 @@
 
 ---
 
+# And now something...
+
+  1. JavaScript language follows the ECMAScript (ES) specification
+  1. ES versions are numbered both by year and edition
+  1. Eighth edition was finalized in June 2017
+  1. Previous version (ES2016) brought only two minor features
+  1. Developers not always enthusiastic about bleeding-edge news
+
+---
+
 # History II: Node.js
 
 Also known as *The Callback Hell*

@@ -64,6 +64,31 @@ body {
 }
 li {
   margin: 0.5em 0;
+  list-style: none;
+  text-indent: calc(-1 * calc(2 * var(--grid)));
+}
+li::before {
+  display: inline-block;
+  text-align: right;
+  width: calc(2 * var(--grid));
+  padding-right: var(--grid);
+  opacity: 0.75;
+}
+ul,
+ol {
+  padding: 0;
+}
+ol {
+  counter-reset: list-item;
+}
+ol > li {
+  counter-increment: list-item;
+}
+ol > li::before {
+  content: counter(list-item) ".";
+}
+ul > li::before {
+  content: "•";
 }
 @media screen {
   #cursor {
