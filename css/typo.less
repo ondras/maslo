@@ -4,17 +4,12 @@ body {
 }
 
 li {
-	@indent: ~"calc(2 * var(--grid))";
 	margin: 0.5em 0;
 	list-style: none;
-	text-indent: ~"calc(-1 * @{indent})";
+	text-indent: ~"calc(-1 * var(--marker-width))";
 
 	&::before {
-		display: inline-block;
-		text-align: right;
-		width: @indent;
-		padding-right: var(--grid);
-		opacity: 0.75;
+		.marker();
 	}
 }
 

@@ -3,21 +3,17 @@
 *::after {
   box-sizing: inherit;
 }
-:root {
+body {
+  margin: 0;
   counter-reset: slide slide-before slide-current slide-after;
   box-sizing: border-box;
   -moz-tab-size: var(--tab-size);
   tab-size: var(--tab-size);
 }
-body {
-  margin: 0;
-}
 .slide {
   width: 1024px;
   height: 768px;
   overflow: hidden;
-  page-break-after: always;
-  -webkit-print-color-adjust: exact;
   counter-increment: slide slide-before;
 }
 .slide.current {
@@ -34,14 +30,12 @@ body {
 }
 .slide pre div::before {
   display: inline-block;
-  content: counter(line) ". ";
-  width: 5ch;
-  font-weight: normal;
   text-align: right;
-}
-@page {
-  margin: 0px;
-  size: 1024px 768px;
+  width: var(--marker-width);
+  padding-right: var(--grid);
+  opacity: 0.6;
+  content: counter(line) ".";
+  font-weight: normal;
 }
 :root {
   --width: 1024;
@@ -57,6 +51,7 @@ body {
   --overview-border: calc(var(--grid) / 4);
   --fg: #fff;
   --bg: #000;
+  --marker-width: calc(5 * var(--grid));
 }
 body {
   font-size: calc(2 * var(--grid));
@@ -65,14 +60,14 @@ body {
 li {
   margin: 0.5em 0;
   list-style: none;
-  text-indent: calc(-1 * calc(2 * var(--grid)));
+  text-indent: calc(-1 * var(--marker-width));
 }
 li::before {
   display: inline-block;
   text-align: right;
-  width: calc(2 * var(--grid));
+  width: var(--marker-width);
   padding-right: var(--grid);
-  opacity: 0.75;
+  opacity: 0.6;
 }
 ul,
 ol {
@@ -156,5 +151,15 @@ ul > li::before {
   }
   body.overview .slide.current {
     box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.75);
+  }
+}
+@media print {
+  @page {
+    margin: 0px;
+    size: 1024px 768px;
+  }
+  .slide {
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
   }
 }

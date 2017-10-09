@@ -1,27 +1,30 @@
 @width: 1024;
 @height: 768;
 
+.marker() {
+	display: inline-block;
+	text-align: right;
+	width: var(--marker-width);
+	padding-right: var(--grid);
+	opacity: 0.6;
+}
+
 *, *::before, *::after {
 	box-sizing: inherit;
 }
 
-:root {
+body {
+	margin: 0;
 	counter-reset: slide slide-before slide-current slide-after;
 	box-sizing: border-box;
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
 }
 
-body {
-	margin: 0;
-}
-
 .slide {
 	width: @width*1px;
 	height: @height*1px;
 	overflow: hidden;
-	page-break-after: always;
-	-webkit-print-color-adjust: exact;
 
 	counter-increment: slide slide-before;
 	&.current { 
@@ -36,20 +39,12 @@ body {
 		div {
 			counter-increment: line;
 			&::before {
-				display: inline-block;
-				content: counter(line) ". ";
-				width: 5ch;
+				.marker();
+				content: counter(line) ".";
 				font-weight: normal;
-				text-align: right;
 			}
 		}
 	}
-}
-
-@page {
-	@page-margin: 0*12px; // largest that works in ff (ignores @page size)
-	margin: @page-margin;
-	size: @width*1px+2*@page-margin @height*1px+2*@page-margin;
 }
 
 @import "variables.less";
@@ -58,3 +53,4 @@ body {
 @import "draw.less" screen;
 @import "full.less" screen;
 @import "overview.less" screen;
+@import "print.less" print;

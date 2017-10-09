@@ -1,0 +1,10 @@
+@page {
+	@page-margin: 0*12px; // largest that works in ff (ignores @page size)
+	margin: @page-margin;
+	size: @width*1px+2*@page-margin @height*1px+2*@page-margin;
+}
+
+.slide {
+	page-break-after: always;
+	-webkit-print-color-adjust: exact;
+}

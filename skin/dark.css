@@ -64,11 +64,8 @@ a:hover {
   text-decoration-color: var(--color);
 }
 pre {
-  border-left: calc(var(--grid) / 4) solid var(--color);
+  box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
   background-color: rgba(255, 255, 255, 0.1);
-}
-pre div::before {
-  opacity: 0.5;
 }
 pre div:hover {
   background-color: rgba(255, 255, 255, 0.1);
@@ -79,8 +76,8 @@ pre div:hover {
   background-position: 0 calc(var(--grid) / 2);
 }
 .slide > * {
-  margin-left: calc(4 * var(--grid));
-  margin-right: calc(4 * var(--grid));
+  margin-left: calc(5 * var(--grid));
+  margin-right: calc(5 * var(--grid));
 }
 .slide > p:first-child {
   margin: 0;

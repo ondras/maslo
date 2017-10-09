@@ -39,17 +39,11 @@ a:hover {
 
 pre {
 	@tint: rgba(255, 255, 255, 0.1);
-	border-left: ~"calc(var(--grid) / 4)" solid var(--color);
+	box-shadow: ~"calc(var(--grid) / -4)" 0 0 var(--color);
 	background-color: @tint;
 
-	div {
-		&::before {
-			opacity: 0.5;
-		}
-
-		&:hover {
-			background-color: @tint;
-		}
+	div:hover {
+		background-color: @tint;
 	}
 }
 
@@ -57,7 +51,7 @@ pre {
 	.bg;
 
 	> * {
-		@margin: ~"calc(4 * var(--grid))";
+		@margin: ~"calc(5 * var(--grid))";
 		margin-left: @margin;
 		margin-right: @margin;
 	}
