@@ -7,10 +7,10 @@
 .hljs("vs2015"); // agate, dracula, gruvbox-dark
 
 :root {
-	--bg: #000;
-	--fg: #eee;
+	--fg: #111;
+	--bg: #fff;
 	--color: hsl(180, 50%, 50%);
-	--font: ubuntu, sans-serif;
+	--font: Lora, serif;
 }
 
 code {
@@ -35,12 +35,11 @@ a:hover {
 pre {
 	box-shadow: ~"calc(var(--grid) / -4)" 0 0 var(--color);
 
-	@tint: rgba(255, 255, 255, 0.1);
+	@tint: rgba(0, 0, 0, 0.1);
 	background-color: @tint;
 	div:hover { background-color: @tint; }
 }
 
-.bg-grid();
 .progress();
 .poster();
 .padding-lr(5);

@@ -25,10 +25,10 @@
   src: url(font/Input-BoldItalic.ttf);
 }
 :root {
-  --bg: #000;
-  --fg: #eee;
+  --fg: #111;
+  --bg: #fff;
   --color: #40bfbf;
-  --font: ubuntu, sans-serif;
+  --font: Lora, serif;
 }
 code {
   font-size: calc(1.6 * var(--grid));
@@ -48,14 +48,10 @@ a:hover {
 }
 pre {
   box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 pre div:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.slide {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid)), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid));
-  background-position: 0 calc(var(--grid) / 2);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 @counter-style circle-empty {
   system: additive;

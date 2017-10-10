@@ -3,28 +3,63 @@
 	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
 }
 
-.bg {
-	@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid);
+.bg-grid() {
+	.slide {
+		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid);
 
-	background: var(--bg);
-	background-image: 
-		radial-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 1)),
-		repeating-linear-gradient(to right, @pattern),
-		repeating-linear-gradient(to bottom, @pattern)
-	;
-	background-position: 0 ~"calc(var(--grid) / 2)";
+		background-image: 
+			radial-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 1)),
+			repeating-linear-gradient(to right, @pattern),
+			repeating-linear-gradient(to bottom, @pattern)
+		;
+		background-position: 0 ~"calc(var(--grid) / 2)";
+	}
 }
 
 .font(@name, @widths: "400,400i,700,700i") {
 	@import url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
 }
 
-@counter-style circle-empty {
-	system: additive;
-	additive-symbols: 1 "○", 0 "";
+.progress() {
+	@counter-style circle-empty {
+		system: additive;
+		additive-symbols: 1 "○", 0 "";
+	}
+
+	@counter-style circle-full {
+		system: additive;
+		additive-symbols: 1 "●", 0 "";
+	}
+
+	@media screen {
+		body::after {
+			font-size: ~"calc(1.25 * var(--grid))";
+			content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
+			color: var(--color);
+			display: block;
+			text-align: center;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	}
 }
 
-@counter-style circle-full {
-	system: additive;
-	additive-symbols: 1 "●", 0 "";
+.padding-lr(@num) {
+	.slide > * {
+		@margin: ~"calc(@{num} * var(--grid))";
+		margin-left: @margin;
+		margin-right: @margin;
+	}
+}
+
+.poster() {
+	.slide > p:first-child {
+		margin: 0;
+		img {
+			display: block;
+			object-fit: contain;
+		}
+	}
 }

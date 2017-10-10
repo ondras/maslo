@@ -926,7 +926,7 @@ function redraw() {
 function setupStyle(parent) {
 	let style = getComputedStyle(parent);
 	ctx.strokeStyle = style.getPropertyValue("--highlight");
-	ctx.lineWidth = style.getPropertyValue("--thickness");
+	ctx.lineWidth = style.getPropertyValue("--brush");
 	ctx.lineJoin = ctx.lineCap = "round";
 }
 

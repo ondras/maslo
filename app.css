@@ -9,6 +9,7 @@ body {
   box-sizing: border-box;
   color: var(--fg);
   background-color: var(--bg);
+  font-family: var(--font);
 }
 .slide {
   width: calc(var(--width) * 1px);
@@ -30,12 +31,13 @@ body {
   --total: 0;
   --grid: 16px;
   --tab-size: 4;
-  --thickness: 12;
+  --brush: 12;
   --highlight: rgba(255, 20, 20, 0.8);
   --overview-scale: 0.3;
   --overview-border: calc(var(--grid) / 4);
   --fg: #fff;
   --bg: #000;
+  --font: sans-serif;
   --marker-width: calc(5 * var(--grid));
 }
 body {
@@ -71,6 +73,9 @@ ol > li::before {
 }
 ul > li::before {
   content: "•";
+  font-size: 150%;
+  vertical-align: middle;
+  line-height: 0;
 }
 pre {
   counter-reset: line;
@@ -93,8 +98,8 @@ pre div::before {
     transform: translate(-50%, -50%);
     background-color: var(--highlight);
     border-radius: 50%;
-    width: calc(1.5px * var(--thickness));
-    height: calc(1.5px * var(--thickness));
+    width: calc(1.5px * var(--brush));
+    height: calc(1.5px * var(--brush));
     z-index: 1;
   }
   body.cursor {
@@ -139,6 +144,7 @@ pre div::before {
   body.overview .slide {
     float: left;
     cursor: pointer;
+    background-color: var(--bg);
     transform-origin: 0 0;
     transform: scale(var(--overview-scale));
     margin-left: calc(2 * var(--grid));
