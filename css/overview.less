@@ -12,8 +12,8 @@ body.overview {
 		transform: scale(var(--overview-scale));
 		margin-left: ~"calc(2 * var(--grid))";
 		margin-top: ~"calc(2 * var(--grid))";
-		margin-bottom: ~"calc(@{height} * var(--offset))";
-		margin-right: ~"calc(@{width} * var(--offset))";
+		margin-bottom: ~"calc(var(--height) * var(--offset))";
+		margin-right: ~"calc(var(--width) * var(--offset))";
 
 		box-shadow: 0 var(--thickness) ~"calc(2 * var(--thickness))" rgba(0, 0, 0, 0.6);
 		border-radius: var(--thickness);

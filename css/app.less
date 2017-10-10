@@ -1,29 +1,18 @@
-@width: 1024;
-@height: 768;
-
-.marker() {
-	display: inline-block;
-	text-align: right;
-	width: var(--marker-width);
-	padding-right: var(--grid);
-	opacity: 0.6;
-}
-
 *, *::before, *::after {
 	box-sizing: inherit;
 }
 
 body {
-	margin: 0;
 	counter-reset: slide slide-before slide-current slide-after;
+	margin: 0;
 	box-sizing: border-box;
-	-moz-tab-size: var(--tab-size);
-	tab-size: var(--tab-size);
+	color: var(--fg);
+	background-color: var(--bg);
 }
 
 .slide {
-	width: @width*1px;
-	height: @height*1px;
+	width: ~"calc(var(--width) * 1px)";
+	height: ~"calc(var(--height) * 1px)";
 	overflow: hidden;
 
 	counter-increment: slide slide-before;
@@ -31,18 +20,6 @@ body {
 		counter-increment: slide slide-current;
 		& ~ .slide {
 			counter-increment: slide slide-after;
-		}
-	}
-
-	pre {
-		counter-reset: line;
-		div {
-			counter-increment: line;
-			&::before {
-				.marker();
-				content: counter(line) ".";
-				font-weight: normal;
-			}
 		}
 	}
 }

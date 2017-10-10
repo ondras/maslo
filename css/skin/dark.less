@@ -13,22 +13,16 @@
 }
 
 body {
-	font-family: ubuntu, sans-serif;
-	color: var(--fg);
-	background-color: var(--bg);
+	font: ubuntu, sans-serif;
 }
 
 code {
-	font-family: input, monospace;
-	font-weight: bold;
-	font-size: ~"calc(1.6 * var(--grid))";
-	line-height: calc(3 / 1.6);
+	font: bold ~"calc(1.6 * var(--grid))" / calc(3 / 1.6) input, monospace;
 }
 
 h1 {
 	color: var(--color);
-	font-size: 200%;
-	line-height: 1;
+	font: 200% / 1;
 	margin: 0 0 0.5em 0;
 	padding-top: 0.5em; // works with print page breaks
 }
@@ -38,13 +32,11 @@ a:hover {
 }
 
 pre {
-	@tint: rgba(255, 255, 255, 0.1);
 	box-shadow: ~"calc(var(--grid) / -4)" 0 0 var(--color);
-	background-color: @tint;
 
-	div:hover {
-		background-color: @tint;
-	}
+	@tint: rgba(255, 255, 255, 0.1);
+	background-color: @tint;
+	div:hover { background-color: @tint; }
 }
 
 .slide {
@@ -55,7 +47,6 @@ pre {
 		margin-left: @margin;
 		margin-right: @margin;
 	}
-
 
 	> p:first-child {
 		margin: 0;
@@ -68,7 +59,7 @@ pre {
 
 @media screen {
 	body::after {
-		font-size: 62.5%;
+		font-size: ~"calc(1.25 * var(--grid))";
 		content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
 		color: var(--color);
 		display: block;

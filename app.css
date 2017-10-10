@@ -4,15 +4,15 @@
   box-sizing: inherit;
 }
 body {
-  margin: 0;
   counter-reset: slide slide-before slide-current slide-after;
+  margin: 0;
   box-sizing: border-box;
-  -moz-tab-size: var(--tab-size);
-  tab-size: var(--tab-size);
+  color: var(--fg);
+  background-color: var(--bg);
 }
 .slide {
-  width: 1024px;
-  height: 768px;
+  width: calc(var(--width) * 1px);
+  height: calc(var(--height) * 1px);
   overflow: hidden;
   counter-increment: slide slide-before;
 }
@@ -21,21 +21,6 @@ body {
 }
 .slide.current ~ .slide {
   counter-increment: slide slide-after;
-}
-.slide pre {
-  counter-reset: line;
-}
-.slide pre div {
-  counter-increment: line;
-}
-.slide pre div::before {
-  display: inline-block;
-  text-align: right;
-  width: var(--marker-width);
-  padding-right: var(--grid);
-  opacity: 0.6;
-  content: counter(line) ".";
-  font-weight: normal;
 }
 :root {
   --width: 1024;
@@ -54,6 +39,8 @@ body {
   --marker-width: calc(5 * var(--grid));
 }
 body {
+  -moz-tab-size: var(--tab-size);
+  tab-size: var(--tab-size);
   font-size: calc(2 * var(--grid));
   line-height: calc(1.5);
 }
@@ -84,6 +71,21 @@ ol > li::before {
 }
 ul > li::before {
   content: "•";
+}
+pre {
+  counter-reset: line;
+}
+pre div {
+  counter-increment: line;
+}
+pre div::before {
+  display: inline-block;
+  text-align: right;
+  width: var(--marker-width);
+  padding-right: var(--grid);
+  opacity: 0.6;
+  content: counter(line) ".";
+  font-weight: normal;
 }
 @media screen {
   #cursor {
@@ -141,8 +143,8 @@ ul > li::before {
     transform: scale(var(--overview-scale));
     margin-left: calc(2 * var(--grid));
     margin-top: calc(2 * var(--grid));
-    margin-bottom: calc(768 * var(--offset));
-    margin-right: calc(1024 * var(--offset));
+    margin-bottom: calc(var(--height) * var(--offset));
+    margin-right: calc(var(--width) * var(--offset));
     box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
     border-radius: var(--thickness);
   }
@@ -155,7 +157,7 @@ ul > li::before {
 }
 @media print {
   @page {
-    margin: 0px;
+    margin: 0;
     size: 1024px 768px;
   }
   .slide {

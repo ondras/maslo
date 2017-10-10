@@ -1,4 +1,15 @@
+.marker() {
+	display: inline-block;
+	text-align: right;
+	width: var(--marker-width);
+	padding-right: var(--grid);
+	opacity: 0.6;
+}
+
 body {
+	-moz-tab-size: var(--tab-size);
+	tab-size: var(--tab-size);
+
 	font-size: ~"calc(2 * var(--grid))";
 	line-height: calc(3/2);
 }
@@ -31,3 +42,14 @@ ul > li::before {
 	content: "•";
 }
 
+pre {
+	counter-reset: line;
+	div {
+		counter-increment: line;
+		&::before {
+			.marker();
+			content: counter(line) ".";
+			font-weight: normal;
+		}
+	}
+}
