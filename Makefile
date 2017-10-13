@@ -23,7 +23,7 @@ $(HIGHLIGHT):
 
 skins: $(SKINS)
 
-skin/%.css: css/skin/%.less css/skin/_include/*.less
+skin/%.css: css/skin/%.less css/*.less
 	$(LESSC) $< > $@
 
 clean:
@@ -34,7 +34,6 @@ watch: all
 	while inotifywait -e MODIFY -r \
 		css/*.less \
 		css/skin/*.less \
-		css/skin/_include/*.less \
 		js/*.js \
 		; do make $^ ; done
 

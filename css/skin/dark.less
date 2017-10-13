@@ -1,23 +1,20 @@
-@import "_include/mixins.less";
-@import "_include/input.less";
+@import "../mixins.less";
 
-.font("Ubuntu");
-.font("Lora");
-.font("Lato");
-.hljs("vs2015"); // agate, dracula, gruvbox-dark
+.google-font("Ubuntu");
+.google-font("Lora");
+.google-font("Lato");
+.hljs("vs2015"); // vs2015, agate, dracula, gruvbox-dark
+
+.bg-grid();
+.progress();
+.poster();
+.padding-lr(5);
 
 :root {
 	--bg: #000;
 	--fg: #eee;
 	--color: hsl(180, 50%, 50%);
-	--font: ubuntu, sans-serif;
-}
-
-code {
-	font-size: ~"calc(1.6 * var(--grid))";
-	line-height: calc(3 / 1.6);
-	font-family: input, monospace;
-	font-weight: bold;
+	--font: Ubuntu, sans-serif;
 }
 
 h1 {
@@ -40,7 +37,3 @@ pre {
 	div:hover { background-color: @tint; }
 }
 
-.bg-grid();
-.progress();
-.poster();
-.padding-lr(5);
