@@ -1143,7 +1143,7 @@ var title$1 = Object.freeze({
 });
 
 function initStyles(skin = "dark") {
-	function loadApp() { return load("app.css"); }
+	function loadApp() { return load("maslo.css"); }
 	function loadSkin() { return load(`skin/${skin}.css`); }
 
 	return loadApp().then(loadSkin);

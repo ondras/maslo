@@ -1,9 +1,29 @@
-.marker() {
-	display: inline-block;
-	text-align: right;
-	width: var(--marker-width);
-	padding-right: var(--grid);
-	opacity: 0.6;
+@import "mixins.less";
+
+@font-face {
+	font-family: input;
+	font-weight: normal;
+	src: url(font/Input-Regular.ttf);
+}
+
+@font-face {
+	font-family: input;
+	font-weight: bold;
+	src: url(font/Input-Bold.ttf);
+}
+
+@font-face {
+	font-family: input;
+	font-weight: normal;
+	font-style: italic;
+	src: url(font/Input-Italic.ttf);
+}
+
+@font-face {
+	font-family: input;
+	font-weight: bold;
+	font-style: italic;
+	src: url(font/Input-BoldItalic.ttf);
 }
 
 body {
@@ -55,4 +75,11 @@ pre {
 			font-weight: normal;
 		}
 	}
+}
+
+code {
+	font-size: ~"calc(1.6 * var(--grid))";
+	line-height: calc(3 / 1.6);
+	font-family: input, monospace;
+	font-weight: bold;
 }

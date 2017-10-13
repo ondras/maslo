@@ -40,6 +40,28 @@ body {
   --font: sans-serif;
   --marker-width: calc(5 * var(--grid));
 }
+@font-face {
+  font-family: input;
+  font-weight: normal;
+  src: url(font/Input-Regular.ttf);
+}
+@font-face {
+  font-family: input;
+  font-weight: bold;
+  src: url(font/Input-Bold.ttf);
+}
+@font-face {
+  font-family: input;
+  font-weight: normal;
+  font-style: italic;
+  src: url(font/Input-Italic.ttf);
+}
+@font-face {
+  font-family: input;
+  font-weight: bold;
+  font-style: italic;
+  src: url(font/Input-BoldItalic.ttf);
+}
 body {
   -moz-tab-size: var(--tab-size);
   tab-size: var(--tab-size);
@@ -91,6 +113,12 @@ pre div::before {
   opacity: 0.6;
   content: counter(line) ".";
   font-weight: normal;
+}
+code {
+  font-size: calc(1.6 * var(--grid));
+  line-height: calc(1.875);
+  font-family: input, monospace;
+  font-weight: bold;
 }
 @media screen {
   #cursor {

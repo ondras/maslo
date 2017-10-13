@@ -1,58 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&subset=latin,latin-ext");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
-@font-face {
-  font-family: input;
-  font-weight: normal;
-  src: url(font/Input-Regular.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: bold;
-  src: url(font/Input-Bold.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: normal;
-  font-style: italic;
-  src: url(font/Input-Italic.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: bold;
-  font-style: italic;
-  src: url(font/Input-BoldItalic.ttf);
-}
-:root {
-  --fg: #111;
-  --bg: #fff;
-  --color: #40bfbf;
-  --font: Lora, serif;
-}
-code {
-  font-size: calc(1.6 * var(--grid));
-  line-height: calc(1.875);
-  font-family: input, monospace;
-  font-weight: bold;
-}
-h1 {
-  color: var(--color);
-  font-size: 200%;
-  line-height: 1;
-  margin: 0 0 0.5em 0;
-  padding-top: 0.5em;
-}
-a:hover {
-  text-decoration-color: var(--color);
-}
-pre {
-  box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
-  background-color: rgba(0, 0, 0, 0.1);
-}
-pre div:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs.min.css");
 @counter-style circle-empty {
   system: additive;
   additive-symbols: 1 "○", 0 "";
@@ -84,4 +33,27 @@ pre div:hover {
 .slide > * {
   margin-left: calc(5 * var(--grid));
   margin-right: calc(5 * var(--grid));
+}
+:root {
+  --fg: #111;
+  --bg: #fff;
+  --color: #009999;
+  --font: Lora, serif;
+}
+h1 {
+  color: var(--color);
+  font-size: 200%;
+  line-height: 1;
+  margin: 0 0 0.5em 0;
+  padding-top: 0.5em;
+}
+a:hover {
+  text-decoration-color: var(--color);
+}
+pre {
+  box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+pre div:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }

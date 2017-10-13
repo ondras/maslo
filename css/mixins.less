@@ -1,3 +1,11 @@
+.marker() {
+	display: inline-block;
+	text-align: right;
+	width: var(--marker-width);
+	padding-right: var(--grid);
+	opacity: 0.6;
+}
+
 .hljs(@name) {
 	@version: "9.12.0";
 	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
@@ -16,7 +24,7 @@
 	}
 }
 
-.font(@name, @widths: "400,400i,700,700i") {
+.google-font(@name, @widths: "400,400i,700,700i") {
 	@import url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
 }
 

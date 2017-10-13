@@ -10,7 +10,7 @@ import * as draw from "draw.js";
 import * as mode from "mode.js";
 
 function initStyles(skin = "dark") {
-	function loadApp() { return style.load("app.css"); }
+	function loadApp() { return style.load("maslo.css"); }
 	function loadSkin() { return style.load(`skin/${skin}.css`); }
 
 	return loadApp().then(loadSkin);
