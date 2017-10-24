@@ -9,9 +9,9 @@ import * as mouse from "mouse.js";
 import * as draw from "draw.js";
 import * as mode from "mode.js";
 
-function initStyles(skin = "dark") {
+function initStyles(skin) {
 	function loadApp() { return style.load("maslo.css"); }
-	function loadSkin() { return style.load(`skin/${skin}.css`); }
+	function loadSkin() { return skin ? style.load(`skin/${skin}.css`) : Promise.resolve(); }
 
 	return loadApp().then(loadSkin);
 }
@@ -29,7 +29,8 @@ function init(selector) {
 	let node = document.querySelector(selector);
 	function initSlides() { return slides.init(node); }
 
-	initStyles(node.dataset.skin).then(initSlides).then(initApp).catch(error);
+	let skin = ("skin" in node.dataset ? node.dataset.skin : "dark");
+	initStyles(skin).then(initSlides).then(initApp).catch(error);
 }
 
 init(document.currentScript.dataset.selector || "template");

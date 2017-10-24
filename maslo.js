@@ -1142,9 +1142,9 @@ var title$1 = Object.freeze({
 	init: init$8
 });
 
-function initStyles(skin = "dark") {
+function initStyles(skin) {
 	function loadApp() { return load("maslo.css"); }
-	function loadSkin() { return load(`skin/${skin}.css`); }
+	function loadSkin() { return skin ? load(`skin/${skin}.css`) : Promise.resolve(); }
 
 	return loadApp().then(loadSkin);
 }
@@ -1162,7 +1162,8 @@ function init(selector) {
 	let node = document.querySelector(selector);
 	function initSlides() { return init$1(node); }
 
-	initStyles(node.dataset.skin).then(initSlides).then(initApp).catch(error);
+	let skin = ("skin" in node.dataset ? node.dataset.skin : "dark");
+	initStyles(skin).then(initSlides).then(initApp).catch(error);
 }
 
 init(document.currentScript.dataset.selector || "template");

@@ -35,8 +35,8 @@ body {
   --highlight: rgba(255, 20, 20, 0.8);
   --overview-scale: 0.3;
   --overview-border: calc(var(--grid) / 4);
-  --fg: #fff;
-  --bg: #000;
+  --fg: #000;
+  --bg: #fff;
   --font: sans-serif;
   --marker-width: calc(5 * var(--grid));
 }
