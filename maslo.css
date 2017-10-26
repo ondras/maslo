@@ -96,7 +96,7 @@ ol > li::before {
 ul > li::before {
   content: "•";
   font-size: 150%;
-  vertical-align: middle;
+  vertical-align: sub;
   line-height: 0;
 }
 pre {
