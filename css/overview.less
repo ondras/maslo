@@ -14,16 +14,17 @@ body.overview {
 		margin-top: ~"calc(2 * var(--grid))";
 		margin-bottom: ~"calc(var(--height) * var(--offset))";
 		margin-right: ~"calc(var(--width) * var(--offset))";
-
-		box-shadow: 0 var(--thickness) ~"calc(2 * var(--thickness))" rgba(0, 0, 0, 0.6);
 		border-radius: var(--thickness);
 
+		@shadow: 0 var(--thickness) ~"calc(2 * var(--thickness))" rgba(0, 0, 0, 0.6);
+		box-shadow: @shadow;
+
 		&:hover {
-			box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.25);
+			box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.25), @shadow;
 		}
 
 		&.current {
-			box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.75);
+			box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.75), @shadow;
 		}
 	}
 }

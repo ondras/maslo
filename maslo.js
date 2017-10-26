@@ -1142,9 +1142,15 @@ var title$1 = Object.freeze({
 	init: init$8
 });
 
+const base = document.currentScript.src;
+
+function makeURL(rel) {
+	return new URL(rel, base).href;
+}
+
 function initStyles(skin) {
-	function loadApp() { return load("maslo.css"); }
-	function loadSkin() { return skin ? load(`skin/${skin}.css`) : Promise.resolve(); }
+	function loadApp() { return load(makeURL("maslo.css")); }
+	function loadSkin() { return skin ? load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
 
 	return loadApp().then(loadSkin);
 }

@@ -9,9 +9,15 @@ import * as mouse from "mouse.js";
 import * as draw from "draw.js";
 import * as mode from "mode.js";
 
+const base = document.currentScript.src;
+
+function makeURL(rel) {
+	return new URL(rel, base).href;
+}
+
 function initStyles(skin) {
-	function loadApp() { return style.load("maslo.css"); }
-	function loadSkin() { return skin ? style.load(`skin/${skin}.css`) : Promise.resolve(); }
+	function loadApp() { return style.load(makeURL("maslo.css")); }
+	function loadSkin() { return skin ? style.load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
 
 	return loadApp().then(loadSkin);
 }

@@ -2,31 +2,10 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>aaa</title>
+		<title>MaSlO test</title>
 	</head>
 	<body>
-<!--		<template data-src="test.md" data-skin="light"></template> -->
-		<template data-src="https://doc-0g-b4-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/sp5b12gatm0e7hk9rplvlgkqhh96ibjv/1508932800000/07551839256636753797/*/0B7h5AbqXfUQpbzBGQVBveFhIQjQ?e=download" data-skin="light"></template>
+		<template data-src="test.md" data-skin="light"></template>
 		<script src="maslo.js"></script>
-		<style>
-			:root {
-				--xcolor: red;
-				--xbg: #aaa;
-			}
-		</style>
-
-		<script>
-			function createDot(node) {
-				let dot = node.textContent;
-				let img = document.createElement("img");
-				img.src = `https://g.gravizo.com/svg?${encodeURIComponent(dot)}`;
-				let pre = node.parentNode;
-				pre.parentNode.replaceChild(img, pre);
-			}
-
-			window.addEventListener("slide-change", e => {
-				Array.from(document.querySelectorAll(".language-dot")).forEach(createDot);
-			}, {once:true})
-		</script>
 	</body>
 </html>
