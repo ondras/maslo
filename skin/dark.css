@@ -42,6 +42,7 @@
   --bg: #000;
   --fg: #eee;
   --color: #40bfbf;
+  --link: var(--fg);
   --font: Ubuntu, sans-serif;
 }
 h1 {
@@ -52,7 +53,6 @@ h1 {
   padding-top: 0.5em;
 }
 a {
-  color: var(--fg);
   text-decoration-color: var(--color);
 }
 pre {

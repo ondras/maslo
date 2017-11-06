@@ -38,7 +38,9 @@ body {
   --fg: #000;
   --bg: #fff;
   --font: sans-serif;
+  --link: #00e;
   --marker-width: calc(5 * var(--grid));
+  --marker-opacity: 0.6;
 }
 @font-face {
   font-family: input;
@@ -78,7 +80,7 @@ li::before {
   text-align: right;
   width: var(--marker-width);
   padding-right: var(--grid);
-  opacity: 0.6;
+  opacity: var(--marker-opacity);
 }
 ul,
 ol {
@@ -110,7 +112,7 @@ pre div::before {
   text-align: right;
   width: var(--marker-width);
   padding-right: var(--grid);
-  opacity: 0.6;
+  opacity: var(--marker-opacity);
   content: counter(line) ".";
   font-weight: normal;
 }
@@ -119,6 +121,9 @@ code {
   line-height: calc(1.875);
   font-family: input, monospace;
   font-weight: bold;
+}
+a {
+  color: var(--link);
 }
 @media screen {
   #cursor {

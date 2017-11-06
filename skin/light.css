@@ -39,6 +39,7 @@
   --bg: #ed9;
   --color: #662200;
   --font: Lora, serif;
+  --link: var(--fg);
 }
 h1 {
   color: var(--color);
@@ -48,7 +49,6 @@ h1 {
   padding-top: 0.5em;
 }
 a {
-  color: var(--fg);
   text-decoration-color: var(--color);
 }
 pre {
