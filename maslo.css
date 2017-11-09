@@ -110,7 +110,7 @@ pre div {
 pre div::before {
   display: inline-block;
   text-align: right;
-  width: var(--marker-width);
+  width: 4ch;
   padding-right: var(--grid);
   opacity: var(--marker-opacity);
   content: counter(line) ".";

@@ -738,7 +738,7 @@ function load(href) {
 
 	return new Promise((resolve, reject) => {
 		node.onload = resolve;
-		node.onerror = reject;
+		node.onerror = e => console.warn(e), resolve();
 	});
 }
 

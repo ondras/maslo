@@ -28,6 +28,7 @@ getData(function(err, data) {
 
 	processData(data, function(err, result) {
 		if (err) return displayError(err)
+        xxx
 
 		displayData(result, function(err) {
 			if (err) return displayError(err)

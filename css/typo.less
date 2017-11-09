@@ -40,7 +40,7 @@ li {
 	text-indent: ~"calc(-1 * var(--marker-width))";
 
 	&::before {
-		.marker();
+		.marker(var(--marker-width));
 	}
 }
 
@@ -70,7 +70,7 @@ pre {
 	div {
 		counter-increment: line;
 		&::before {
-			.marker();
+			.marker(4ch);
 			content: counter(line) ".";
 			font-weight: normal;
 		}
