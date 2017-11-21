@@ -1,4 +1,4 @@
-const CACHE = "";
+const CACHE = "v1";
 
 function cacheable(request) {
 	return (request.method.toLowerCase() == "get");
