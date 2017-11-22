@@ -11,7 +11,7 @@ async function purgeCaches() {
 	let deletePromises = toDelete.map(name => caches.delete(name));
 	return Promise.all(deletePromises);
 }
-
+/*
 async function processRequest(request) {
 	let cached = await caches.match(request);
 	if (cached) { return cached; }
@@ -22,6 +22,20 @@ async function processRequest(request) {
 	]);
 	await cache.put(request, response.clone());
 	return response;
+}
+*/
+
+async function processRequest(request) {
+	if (navigator.onLine) {
+		let [cache, response] = await Promise.all([
+			caches.open(CACHE),
+			fetch(request)
+		]);
+		await cache.put(request, response.clone());
+		return response;
+	} else {
+		return caches.match(request);
+	}
 }
 
 function onActivate(e) {

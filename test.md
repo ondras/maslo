@@ -3,6 +3,8 @@
   - JavaScript language follows the ECMAScript (ES) specification
   - ES versions are numbered both by year and edition
   - Eighth edition was finalized in June 2017
+    - Omg
+    - Nested lists
   - Previous version (ES2016) brought only two minor features
   - Developers not always enthusiastic about bleeding-edge news
 

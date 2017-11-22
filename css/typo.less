@@ -39,6 +39,8 @@ li {
 	list-style: none;
 	text-indent: ~"calc(-1 * var(--marker-width))";
 
+	li { margin-left: ~"calc(3 * var(--grid))"; }
+
 	&::before {
 		.marker(var(--marker-width));
 	}

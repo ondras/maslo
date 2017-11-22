@@ -75,6 +75,9 @@ li {
   list-style: none;
   text-indent: calc(-1 * var(--marker-width));
 }
+li li {
+  margin-left: calc(3 * var(--grid));
+}
 li::before {
   display: inline-block;
   text-align: right;
