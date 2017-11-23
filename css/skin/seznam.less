@@ -15,14 +15,20 @@ h1 {
 	color: var(--seznam);
 }
 
-footer {
-	position: fixed;
-	bottom: 0;
+.slide::after {
+	--height: ~"calc(2.5 * var(--grid))";
+
+	content: "www.seznam.cz";
+	position: absolute;
 	left: 0;
 	right: 0;
-	height: ~"calc(40px * var(--scale))";
+	bottom: 0;
+	height: var(--height);
+	line-height: var(--height);
+	padding: 0 ~"calc(5 * var(--grid))";
+	font-size: 50%;
 	background-color: var(--seznam);
 	color: var(--bg);
 }
 
-/* pismo 40/24/14 */
+/* pismo 40/24/18/12 */
