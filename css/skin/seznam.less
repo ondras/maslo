@@ -9,26 +9,64 @@
 	--seznam: #de0000;
 	--font: Arial, sans-serif;
 	--marker-opacity: 1;
+	--footer-height: ~"calc(2.5 * var(--grid))";
 }
 
 h1 {
 	color: var(--seznam);
+	font-size: 150%;
+	line-height: 1;
 }
 
 .slide::after {
-	--height: ~"calc(2.5 * var(--grid))";
-
-	content: "www.seznam.cz";
+	content: "";
 	position: absolute;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height: var(--height);
-	line-height: var(--height);
+	height: var(--footer-height);
+	line-height: var(--footer-height);
 	padding: 0 ~"calc(5 * var(--grid))";
 	font-size: 50%;
 	background-color: var(--seznam);
 	color: var(--bg);
 }
 
-/* pismo 40/24/18/12 */
+.slide:not(:first-of-type)::after {
+	content: "www.seznam.cz";
+}
+
+.slide:first-of-type {
+	background: 
+		url(img/seznam-pes-1.png) ~"calc(5 * var(--grid))" ~"calc(100% - var(--footer-height))" no-repeat,
+		url(img/seznam-1.png) ~"calc(100% - 5 * var(--grid))" ~"calc(100% - 1.5 * var(--footer-height))" / 3.5in no-repeat
+	;
+
+	h1 {
+		font-size: 200%;
+	}
+
+	h2 {
+		font-size: 100%;
+	}
+
+	h3 {
+		font-size: ~"calc(3/2 * var(--grid))";
+		line-height: 2;
+		color: #3c3c3c;
+		font-weight: normal;
+	}
+}
+
+.slide:last-of-type {
+	background: url(img/seznam-2.png) 50% no-repeat;
+
+	h1 {
+		color: var(--fg);
+		font-size: 100%;
+		position: absolute;
+		bottom: var(--footer-height);
+	}
+}
+
+/* pismo prvni: 60/24/16, 40/24/18/12 */

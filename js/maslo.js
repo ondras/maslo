@@ -1,6 +1,5 @@
 import * as style from "style.js";
 import * as slides from "slides.js";
-
 import * as scale from "scale.js";
 import * as control from "control.js";
 import * as url from "url.js";
@@ -26,14 +25,6 @@ function initApp() {
 	[scale, control, title, mouse, draw, mode, url].forEach(c => c.init());
 }
 
-function initWorker() {
-	if (navigator.serviceWorker) {
-		return navigator.serviceWorker.register("service-worker.js");
-	} else {
-		return Promise.resolve();
-	}	
-}
-
 function error(e) {
 	console.log(e);
 	alert("Error loading the app, see console for more details.");
@@ -44,7 +35,7 @@ function init(selector) {
 	function initSlides() { return slides.init(node); }
 
 	let skin = ("skin" in node.dataset ? node.dataset.skin : "dark");
-	initStyles(skin).then(initSlides).then(initApp).then(initWorker).catch(error);
+	initStyles(skin).then(initSlides).then(initApp).catch(error);
 }
 
 init(document.currentScript.dataset.selector || "template");
