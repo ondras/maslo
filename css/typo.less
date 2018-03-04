@@ -89,3 +89,13 @@ code {
 a {
 	color: var(--link);
 }
+
+blockquote {
+	p::before { content: open-quote; }
+	p::after { content: close-quote; }
+
+	& + p {
+		text-align: right;
+		&::before { content: "— "; }
+	}
+}

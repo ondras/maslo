@@ -47,6 +47,13 @@ getData(function(err, data) {
 
 # Slide N
 
+> quote 1a 
+> quote 1b
+
+> quote 2
+
+autor nejaky 
+
 ---
 
 # Slide N+1

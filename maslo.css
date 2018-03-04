@@ -24,8 +24,8 @@ body {
   counter-increment: slide slide-after;
 }
 :root {
-  --width: 1024;
-  --height: 768;
+  --width: 1020;
+  --height: 760;
   --scale: 1;
   --current: 0;
   --total: 0;
@@ -128,6 +128,18 @@ code {
 a {
   color: var(--link);
 }
+blockquote p::before {
+  content: open-quote;
+}
+blockquote p::after {
+  content: close-quote;
+}
+blockquote + p {
+  text-align: right;
+}
+blockquote + p::before {
+  content: "— ";
+}
 @media screen {
   #cursor {
     position: fixed;
@@ -200,7 +212,7 @@ a {
 @media print {
   @page {
     margin: 0;
-    size: 1024px 768px;
+    size: 1020px 760px;
   }
   .slide {
     page-break-after: always;
