@@ -4,6 +4,7 @@
   box-sizing: inherit;
 }
 body {
+  touch-action: none;
   counter-reset: slide slide-before slide-current slide-after;
   margin: 0;
   box-sizing: border-box;
