@@ -7,9 +7,12 @@
 	--bg: #fff;
 	--fg: #141313;
 	--seznam: #de0000;
-	--font: Arial, sans-serif;
 	--marker-opacity: 1;
-	--footer-height: ~"calc(2.5 * var(--grid))";
+	--footer-height: calc(2.5 * var(--grid));
+}
+
+body {
+	font-family: Arial, sans-serif;
 }
 
 h1 {
@@ -26,7 +29,7 @@ h1 {
 	bottom: 0;
 	height: var(--footer-height);
 	line-height: var(--footer-height);
-	padding: 0 ~"calc(5 * var(--grid))";
+	padding: 0 calc(5 * var(--grid));
 	font-size: 50%;
 	background-color: var(--seznam);
 	color: var(--bg);
@@ -38,8 +41,8 @@ h1 {
 
 .slide:first-of-type {
 	background: 
-		url(img/seznam-pes-1.png) ~"calc(5 * var(--grid))" ~"calc(100% - var(--footer-height))" no-repeat,
-		url(img/seznam-1.png) ~"calc(100% - 5 * var(--grid))" ~"calc(100% - 1.5 * var(--footer-height))" / 3.5in no-repeat
+		url(img/seznam-pes-1.png) calc(5 * var(--grid)) calc(100% - var(--footer-height)) no-repeat,
+		url(img/seznam-1.png) calc(100% - 5 * var(--grid)) calc(100% - 1.5 * var(--footer-height)) / 3.5in no-repeat
 	;
 
 	h1 {
@@ -51,7 +54,7 @@ h1 {
 	}
 
 	h3 {
-		font-size: ~"calc(3/2 * var(--grid))";
+		font-size: calc(3/2 * var(--grid));
 		line-height: 2;
 		color: #3c3c3c;
 		font-weight: normal;

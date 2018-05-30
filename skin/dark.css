@@ -43,7 +43,9 @@
   --fg: #eee;
   --color: #40bfbf;
   --link: var(--fg);
-  --font: Ubuntu, sans-serif;
+}
+body {
+  font-family: Ubuntu, sans-serif;
 }
 h1 {
   color: var(--color);

@@ -38,8 +38,10 @@
   --fg: #111;
   --bg: #ed9;
   --color: #662200;
-  --font: Lora, serif;
   --link: var(--fg);
+}
+body {
+  font-family: Lora, serif;
 }
 h1 {
   color: var(--color);

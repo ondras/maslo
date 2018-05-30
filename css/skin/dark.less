@@ -15,7 +15,10 @@
 	--fg: #eee;
 	--color: hsl(180, 50%, 50%);
 	--link: var(--fg);
-	--font: Ubuntu, sans-serif;
+}
+
+body {
+	font-family: Ubuntu, sans-serif;
 }
 
 h1 {
@@ -31,7 +34,7 @@ a {
 }
 
 pre {
-	box-shadow: ~"calc(var(--grid) / -4)" 0 0 var(--color);
+	box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
 
 	@tint: rgba(255, 255, 255, 0.1);
 	background-color: @tint;

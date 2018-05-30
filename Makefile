@@ -1,4 +1,4 @@
-LESSC := node_modules/.bin/lessc
+LESSC := node_modules/.bin/lessc --strict-math=on
 ROLLUP := node_modules/.bin/rollup
 HIGHLIGHT := vendor/highlight.min.js
 SKINS := $(wildcard css/skin/*.less)

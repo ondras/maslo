@@ -7,9 +7,11 @@
   --bg: #fff;
   --fg: #141313;
   --seznam: #de0000;
-  --font: Arial, sans-serif;
   --marker-opacity: 1;
   --footer-height: calc(2.5 * var(--grid));
+}
+body {
+  font-family: Arial, sans-serif;
 }
 h1 {
   color: var(--seznam);

@@ -13,8 +13,11 @@
 	--fg: #111;
 	--bg: #ed9;
 	--color: hsl(20, 100%, 20%);
-	--font: Lora, serif;
 	--link: var(--fg);
+}
+
+body {
+	font-family: Lora, serif;
 }
 
 h1 {
@@ -30,7 +33,7 @@ a {
 }
 
 pre {
-	box-shadow: ~"calc(var(--grid) / -4)" 0 0 var(--color);
+	box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
 
 	@tint: rgba(0, 0, 0, 0.1);
 	background-color: @tint;

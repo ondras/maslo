@@ -10,7 +10,6 @@ body {
   box-sizing: border-box;
   color: var(--fg);
   background-color: var(--bg);
-  font-family: var(--font);
 }
 .slide {
   width: calc(var(--width) * 1px);
@@ -25,8 +24,8 @@ body {
   counter-increment: slide slide-after;
 }
 :root {
-  --width: 1020;
-  --height: 760;
+  --width: 1024;
+  --height: 768;
   --scale: 1;
   --current: 0;
   --total: 0;
@@ -38,7 +37,6 @@ body {
   --overview-border: calc(var(--grid) / 4);
   --fg: #000;
   --bg: #fff;
-  --font: sans-serif;
   --link: #00e;
   --marker-width: calc(5 * var(--grid));
   --marker-opacity: 0.6;
@@ -69,7 +67,7 @@ body {
   -moz-tab-size: var(--tab-size);
   tab-size: var(--tab-size);
   font-size: calc(2 * var(--grid));
-  line-height: calc(1.5);
+  line-height: calc(3/2);
 }
 li {
   margin: 0.5em 0;
@@ -122,7 +120,7 @@ pre div::before {
 }
 code {
   font-size: calc(1.6 * var(--grid));
-  line-height: calc(1.875);
+  line-height: calc(3 / 1.6);
   font-family: input, monospace;
   font-weight: bold;
 }
@@ -213,7 +211,7 @@ blockquote + p::before {
 @media print {
   @page {
     margin: 0;
-    size: 1020px 760px;
+    size: 1024px 768px;
   }
   .slide {
     page-break-after: always;
