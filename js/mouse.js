@@ -13,8 +13,6 @@ function eventToPosition(e) {
 }
 
 function onMouseDown(e) {
-	e.stopPropagation(); // no hammer please
-
 	if (!active || mode.current == "overview") { return; }
 	drawing = true;
 	draw.start(eventToPosition(e));
@@ -73,7 +71,7 @@ export function init() {
 	cursor = document.createElement("div");
 	cursor.id = "cursor";
 
-	window.addEventListener("mousedown", onMouseDown, true); // before hammer
+	window.addEventListener("mousedown", onMouseDown);
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
 	window.addEventListener("click", onClick);

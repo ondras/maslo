@@ -27,9 +27,16 @@ function onKeyDown(e) {
 	}
 }
 
+function swipeBy(diff, e) {
+	if (e.pointerType == "mouse") { return; }
+	slides.show(slides.currentIndex+diff)
+}
+function onSwipeLeft(e) { swipeBy(+1, e); }
+function onSwipeRight(e) { swipeBy(-1, e); }
+
 export function init() {
 	window.addEventListener("keydown", onKeyDown);
 	let hammer = new Hammer(window);
-	hammer.on("swipeleft", () => slides.show(slides.currentIndex+1));
-	hammer.on("swiperight", () => slides.show(slides.currentIndex-1));
+	hammer.on("swipeleft", onSwipeLeft);
+	hammer.on("swiperight", onSwipeRight);
 }

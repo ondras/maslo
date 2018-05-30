@@ -983,8 +983,6 @@ function eventToPosition(e) {
 }
 
 function onMouseDown(e) {
-	e.stopPropagation(); // no hammer please
-
 	if (!active || current$1 == "overview") { return; }
 	drawing = true;
 	start(eventToPosition(e));
@@ -1043,7 +1041,7 @@ function init$4() {
 	cursor = document.createElement("div");
 	cursor.id = "cursor";
 
-	window.addEventListener("mousedown", onMouseDown, true); // before hammer
+	window.addEventListener("mousedown", onMouseDown);
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
 	window.addEventListener("click", onClick);
@@ -1083,11 +1081,18 @@ function onKeyDown(e) {
 	}
 }
 
+function swipeBy(diff, e) {
+	if (e.pointerType == "mouse") { return; }
+	show(currentIndex+diff);
+}
+function onSwipeLeft(e) { swipeBy(+1, e); }
+function onSwipeRight(e) { swipeBy(-1, e); }
+
 function init$3() {
 	window.addEventListener("keydown", onKeyDown);
 	let hammer = new Hammer(window);
-	hammer.on("swipeleft", () => show(currentIndex+1));
-	hammer.on("swiperight", () => show(currentIndex-1));
+	hammer.on("swipeleft", onSwipeLeft);
+	hammer.on("swiperight", onSwipeRight);
 }
 
 
