@@ -1,5 +1,6 @@
 @width: 1024;
 @height: 768;
+@u: 16px;
 
 :root {
 	--width: @width;
@@ -13,12 +14,13 @@
 	--highlight: rgba(255, 20, 20, 0.8);
 
 	--overview-scale: 0.3;
-	--overview-border: calc(var(--grid) / 4);
+	--overview-border: 4px;
 
 	--fg: #000;
 	--bg: #fff;
 	--link:  #00e;
 
-	--marker-width: calc(5 * var(--grid));
+	--marker: "•";
+	--marker-width: (5 * @u);
 	--marker-opacity: 0.6;
 }

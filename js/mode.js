@@ -11,7 +11,8 @@ function setMode(mode) {
 	current = mode;
 	node.classList.add(current);
 
-	window.dispatchEvent(new CustomEvent("mode-change"));
+	let detail = {mode}
+	window.dispatchEvent(new CustomEvent("mode-change", {detail}));
 }
 
 export function toggle() {

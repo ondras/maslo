@@ -1,14 +1,33 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/googlecode.min.css");
+:root {
+  --width: 1024;
+  --height: 768;
+  --scale: 1;
+  --current: 0;
+  --total: 0;
+  --grid: 16px;
+  --tab-size: 4;
+  --brush: 12;
+  --highlight: rgba(255, 20, 20, 0.8);
+  --overview-scale: 0.3;
+  --overview-border: 4px;
+  --fg: #000;
+  --bg: #fff;
+  --link: #00e;
+  --marker: "•";
+  --marker-width: 80px;
+  --marker-opacity: 0.6;
+}
 .slide > * {
-  margin-left: calc(5 * var(--grid));
-  margin-right: calc(5 * var(--grid));
+  margin-left: 80px;
+  margin-right: 80px;
 }
 :root {
   --bg: #fff;
   --fg: #141313;
   --seznam: #de0000;
   --marker-opacity: 1;
-  --footer-height: calc(2.5 * var(--grid));
+  --footer-height: 40px;
 }
 body {
   font-family: Arial, sans-serif;
@@ -26,7 +45,7 @@ h1 {
   bottom: 0;
   height: var(--footer-height);
   line-height: var(--footer-height);
-  padding: 0 calc(5 * var(--grid));
+  padding: 0 80px;
   font-size: 50%;
   background-color: var(--seznam);
   color: var(--bg);
@@ -35,7 +54,7 @@ h1 {
   content: "www.seznam.cz";
 }
 .slide:first-of-type {
-  background: url(img/seznam-pes-1.png) calc(5 * var(--grid)) calc(100% - var(--footer-height)) no-repeat, url(img/seznam-1.png) calc(100% - 5 * var(--grid)) calc(100% - 1.5 * var(--footer-height)) / 3.5in no-repeat;
+  background: url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat, url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 3.5in no-repeat;
 }
 .slide:first-of-type h1 {
   font-size: 200%;
@@ -44,7 +63,7 @@ h1 {
   font-size: 100%;
 }
 .slide:first-of-type h3 {
-  font-size: calc(3/2 * var(--grid));
+  font-size: 24px;
   line-height: 2;
   color: #3c3c3c;
   font-weight: normal;

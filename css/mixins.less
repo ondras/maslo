@@ -1,8 +1,10 @@
+@import "variables.less";
+
 .marker(@width) {
 	display: inline-block;
 	text-align: right;
 	width: @width;
-	padding-right: var(--grid);
+	padding-right: @u;
 	opacity: var(--marker-opacity);
 }
 
@@ -13,14 +15,14 @@
 
 .bg-grid() {
 	.slide {
-		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid);
+		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
 
 		background-image: 
 			radial-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 1)),
 			repeating-linear-gradient(to right, @pattern),
 			repeating-linear-gradient(to bottom, @pattern)
 		;
-		background-position: 0 calc(var(--grid) / 2);
+		background-position: 0 (@u / 2);
 	}
 }
 
@@ -41,7 +43,7 @@
 
 	@media screen {
 		body::after {
-			font-size: calc(1.25 * var(--grid));
+			font-size: (1.25 * @u);
 			content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
 			color: var(--color);
 			display: block;
@@ -56,7 +58,7 @@
 
 .padding-lr(@num) {
 	.slide > * {
-		@margin: calc(@num * var(--grid));
+		@margin: (@num * @u);
 		margin-left: @margin;
 		margin-right: @margin;
 	}

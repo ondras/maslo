@@ -2,9 +2,28 @@
 @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css");
+:root {
+  --width: 1024;
+  --height: 768;
+  --scale: 1;
+  --current: 0;
+  --total: 0;
+  --grid: 16px;
+  --tab-size: 4;
+  --brush: 12;
+  --highlight: rgba(255, 20, 20, 0.8);
+  --overview-scale: 0.3;
+  --overview-border: 4px;
+  --fg: #000;
+  --bg: #fff;
+  --link: #00e;
+  --marker: "•";
+  --marker-width: 80px;
+  --marker-opacity: 0.6;
+}
 .slide {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid)), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent var(--grid));
-  background-position: 0 calc(var(--grid) / 2);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
+  background-position: 0 8px;
 }
 @counter-style circle-empty {
   system: additive;
@@ -16,7 +35,7 @@
 }
 @media screen {
   body::after {
-    font-size: calc(1.25 * var(--grid));
+    font-size: 20px;
     content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
     color: var(--color);
     display: block;
@@ -35,8 +54,8 @@
   object-fit: contain;
 }
 .slide > * {
-  margin-left: calc(5 * var(--grid));
-  margin-right: calc(5 * var(--grid));
+  margin-left: 80px;
+  margin-right: 80px;
 }
 :root {
   --bg: #000;
@@ -54,11 +73,8 @@ h1 {
   margin: 0 0 0.5em 0;
   padding-top: 0.5em;
 }
-a {
-  text-decoration-color: var(--color);
-}
 pre {
-  box-shadow: calc(var(--grid) / -4) 0 0 var(--color);
+  box-shadow: -4px 0 0 var(--color);
   background-color: rgba(255, 255, 255, 0.1);
 }
 pre div:hover {

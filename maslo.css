@@ -34,11 +34,12 @@ body {
   --brush: 12;
   --highlight: rgba(255, 20, 20, 0.8);
   --overview-scale: 0.3;
-  --overview-border: calc(var(--grid) / 4);
+  --overview-border: 4px;
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  --marker-width: calc(5 * var(--grid));
+  --marker: "•";
+  --marker-width: 80px;
   --marker-opacity: 0.6;
 }
 @font-face {
@@ -66,8 +67,8 @@ body {
 body {
   -moz-tab-size: var(--tab-size);
   tab-size: var(--tab-size);
-  font-size: calc(2 * var(--grid));
-  line-height: calc(3/2);
+  font-size: 32px;
+  line-height: 1.5;
 }
 li {
   margin: 0.5em 0;
@@ -75,13 +76,13 @@ li {
   text-indent: calc(-1 * var(--marker-width));
 }
 li li {
-  margin-left: calc(3 * var(--grid));
+  margin-left: 48px;
 }
 li::before {
   display: inline-block;
   text-align: right;
   width: var(--marker-width);
-  padding-right: var(--grid);
+  padding-right: 16px;
   opacity: var(--marker-opacity);
 }
 ul,
@@ -98,7 +99,7 @@ ol > li::before {
   content: counter(list-item) ".";
 }
 ul > li::before {
-  content: "•";
+  content: var(--marker);
   font-size: 150%;
   vertical-align: sub;
   line-height: 0;
@@ -116,19 +117,26 @@ pre div:not(:empty)::before {
   display: inline-block;
   text-align: right;
   width: 4ch;
-  padding-right: var(--grid);
+  padding-right: 16px;
   opacity: var(--marker-opacity);
   content: counter(line) ".";
   font-weight: normal;
 }
 code {
-  font-size: calc(1.6 * var(--grid));
-  line-height: calc(3 / 1.6);
+  font-size: 25.6px;
+  line-height: 1.875;
   font-family: input, monospace;
   font-weight: bold;
 }
 a {
   color: var(--link);
+  text-decoration: none;
+  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+  transition: all 300ms;
+}
+a:focus,
+a:hover {
+  background-size: 100% 100%;
 }
 blockquote p::before {
   content: open-quote;
@@ -172,7 +180,7 @@ blockquote + p::before {
     transform: translate(-50%, -50%) scale(var(--scale));
   }
   body.full .slide:not(.current) {
-    visibility: hidden;
+    display: none;
   }
 }
 @media screen and (orientation: portrait) and (max-width: 768px) {
@@ -190,6 +198,7 @@ blockquote + p::before {
     --thickness: calc(var(--overview-border) / var(--overview-scale));
     --offset: calc((1 - var(--overview-scale)) * -1px);
     background-color: #666;
+    overflow-x: hidden;
   }
   body.overview .slide {
     float: left;
@@ -197,8 +206,8 @@ blockquote + p::before {
     background-color: var(--bg);
     transform-origin: 0 0;
     transform: scale(var(--overview-scale));
-    margin-left: calc(2 * var(--grid));
-    margin-top: calc(2 * var(--grid));
+    margin-left: 32px;
+    margin-top: 32px;
     margin-bottom: calc(var(--height) * var(--offset));
     margin-right: calc(var(--width) * var(--offset));
     border-radius: var(--thickness);

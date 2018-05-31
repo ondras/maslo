@@ -1,7 +1,9 @@
 body.overview {
 	--thickness: calc(var(--overview-border) / var(--overview-scale));
 	--offset: calc((1 - var(--overview-scale)) * -1px);
+
 	background-color: #666;
+	overflow-x: hidden;
 
 	.slide {
 		float: left;
@@ -10,8 +12,8 @@ body.overview {
 
 		transform-origin: 0 0;
 		transform: scale(var(--overview-scale));
-		margin-left: calc(2 * var(--grid));
-		margin-top: calc(2 * var(--grid));
+		margin-left: (2*@u);
+		margin-top: (2*@u);
 		margin-bottom: calc(var(--height) * var(--offset));
 		margin-right: calc(var(--width) * var(--offset));
 		border-radius: var(--thickness);

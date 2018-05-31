@@ -824,7 +824,8 @@ function show(index) {
 	currentIndex = index;
 	nodes.forEach((node, i) => node.classList.toggle("current", i == currentIndex));
 
-	window.dispatchEvent(new CustomEvent("slide-change"));
+	let detail = {currentIndex};
+	window.dispatchEvent(new CustomEvent("slide-change", {detail}));
 	root.style.setProperty("--current", currentIndex+1);
 }
 
@@ -887,7 +888,8 @@ function setMode(mode) {
 	current$1 = mode;
 	node.classList.add(current$1);
 
-	window.dispatchEvent(new CustomEvent("mode-change"));
+	let detail = {mode};
+	window.dispatchEvent(new CustomEvent("mode-change", {detail}));
 }
 
 function toggle$1() {
@@ -1028,13 +1030,13 @@ function toggle() {
 }
 
 function onModeChange(e) {
-	if (active && current$1 == "overview") { toggle(); }
+	if (active && e.detail.mode == "overview") { toggle(); }
 }
 
 function onSlideChange(e) {
 	if (!active) { return; }
 	hide();
-	show$1(nodes[currentIndex]);
+	show$1(nodes[e.detail.currentIndex]);
 }
 
 function init$4() {
@@ -1105,7 +1107,7 @@ function onHashChange(e) {
 }
 
 function onSlideChange$1(e) {
-	set(currentIndex);
+	set(e.detail.currentIndex);
 }
 
 function get() {
@@ -1135,7 +1137,7 @@ var url = Object.freeze({
 const title = document.title;
 
 function onSlideChange$2(e) {
-	document.title = `(${currentIndex+1}) ${title}`;
+	document.title = `(${e.detail.currentIndex+1}) ${title}`;
 }
 
 function init$8() {

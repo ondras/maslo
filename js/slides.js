@@ -35,7 +35,8 @@ export function show(index) {
 	currentIndex = index;
 	nodes.forEach((node, i) => node.classList.toggle("current", i == currentIndex));
 
-	window.dispatchEvent(new CustomEvent("slide-change"));
+	let detail = {currentIndex};
+	window.dispatchEvent(new CustomEvent("slide-change", {detail}));
 	root.style.setProperty("--current", currentIndex+1);
 }
 

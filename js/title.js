@@ -1,9 +1,7 @@
-import * as slides from "slides.js";
-
 const title = document.title;
 
 function onSlideChange(e) {
-	document.title = `(${slides.currentIndex+1}) ${title}`;
+	document.title = `(${e.detail.currentIndex+1}) ${title}`;
 }
 
 export function init() {

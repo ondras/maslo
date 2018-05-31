@@ -30,8 +30,8 @@ body {
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
 
-	font-size: calc(2 * var(--grid));
-	line-height: calc(3/2);
+	font-size: (2 * @u);
+	line-height: (3/2);
 }
 
 li {
@@ -39,7 +39,7 @@ li {
 	list-style: none;
 	text-indent: calc(-1 * var(--marker-width));
 
-	li { margin-left: calc(3 * var(--grid)); }
+	li { margin-left: (3 * @u); }
 
 	&::before {
 		.marker(var(--marker-width));
@@ -61,7 +61,7 @@ ol {
 }
 
 ul > li::before {
-	content: "•";
+	content: var(--marker);
 	font-size: 150%;
 	vertical-align: sub;
 	line-height: 0;
@@ -83,14 +83,19 @@ pre {
 }
 
 code {
-	font-size: calc(1.6 * var(--grid));
-	line-height: calc(3 / 1.6);
+	font-size: (1.6 * @u);
+	line-height: (3 / 1.6);
 	font-family: input, monospace;
 	font-weight: bold;
 }
 
 a {
 	color: var(--link);
+	text-decoration: none;
+	background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+	transition: all 300ms;
+
+	&:focus, &:hover { background-size: 100% 100%; }
 }
 
 blockquote {

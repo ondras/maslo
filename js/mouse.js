@@ -58,13 +58,13 @@ export function toggle() {
 }
 
 function onModeChange(e) {
-	if (active && mode.current == "overview") { toggle(); }
+	if (active && e.detail.mode == "overview") { toggle(); }
 }
 
 function onSlideChange(e) {
 	if (!active) { return; }
 	draw.hide();
-	draw.show(slides.nodes[slides.currentIndex]);
+	draw.show(slides.nodes[e.detail.currentIndex]);
 }
 
 export function init() {
