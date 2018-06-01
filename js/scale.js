@@ -1,5 +1,4 @@
 const root = document.documentElement;
-let width, height;
 export let current = 1;
 
 const META = {
@@ -8,9 +7,13 @@ const META = {
 }
 
 function sync() {
-	let rw = window.innerWidth/width;
-	let rh = window.innerHeight/height;
-	current = Math.min(rw, rh);
+	let port = [window.innerWidth, window.innerHeight];
+	if (port[1] == 767) { port[1] = 768; } // fix for lenovo x230
+
+	let style = getComputedStyle(root);
+	let target = ["width", "height"].map(prop => Number(style.getPropertyValue(`--${prop}`)));
+
+	current = Math.min(port[0]/target[0], port[1]/target[1]);
 	root.style.setProperty("--scale", current);
 }
 
@@ -19,10 +22,6 @@ export function init() {
 	Object.assign(meta, META);
 	document.head.appendChild(meta);
 
-	let style = getComputedStyle(root);
-	width = Number(style.getPropertyValue("--width"));
-	height = Number(style.getPropertyValue("--height"));
 	sync();
-
 	window.addEventListener("resize", e => sync());
 }

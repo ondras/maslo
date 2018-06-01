@@ -4,7 +4,9 @@ body.full {
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%) scale(var(--scale));
-		&:not(.current) { display: none; }
+
+		// display:none breaks counters
+		&:not(.current) { visibility: hidden; }
 	}
 
 	@media (orientation: portrait) and (max-width: 768px) {
