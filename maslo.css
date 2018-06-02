@@ -150,6 +150,23 @@ blockquote + p {
 blockquote + p::before {
   content: "— ";
 }
+p.poster {
+  margin: 0;
+  height: 100%;
+}
+p.poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+p.questions {
+  text-align: center;
+  font-size: 500%;
+  line-height: 1.5;
+  font-weight: bold;
+  text-shadow: 0 0 0.1em var(--color, currentColor);
+}
 @media screen {
   #cursor {
     position: fixed;

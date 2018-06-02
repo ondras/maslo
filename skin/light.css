@@ -42,16 +42,6 @@
     right: 0;
   }
 }
-.slide > p:first-child {
-  margin: 0;
-  height: 100%;
-}
-.slide > p:first-child img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
 .slide > * {
   margin-left: 80px;
   margin-right: 80px;
