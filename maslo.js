@@ -1162,6 +1162,7 @@ function initStyles(skin) {
 
 function initApp() {
 	[scale, control, title$1, mouse, draw, mode, url].forEach(c => c.init());
+	window.dispatchEvent(new CustomEvent("slides-load"));
 }
 
 function error(e) {
