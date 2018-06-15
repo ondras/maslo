@@ -5,7 +5,7 @@ export function load(href) {
 	document.head.appendChild(node);
 
 	return new Promise((resolve, reject) => {
-		node.onload = resolve;
+		node.onload = (e) => { console.log("LOADED", e); resolve(); }
 		node.onerror = e => console.warn(e), resolve();
 	});
 }
