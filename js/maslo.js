@@ -15,13 +15,15 @@ function makeURL(rel) {
 }
 
 function initStyles(skin) {
-	function loadApp() { return style.load(makeURL("maslo.css")); }
-	function loadSkin() { return skin ? style.load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
+	console.log("initStyles");
+	function loadApp() { console.log("loadApp"); return style.load(makeURL("maslo.css")); }
+	function loadSkin() { console.log("loadSkin"); return skin ? style.load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
 
 	return loadApp().then(loadSkin);
 }
 
 function initApp() {
+	console.log("initApp");
 	[scale, control, title, mouse, draw, mode, url].forEach(c => c.init());
 	window.dispatchEvent(new CustomEvent("slides-load"));
 }
