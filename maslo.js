@@ -731,17 +731,14 @@ var t="[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]
 'use strict';
 
 function load(href) {
-	console.log("load", href);
 	let node = document.createElement("link");
 	node.rel = "stylesheet";
 	node.href = href;
 	document.head.appendChild(node);
 
 	return new Promise((resolve, reject) => {
-		node.onload = (e) => { console.log("LOADED", e); resolve(); };
-		node.onloadeddata = e => {console.log("onloadeddata", e); };
-		node.onloadstart = e => {console.log("onloadstart", e); };
-		node.onerror = e => console.warn(e), resolve();
+		node.onload = resolve;
+		node.onerror = e => resolve(console.warn(e), e);
 	});
 }
 
@@ -1157,15 +1154,13 @@ function makeURL(rel) {
 }
 
 function initStyles(skin) {
-	console.log("initStyles");
-	function loadApp() { console.log("loadApp"); return load(makeURL("maslo.css")); }
-	function loadSkin() { console.log("loadSkin"); return skin ? load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
+	function loadApp() { return load(makeURL("maslo.css")); }
+	function loadSkin() { return skin ? load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
 
 	return loadApp().then(loadSkin);
 }
 
 function initApp() {
-	console.log("initApp");
 	[scale, control, title$1, mouse, draw, mode, url].forEach(c => c.init());
 	window.dispatchEvent(new CustomEvent("slides-load"));
 }
