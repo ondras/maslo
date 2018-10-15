@@ -4,4 +4,4 @@
   * Markdown
   * Easily themable
   
-  
+  More info at [the Wiki](wiki/Home)
