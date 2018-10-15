@@ -760,7 +760,7 @@ function newSlide(slides) {
 }
 
 function parse(source) {
-	let md = markdownit({highlight: highlight, html:true});
+	let md = markdownit({highlight:highlight, html:true, linkify:true});
 	md.use(markdownItAttrs);
 
 	let tmp = document.createElement("div");

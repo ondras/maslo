@@ -9,7 +9,7 @@ function newSlide(slides) {
 }
 
 export function parse(source) {
-	let md = markdownit({highlight: syntax.highlight, html:true});
+	let md = markdownit({highlight:syntax.highlight, html:true, linkify:true});
 	md.use(markdownItAttrs);
 
 	let tmp = document.createElement("div");
