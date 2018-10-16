@@ -2,14 +2,14 @@
 
 - MArkdown SLides by Ondras
 - Fourth iteration of my JS presentation engine
-- Hit `Space` / `PageDown` / &rarr; / &darr; to continue
+- Hit `Space` / `PageDown` / `→` / `↓` to continue
 
 ---
 
 # Write in Markdown
 
 - Presentation content is written using the [Markdown](https://commonmark.org/) language
-- Create a [tiny HTML](FIXME) &hellip;
+- Create a [tiny HTML](https://bitbucket.org/ondras/maslo/src/default/example/index.html) &hellip;
   - &hellip;to include the JS library
   - &hellip;to reference the content
 
@@ -41,8 +41,8 @@ FIXME
 
 # Keyboard reference
 
-- `Space` / `PageDown` / &rarr; / &darr; : next slide
-- `Backspace` / `PageUp` / &larr; / &uarr; : previous slide
+- `Space`, `PageDown`, `→`, `↓`: next slide
+- `Backspace`, `PageUp`, `←`, `↑`: previous slide
 - `Home`: first slide
 - `End`: last slide
 - `ESC`: toggle overview
