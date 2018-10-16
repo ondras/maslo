@@ -8,7 +8,7 @@
 
 # Write in Markdown
 
-- Presentation content is written using the [Markdown](FIXME) language
+- Presentation content is written using the [Markdown](https://commonmark.org/) language
 - Create a [tiny HTML](FIXME) &hellip;
   - &hellip;to include the JS library
   - &hellip;to reference the content
@@ -19,14 +19,14 @@
 
 - Markdown input
 - Automatic scaling
-- Styling based on [CSS Custom Properties](FIXME)
+- Styling based on [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*)
 - PDF output (`Ctrl+P` in Chrome)
 
 ---
 
 # Additional features
 
-- Syntax highlighting via [highlight.js](FIXME)
+- Syntax highlighting via [highlight.js](https://highlightjs.org/)
 - `ESC` to toggle preview mode
 - `Caps Lock` to toggle mouse doodling
 - Touch control (swiping)
@@ -52,6 +52,6 @@ FIXME
 
 # Open Source Software
 
-- [Source code](FIXME)
-- [Documentation](FIXME)
+- [Source code](https://bitbucket.org/ondras/maslo/src)
+- [Documentation](https://bitbucket.org/ondras/maslo/wiki/Home)
 
