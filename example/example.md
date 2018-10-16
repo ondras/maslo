@@ -35,7 +35,10 @@
 
 # Supported Markdown
 
-FIXME
+- Autolinking
+- HTML tags in source
+- Tables
+- [Complete reference](https://github.com/markdown-it/markdown-it)
 
 ---
 
@@ -54,4 +57,4 @@ FIXME
 
 - [Source code](https://bitbucket.org/ondras/maslo/src)
 - [Documentation](https://bitbucket.org/ondras/maslo/wiki/Home)
-
+- [Author](https://ondras.zarovi.cz/)
