@@ -30,6 +30,11 @@
 - `ESC` to toggle preview mode
 - `Caps Lock` to toggle mouse doodling
 - Touch control (swiping)
+- Poster images (see next slide)
+
+---
+
+![](poster.png) {.poster}
 
 ---
 
@@ -58,3 +63,9 @@
 - [Source code](https://bitbucket.org/ondras/maslo/src)
 - [Documentation](https://bitbucket.org/ondras/maslo/wiki/Home)
 - [Author](https://ondras.zarovi.cz/)
+
+---
+
+# The End
+
+[Back to the first page](#1)
