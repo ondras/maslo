@@ -242,6 +242,7 @@ p.questions {
     size: 1024px 768px;
   }
   .slide {
+    position: relative;
     page-break-after: always;
     -webkit-print-color-adjust: exact;
   }

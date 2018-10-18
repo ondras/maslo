@@ -35,6 +35,8 @@ h1 {
   color: var(--seznam);
   font-size: 150%;
   line-height: 1;
+  margin: 0;
+  padding: 1em 0;
 }
 .slide::after {
   content: "";
