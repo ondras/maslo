@@ -17,7 +17,7 @@
 
 # Main features
 
-- Markdown input
+- Markdown input (see [this presentation's source](https://bitbucket.org/ondras/maslo/src/default/example/example.md))
 - Automatic scaling
 - Styling based on [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*)
 - PDF output (`Ctrl+P` in Chrome)
