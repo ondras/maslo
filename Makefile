@@ -19,7 +19,7 @@ $(APP).css: css/*.less
 	$(LESSC) css/$(APP).less > $@
 
 $(HIGHLIGHT):
-	wget cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js -O $(HIGHLIGHT)
+	wget cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js -O $(HIGHLIGHT)
 
 skins: $(SKINS)
 
