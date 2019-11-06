@@ -9,6 +9,7 @@ const META = {
 function sync() {
 	let port = [window.innerWidth, window.innerHeight];
 	if (port[1] == 767) { port[1] = 768; } // fix for lenovo x230
+	if (port[1] == 719) { port[1] = 720; } // fix for chuwi ubook
 
 	let style = getComputedStyle(root);
 	let target = ["width", "height"].map(prop => Number(style.getPropertyValue(`--${prop}`)));
