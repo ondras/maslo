@@ -3,7 +3,7 @@ import * as slides from "slides.js";
 import * as draw from "draw.js";
 import * as scale from "scale.js";
 
-let active = false;
+export let active = false;
 let drawing = false;
 let cursor = null;
 

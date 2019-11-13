@@ -1053,6 +1053,7 @@ exports.escapeHtml = function (str) {
 
 	var mouse = /*#__PURE__*/Object.freeze({
 		__proto__: null,
+		get active () { return active; },
 		toggle: toggle$1,
 		init: init$4
 	});
@@ -1083,7 +1084,7 @@ exports.escapeHtml = function (str) {
 	}
 
 	function swipeBy(diff, e) {
-		if (e.pointerType == "mouse") { return; }
+		if (e.pointerType == "mouse" || active) { return; }
 		show(currentIndex+diff);
 	}
 	function onSwipeLeft(e) { swipeBy(+1, e); }

@@ -28,7 +28,7 @@ function onKeyDown(e) {
 }
 
 function swipeBy(diff, e) {
-	if (e.pointerType == "mouse") { return; }
+	if (e.pointerType == "mouse" || mouse.active) { return; }
 	slides.show(slides.currentIndex+diff)
 }
 function onSwipeLeft(e) { swipeBy(+1, e); }
