@@ -32,13 +32,13 @@ a {
 img {
   vertical-align: middle;
 }
-h1 {
+.slide h1 {
   background-color: #231F20;
   color: var(--bg);
   padding: 8px var(--padding-side);
   margin: 0;
 }
-h1 code {
+.slide h1 code {
   font-size: 100%;
   line-height: 1;
 }
