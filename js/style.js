@@ -2,10 +2,11 @@ export function load(href) {
 	let node = document.createElement("link");
 	node.rel = "stylesheet";
 	node.href = href;
-	document.head.appendChild(node);
+	const parent = document.head;
+	parent.insertBefore(node, parent.firstChild);
 
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		node.onload = resolve;
-		node.onerror = e => resolve(console.warn(e), e);
+		node.onerror = e => resolve(console.warn(e));
 	});
 }

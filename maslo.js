@@ -733,11 +733,12 @@ exports.escapeHtml = function (str) {
 		let node = document.createElement("link");
 		node.rel = "stylesheet";
 		node.href = href;
-		document.head.appendChild(node);
+		const parent = document.head;
+		parent.insertBefore(node, parent.firstChild);
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			node.onload = resolve;
-			node.onerror = e => resolve(console.warn(e), e);
+			node.onerror = e => resolve(console.warn(e));
 		});
 	}
 
@@ -1156,10 +1157,10 @@ exports.escapeHtml = function (str) {
 	}
 
 	function initStyles(skin) {
-		function loadApp() { return load(makeURL("maslo.css")); }
 		function loadSkin() { return skin ? load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
+		function loadApp() { return load(makeURL("maslo.css")); }
 
-		return loadApp().then(loadSkin);
+		return loadSkin().then(loadApp);
 	}
 
 	function initApp() {

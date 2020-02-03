@@ -15,10 +15,10 @@ function makeURL(rel) {
 }
 
 function initStyles(skin) {
-	function loadApp() { return style.load(makeURL("maslo.css")); }
 	function loadSkin() { return skin ? style.load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
+	function loadApp() { return style.load(makeURL("maslo.css")); }
 
-	return loadApp().then(loadSkin);
+	return loadSkin().then(loadApp);
 }
 
 function initApp() {
