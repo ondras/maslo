@@ -55,7 +55,7 @@ pre {
 .slide::before {
   content: url("img/cvut.png");
   position: absolute;
-  right: 0;
+  right: 8px;
   bottom: var(--footer-height);
 }
 .slide::after {
