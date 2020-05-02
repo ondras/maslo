@@ -4,4 +4,4 @@
   * Markdown
   * Easily themable
   
-  More info at [the Wiki](https://bitbucket.org/ondras/maslo/wiki/Home).
+  More info at [the Wiki](https://github.com/ondras/maslo/wiki).
