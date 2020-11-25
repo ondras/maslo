@@ -12,6 +12,7 @@ $(APP).js: js/*.js $(HIGHLIGHT)
 	cat node_modules/markdown-it/dist/markdown-it.min.js >> $@
 	cat node_modules/markdown-it-attrs/markdown-it-attrs.browser.js >> $@
 	cat node_modules/hammerjs/hammer.min.js >> $@
+	echo "" >> $@
 	cat $(HIGHLIGHT) >> $@
 	$(ROLLUP) -c -i js/$(APP).js >> $@
 
@@ -19,7 +20,7 @@ $(APP).css: css/*.less
 	$(LESSC) css/$(APP).less > $@
 
 $(HIGHLIGHT):
-	wget cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js -O $(HIGHLIGHT)
+	wget cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js -O $(HIGHLIGHT)
 
 skins: $(SKINS)
 

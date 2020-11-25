@@ -1,6 +1,6 @@
 {
   "name": "ma-sl-o",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,6 @@
   "license": "ISC",
   "devDependencies": {
     "hammerjs": "^2.0.8",
-    "highlight.js": "^10.1.2",
     "less": "^2.7.2",
     "markdown-it": "^8.4.0",
     "markdown-it-attrs": "^1.2.0",

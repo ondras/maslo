@@ -9,7 +9,7 @@
 }
 
 .hljs(@name) {
-	@version: "9.12.0";
+	@version: "10.1.2";
 	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
 }
 
@@ -17,7 +17,7 @@
 	.slide {
 		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
 
-		background-image: 
+		background-image:
 			radial-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 1)),
 			repeating-linear-gradient(to right, @pattern),
 			repeating-linear-gradient(to bottom, @pattern)
