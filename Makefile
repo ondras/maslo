@@ -1,4 +1,4 @@
-LESSC := node_modules/.bin/lessc --strict-math=on
+LESSC := node_modules/.bin/lessc --math=strict
 ROLLUP := node_modules/.bin/rollup
 HIGHLIGHT := node_modules/@highlightjs/cdn-assets/highlight.min.js
 SKINS := $(wildcard css/skin/*.less)
@@ -26,7 +26,7 @@ skin/%.css: css/skin/%.less css/*.less
 
 clean:
 	echo $(SKINS)
-	rm -rf $(APP).js $(APP).css $(HIGHLIGHT) $(SKINS)
+	rm -rf $(APP).js $(APP).css $(SKINS)
 
 watch: all
 	while inotifywait -e MODIFY -r \

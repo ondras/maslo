@@ -16,9 +16,6 @@
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  --marker: "•";
-  --marker-width: 80px;
-  --marker-opacity: 0.6;
 }
 .slide {
   background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
@@ -49,11 +46,19 @@
   margin-left: 80px;
   margin-right: 80px;
 }
+.slide > ul,
+.slide > ol {
+  margin-left: 0;
+  padding-left: 80px;
+}
 :root {
   --bg: #000;
   --fg: #eee;
-  --color: #40bfbf;
+  --color: hsl(180, 50%, 50%);
   --link: var(--fg);
+}
+::marker {
+  color: rgba(0, 0, 0, 0.6);
 }
 body {
   font-family: Ubuntu, sans-serif;

@@ -14,16 +14,12 @@
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  --marker: "•";
-  --marker-width: 80px;
-  --marker-opacity: 0.6;
 }
 :root {
   font-family: Ubuntu, sans-serif;
   --footer-height: 48px;
   --padding-side: 60px;
   --color: #0063a8;
-  --marker-opacity: 1;
   --width: 1600;
   --height: 900;
 }

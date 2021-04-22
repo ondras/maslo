@@ -37,9 +37,6 @@ body {
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  --marker: "•";
-  --marker-width: 80px;
-  --marker-opacity: 0.6;
 }
 @font-face {
   font-family: input;
@@ -71,55 +68,24 @@ body {
 }
 li {
   margin: 0.5em 0;
-  list-style: none;
-  text-indent: calc(-1 * var(--marker-width));
-}
-li li {
-  margin-left: 48px;
-}
-li::before {
-  display: inline-block;
-  text-align: right;
-  width: var(--marker-width);
-  padding-right: 16px;
-  opacity: var(--marker-opacity);
-}
-ul,
-ol {
-  padding: 0;
-}
-ol {
-  counter-reset: list-item;
-}
-ol > li {
-  counter-increment: list-item;
-}
-ol > li::before {
-  content: counter(list-item) ".";
-}
-ul > li::before {
-  content: var(--marker);
-  font-size: 150%;
-  vertical-align: sub;
-  line-height: 0;
 }
 pre {
   counter-reset: line;
 }
 pre div::before {
   content: " ";
-}
-pre div:not(:empty) {
-  counter-increment: line;
-}
-pre div:not(:empty)::before {
   display: inline-block;
   text-align: right;
   width: 4ch;
   padding-right: 16px;
   opacity: var(--marker-opacity);
-  content: counter(line) ".";
   font-weight: normal;
+}
+pre div:not(:empty) {
+  counter-increment: line;
+}
+pre div:not(:empty)::before {
+  content: counter(line) ".";
 }
 code {
   font-size: 25.6px;

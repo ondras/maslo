@@ -1,13 +1,5 @@
 @import "variables.less";
 
-.marker(@width) {
-	display: inline-block;
-	text-align: right;
-	width: @width;
-	padding-right: @u;
-	opacity: var(--marker-opacity);
-}
-
 .hljs(@name) {
 	@version: "10.1.2";
 	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
@@ -18,7 +10,7 @@
 		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
 
 		background-image:
-			radial-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 1)),
+			radial-gradient(rgb(0 0 0 / 0.75), rgb(0 0 0 / 1)),
 			repeating-linear-gradient(to right, @pattern),
 			repeating-linear-gradient(to bottom, @pattern)
 		;
@@ -27,7 +19,7 @@
 }
 
 .google-font(@name, @widths: "400,400i,700,700i") {
-	@import url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
+	@import (css) url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
 }
 
 .progress() {
@@ -57,9 +49,15 @@
 }
 
 .padding-lr(@num) {
-	.slide > * {
-		@margin: (@num * @u);
-		margin-left: @margin;
-		margin-right: @margin;
+	@margin: (@num * @u);
+	.slide {
+		> * {
+			margin-left: @margin;
+			margin-right: @margin;
+		}
+		> ul, > ol {
+			margin-left: 0;
+			padding-left: @margin;
+		}
 	}
 }

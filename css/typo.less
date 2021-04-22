@@ -36,49 +36,24 @@ body {
 
 li {
 	margin: 0.5em 0;
-	list-style: none;
-	text-indent: calc(-1 * var(--marker-width));
-
-	li { margin-left: (3 * @u); }
-
-	&::before {
-		.marker(var(--marker-width));
-	}
-}
-
-ul, ol {
-	padding: 0;
-}
-
-ol {
-	counter-reset: list-item;
-	> li {
-		counter-increment: list-item;
-		&::before {
-			content: counter(list-item) ".";
-		}
-	}
-}
-
-ul > li::before {
-	content: var(--marker);
-	font-size: 150%;
-	vertical-align: sub;
-	line-height: 0;
 }
 
 pre {
 	counter-reset: line;
 
-	div::before { content: " "; } // empty need some content as well to be visible
+	div::before {
+		content: " "; // empty need some content as well to be visible
+		display: inline-block;
+		text-align: right;
+		width: 4ch;
+		padding-right: @u;
+		opacity: var(--marker-opacity);
+		font-weight: normal;
+	}
 
 	div:not(:empty) {
 		counter-increment: line;
-		&::before {
-			.marker(4ch);
-			content: counter(line) ".";
-			font-weight: normal;
-		}
+		&::before { content: counter(line) "."; }
 	}
 }
 

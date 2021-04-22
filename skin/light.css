@@ -16,9 +16,6 @@
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  --marker: "•";
-  --marker-width: 80px;
-  --marker-opacity: 0.6;
 }
 @counter-style circle-empty {
   system: additive;
@@ -45,11 +42,19 @@
   margin-left: 80px;
   margin-right: 80px;
 }
+.slide > ul,
+.slide > ol {
+  margin-left: 0;
+  padding-left: 80px;
+}
 :root {
   --fg: #111;
   --bg: #ed9;
-  --color: #662200;
+  --color: hsl(20, 100%, 20%);
   --link: var(--fg);
+}
+::marker {
+  color: rgba(0, 0, 0, 0.6);
 }
 body {
   font-family: Lora, serif;

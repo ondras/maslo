@@ -13,19 +13,20 @@
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  --marker: "•";
-  --marker-width: 80px;
-  --marker-opacity: 0.6;
 }
 .slide > * {
   margin-left: 80px;
   margin-right: 80px;
 }
+.slide > ul,
+.slide > ol {
+  margin-left: 0;
+  padding-left: 80px;
+}
 :root {
   --bg: #fff;
   --fg: #141313;
   --seznam: #de0000;
-  --marker-opacity: 1;
   --footer-height: 40px;
 }
 body {
