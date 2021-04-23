@@ -1962,16 +1962,6 @@ function parse(source) {
 	return slides;
 }
 
-function xhr(url) {
-	let r = new XMLHttpRequest();
-	r.open("get", url, true);
-	r.send();
-	return new Promise((resolve, reject) => {
-		r.onload = resolve;
-		r.onerror = reject;
-	});
-}
-
 let nodes = [];
 let currentIndex = -1;
 
@@ -2011,13 +2001,14 @@ function show(index) {
 	root.style.setProperty("--current", currentIndex+1);
 }
 
-function init$1(node) {
+async function init$1(node) {
 	let src = node.dataset.src;
 	if (src) {
-		return xhr(src).then(e => initFromString(e.target.responseText, node));
+		let response = await fetch(src);
+		let text = await response.text();
+		initFromString(text, node);
 	} else {
 		initFromString(node.innerHTML, node);
-		return Promise.resolve();
 	}
 }
 
@@ -2337,29 +2328,25 @@ function makeURL(rel) {
 	return new URL(rel, base).href;
 }
 
-function initStyles(skin) {
-	function loadSkin() { return skin ? load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
-	function loadApp() { return load(makeURL("maslo.css")); }
-
-	return loadSkin().then(loadApp);
+async function initStyles(skin) {
+	skin && await load(makeURL(`skin/${skin}.css`));
+	return load(makeURL("maslo.css"));
 }
 
-function initApp() {
-	[scale, control, title$1, mouse, draw, mode, url].forEach(c => c.init());
-	window.dispatchEvent(new CustomEvent("slides-load"));
-}
-
-function error(e) {
-	console.log(e);
-	alert("Error loading the app, see console for more details.");
-}
-
-function init(selector) {
+async function init(selector) {
 	let node = document.querySelector(selector);
-	function initSlides() { return init$1(node); }
-
 	let skin = ("skin" in node.dataset ? node.dataset.skin : "dark");
-	initStyles(skin).then(initSlides).then(initApp).catch(error);
+
+	try {
+		await initStyles(skin);
+		await init$1(node);
+		[scale, control, title$1, mouse, draw, mode, url].forEach(c => c.init());
+	} catch (e) {
+		console.log(e);
+		alert("Error loading the app, see console for more details.");
+	}
+
+	window.dispatchEvent(new CustomEvent("slides-load"));
 }
 
 init(document.currentScript.dataset.selector || "template");

@@ -1,5 +1,5 @@
 import * as parser from "parser.js";
-import xhr from "xhr.js";
+
 
 export let nodes = [];
 export let currentIndex = -1;
@@ -40,12 +40,13 @@ export function show(index) {
 	root.style.setProperty("--current", currentIndex+1);
 }
 
-export function init(node) {
+export async function init(node) {
 	let src = node.dataset.src;
 	if (src) {
-		return xhr(src).then(e => initFromString(e.target.responseText, node));
+		let response = await fetch(src);
+		let text = await response.text();
+		initFromString(text, node);
 	} else {
 		initFromString(node.innerHTML, node);
-		return Promise.resolve();
 	}
 }

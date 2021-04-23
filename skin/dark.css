@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&subset=latin,latin-ext");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/vs2015.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css");
 :root {
   --width: 1024;
   --height: 768;
@@ -66,10 +66,8 @@ body {
 h1 {
   color: var(--color);
   font-size: 200%;
+  margin: 0.5em 0;
   line-height: 1;
-  margin-top: 0;
-  margin-bottom: 0.5em;
-  padding-top: 0.5em;
 }
 pre {
   box-shadow: -4px 0 0 var(--color);

@@ -2,6 +2,7 @@ import * as slides from "slides.js";
 import * as mouse from "mouse.js";
 import * as mode from "mode.js";
 
+
 function onKeyDown(e) {
 	switch (e.code) {
 		case "Home": slides.show(0); break;

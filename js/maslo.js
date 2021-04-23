@@ -14,29 +14,25 @@ function makeURL(rel) {
 	return new URL(rel, base).href;
 }
 
-function initStyles(skin) {
-	function loadSkin() { return skin ? style.load(makeURL(`skin/${skin}.css`)) : Promise.resolve(); }
-	function loadApp() { return style.load(makeURL("maslo.css")); }
-
-	return loadSkin().then(loadApp);
+async function initStyles(skin) {
+	skin && await style.load(makeURL(`skin/${skin}.css`));
+	return style.load(makeURL("maslo.css"));
 }
 
-function initApp() {
-	[scale, control, title, mouse, draw, mode, url].forEach(c => c.init());
-	window.dispatchEvent(new CustomEvent("slides-load"));
-}
-
-function error(e) {
-	console.log(e);
-	alert("Error loading the app, see console for more details.");
-}
-
-function init(selector) {
+async function init(selector) {
 	let node = document.querySelector(selector);
-	function initSlides() { return slides.init(node); }
-
 	let skin = ("skin" in node.dataset ? node.dataset.skin : "dark");
-	initStyles(skin).then(initSlides).then(initApp).catch(error);
+
+	try {
+		await initStyles(skin);
+		await slides.init(node);
+		[scale, control, title, mouse, draw, mode, url].forEach(c => c.init());
+	} catch (e) {
+		console.log(e);
+		alert("Error loading the app, see console for more details.");
+	}
+
+	window.dispatchEvent(new CustomEvent("slides-load"));
 }
 
 init(document.currentScript.dataset.selector || "template");

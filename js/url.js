@@ -1,5 +1,6 @@
 import * as slides from "slides.js";
 
+
 function onHashChange(e) {
 	slides.show(get());
 }

@@ -1,6 +1,7 @@
 // import markdownIt from "markdown-it";
 import * as syntax from "syntax.js";
 
+
 function newSlide(slides) {
 	let slide = document.createElement("section");
 	slide.classList.add("slide");
