@@ -9,8 +9,9 @@ function newSlide(slides) {
 	return slide;
 }
 
-export function parse(source) {
-	let md = markdownit({highlight:syntax.highlight, html:true, linkify:true});
+export function parse(source, options) {
+	let opts = Object.assign({highlight:syntax.highlight, html:true, linkify:true}, options);
+	let md = markdownit(opts);
 	md.use(markdownItAttrs);
 
 	let tmp = document.createElement("div");

@@ -6,8 +6,8 @@ export let currentIndex = -1;
 
 const root = document.documentElement;
 
-function initFromString(str, node) {
-	nodes = parser.parse(str);
+function initFromString(str, node, options) {
+	nodes = parser.parse(str, options);
 
 	let fragment = document.createDocumentFragment();
 	nodes.forEach(node => fragment.appendChild(node));
@@ -41,12 +41,16 @@ export function show(index) {
 }
 
 export async function init(node) {
+	let options = {};
+
+	if ("linkify" in node.dataset) { options.linkify = (node.dataset.linkify == "true"); }
+
 	let src = node.dataset.src;
 	if (src) {
 		let response = await fetch(src);
 		let text = await response.text();
-		initFromString(text, node);
+		initFromString(text, node, options);
 	} else {
-		initFromString(node.innerHTML, node);
+		initFromString(node.innerHTML, node, options);
 	}
 }
