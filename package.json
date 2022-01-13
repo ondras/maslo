@@ -12,7 +12,7 @@
     "@highlightjs/cdn-assets": "^10.4.0",
     "hammerjs": "^2.0.8",
     "less": "^4.1.1",
-    "markdown-it": "^8.4.0",
+    "markdown-it": "^12.3.2",
     "markdown-it-attrs": "^1.2.0",
     "rollup": "^0.49.2",
     "rollup-plugin-includepaths": "^0.2.2"
