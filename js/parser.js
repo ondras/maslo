@@ -24,7 +24,7 @@ export function parse(source, options) {
 		if (child.nodeName == "HR") {
 			slide = newSlide(slides);
 		} else {
-			slide.appendChild(child);
+			slide.append(child);
 		}
 	});
 

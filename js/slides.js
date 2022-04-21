@@ -8,11 +8,7 @@ const root = document.documentElement;
 
 function initFromString(str, node, options) {
 	nodes = parser.parse(str, options);
-
-	let fragment = document.createDocumentFragment();
-	nodes.forEach(node => fragment.appendChild(node));
-
-	node.parentNode.replaceChild(fragment, node);
+	node.replaceWith(...nodes);
 	root.style.setProperty("--total", nodes.length);
 }
 

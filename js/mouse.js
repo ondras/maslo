@@ -50,10 +50,10 @@ export function toggle() {
 
 	document.body.classList.toggle("cursor", active);
 	if (active) {
-		document.body.appendChild(cursor);
+		document.body.append(cursor);
 		draw.show(slides.nodes[slides.currentIndex]);
 	} else {
-		cursor.parentNode.removeChild(cursor);
+		cursor.remove();
 		draw.hide();
 	}
 }

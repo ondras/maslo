@@ -1963,7 +1963,7 @@ function parse(source, options) {
 		if (child.nodeName == "HR") {
 			slide = newSlide(slides);
 		} else {
-			slide.appendChild(child);
+			slide.append(child);
 		}
 	});
 
@@ -1977,11 +1977,7 @@ const root = document.documentElement;
 
 function initFromString(str, node, options) {
 	nodes = parse(str, options);
-
-	let fragment = document.createDocumentFragment();
-	nodes.forEach(node => fragment.appendChild(node));
-
-	node.parentNode.replaceChild(fragment, node);
+	node.replaceWith(...nodes);
 	root.style.setProperty("--total", nodes.length);
 }
 
@@ -2034,8 +2030,6 @@ const META = {
 
 function sync() {
 	let port = [window.innerWidth, window.innerHeight];
-	if (port[1] == 767) { port[1] = 768; } // fix for lenovo x230
-	if (port[1] == 719) { port[1] = 720; } // fix for chuwi ubook
 
 	let style = getComputedStyle(root$1);
 	let target = ["width", "height"].map(prop => Number(style.getPropertyValue(`--${prop}`)));
@@ -2047,7 +2041,7 @@ function sync() {
 function init$2() {
 	let meta = document.createElement("meta");
 	Object.assign(meta, META);
-	document.head.appendChild(meta);
+	document.head.append(meta);
 
 	sync();
 	window.addEventListener("resize", e => sync());
@@ -2131,7 +2125,7 @@ function add(pos) {
 }
 
 function show$1(parent) {
-	parent.appendChild(ctx.canvas);
+	parent.append(ctx.canvas);
 	ctx.canvas.width = parent.offsetWidth;
 	ctx.canvas.height = parent.offsetHeight;
 	setupStyle(parent);
@@ -2205,10 +2199,10 @@ function toggle() {
 
 	document.body.classList.toggle("cursor", active);
 	if (active) {
-		document.body.appendChild(cursor);
+		document.body.append(cursor);
 		show$1(nodes[currentIndex]);
 	} else {
-		cursor.parentNode.removeChild(cursor);
+		cursor.remove();
 		hide();
 	}
 }

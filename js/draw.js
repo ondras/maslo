@@ -38,7 +38,7 @@ export function add(pos) {
 }
 
 export function show(parent) {
-	parent.appendChild(ctx.canvas);
+	parent.append(ctx.canvas);
 	ctx.canvas.width = parent.offsetWidth;
 	ctx.canvas.height = parent.offsetHeight;
 	setupStyle(parent);
