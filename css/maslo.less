@@ -17,7 +17,7 @@ body {
 	overflow: hidden;
 
 	counter-increment: slide slide-before;
-	&.current { 
+	&.current {
 		counter-increment: slide slide-current;
 		& ~ .slide {
 			counter-increment: slide slide-after;
@@ -27,6 +27,7 @@ body {
 
 @import "typo.less";
 @import "content.less";
+@import "slide.less";
 @import "cursor.less" screen;
 @import "draw.less" screen;
 @import "full.less" screen;

@@ -132,6 +132,21 @@ p.questions {
   font-weight: bold;
   text-shadow: 0 0 0.1em var(--color, currentColor);
 }
+maslo-slide {
+  width: calc(var(--width) * 1px);
+  height: calc(var(--height) * 1px);
+  overflow: hidden;
+  counter-increment: slide slide-before;
+}
+maslo-slide:not([hidden]) {
+  display: block;
+}
+maslo-slide.current {
+  counter-increment: slide slide-current;
+}
+maslo-slide.current ~ .slide {
+  counter-increment: slide slide-after;
+}
 @media screen {
   #cursor {
     position: fixed;

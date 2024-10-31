@@ -1,4 +1,4 @@
-import * as slides from "slides.js";
+import * as slides from "./slides.js";
 
 
 function onHashChange(e) {

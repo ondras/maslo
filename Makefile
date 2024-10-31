@@ -1,5 +1,5 @@
-LESSC := node_modules/.bin/lessc --math=strict
-ROLLUP := node_modules/.bin/rollup
+LESSC := npm exec -- lessc
+ESBUILD := npm exec -- esbuild
 HIGHLIGHT := node_modules/@highlightjs/cdn-assets/highlight.min.js
 SKINS := $(wildcard css/skin/*.less)
 SKINS := $(patsubst css/skin/%.less,skin/%.css,$(SKINS))
@@ -9,12 +9,9 @@ all: $(APP).js $(APP).css skins
 
 $(APP).js: js/*.js $(HIGHLIGHT)
 	echo -n > $@
-	cat node_modules/markdown-it/dist/markdown-it.min.js >> $@
-	cat node_modules/markdown-it-attrs/markdown-it-attrs.browser.js >> $@
-	cat node_modules/hammerjs/hammer.min.js >> $@
 	echo "" >> $@
 	cat $(HIGHLIGHT) >> $@
-	$(ROLLUP) -c -i js/$(APP).js >> $@
+	$(ESBUILD) --bundle js/$(APP).js >> $@
 
 $(APP).css: css/*.less
 	$(LESSC) css/$(APP).less > $@

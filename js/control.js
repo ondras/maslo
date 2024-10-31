@@ -1,6 +1,7 @@
-import * as slides from "slides.js";
-import * as mouse from "mouse.js";
-import * as mode from "mode.js";
+import * as slides from "./slides.js";
+import * as mouse from "./mouse.js";
+import * as mode from "./mode.js";
+import Hammer from "hammerjs";
 
 
 function onKeyDown(e) {
