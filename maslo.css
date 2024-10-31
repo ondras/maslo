@@ -11,21 +11,10 @@ body {
   color: var(--fg);
   background-color: var(--bg);
 }
-.slide {
-  width: calc(var(--width) * 1px);
-  height: calc(var(--height) * 1px);
-  overflow: hidden;
-  counter-increment: slide slide-before;
-}
-.slide.current {
-  counter-increment: slide slide-current;
-}
-.slide.current ~ .slide {
-  counter-increment: slide slide-after;
-}
 :root {
   --width: 1024;
   --height: 768;
+  --aspect-ratio: 4 / 3;
   --scale: 1;
   --current: 0;
   --total: 0;
@@ -133,13 +122,11 @@ p.questions {
   text-shadow: 0 0 0.1em var(--color, currentColor);
 }
 maslo-slide {
+  display: block;
   width: calc(var(--width) * 1px);
-  height: calc(var(--height) * 1px);
+  aspect-ratio: var(--aspect-ratio);
   overflow: hidden;
   counter-increment: slide slide-before;
-}
-maslo-slide:not([hidden]) {
-  display: block;
 }
 maslo-slide.current {
   counter-increment: slide slide-current;
@@ -170,13 +157,14 @@ maslo-slide.current ~ .slide {
   }
 }
 @media screen {
-  body.full .slide {
+  body.full maslo-slide {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) scale(var(--scale));
+    translate: -50% -50%;
+    scale: var(--scale);
   }
-  body.full .slide:not(.current) {
+  body.full maslo-slide:not(.current) {
     visibility: hidden;
   }
 }
@@ -197,7 +185,7 @@ maslo-slide.current ~ .slide {
     background-color: #666;
     overflow-x: hidden;
   }
-  body.overview .slide {
+  body.overview maslo-slide {
     float: left;
     cursor: pointer;
     background-color: var(--bg);
@@ -210,10 +198,10 @@ maslo-slide.current ~ .slide {
     border-radius: var(--thickness);
     box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
   }
-  body.overview .slide:hover {
+  body.overview maslo-slide:hover {
     box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.25), 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
   }
-  body.overview .slide.current {
+  body.overview maslo-slide.current {
     box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.75), 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
   }
 }

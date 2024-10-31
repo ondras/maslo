@@ -11,20 +11,6 @@ body {
 	background-color: var(--bg);
 }
 
-.slide {
-	width: calc(var(--width) * 1px);
-	height: calc(var(--height) * 1px);
-	overflow: hidden;
-
-	counter-increment: slide slide-before;
-	&.current {
-		counter-increment: slide slide-current;
-		& ~ .slide {
-			counter-increment: slide slide-after;
-		}
-	}
-}
-
 @import "typo.less";
 @import "content.less";
 @import "slide.less";

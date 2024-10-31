@@ -9170,7 +9170,7 @@ return Ke}()
     tmp.innerHTML = md.render(source);
     let slides = [];
     let slide = newSlide(slides);
-    Array.from(tmp.children).forEach((child) => {
+    [...tmp.children].forEach((child) => {
       if (child.nodeName == "HR") {
         slide = newSlide(slides);
       } else {
