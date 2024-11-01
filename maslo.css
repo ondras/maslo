@@ -134,6 +134,26 @@ maslo-slide.current {
 maslo-slide.current ~ .slide {
   counter-increment: slide slide-after;
 }
+maslo-deck[mode=full] maslo-slide {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  scale: var(--scale);
+}
+maslo-deck[mode=full] maslo-slide:not(.current) {
+  visibility: hidden;
+}
+@media (orientation: portrait) and (max-width: 768px) {
+  maslo-deck[mode=full]::before {
+    content: "↻";
+    font-weight: bold;
+    position: fixed;
+    right: 0.5em;
+    top: 0.5em;
+    font-size: 200%;
+  }
+}
 @media screen {
   #cursor {
     position: fixed;

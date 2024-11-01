@@ -1,26 +1,25 @@
-import * as slides from "./slides.js";
 import * as mouse from "./mouse.js";
 import * as mode from "./mode.js";
 import Hammer from "hammerjs";
 
 
-function onKeyDown(e) {
+function onKeyDown(e, deck) {
 	switch (e.code) {
-		case "Home": slides.show(0); break;
-		case "End": slides.show(slides.nodes.length-1); break;
+		case "Home": deck.show(0); break;
+		case "End": deck.show(deck.slides.length-1); break;
 
 		case "ArrowLeft":
 		case "ArrowUp":
 		case "PageUp":
 		case "Backspace":
-			slides.show(slides.currentIndex-1);
+			deck.show(deck.currentIndex-1);
 		break;
 
 		case "ArrowRight":
 		case "ArrowDown":
 		case "PageDown":
 		case "Space":
-			slides.show(slides.currentIndex+1);
+			deck.show(deck.currentIndex+1);
 		break;
 
 		case "CapsLock": mouse.toggle(); break;
@@ -29,16 +28,14 @@ function onKeyDown(e) {
 	}
 }
 
-function swipeBy(diff, e) {
+function swipeBy(diff, e, deck) {
 	if (e.pointerType == "mouse" || mouse.active) { return; }
-	slides.show(slides.currentIndex+diff)
+	deck.show(deck.currentIndex+diff)
 }
-function onSwipeLeft(e) { swipeBy(+1, e); }
-function onSwipeRight(e) { swipeBy(-1, e); }
 
-export function init() {
-	window.addEventListener("keydown", onKeyDown);
+export function init(deck) {
+	window.addEventListener("keydown", e => onKeyDown(e, deck));
 	let hammer = new Hammer(window);
-	hammer.on("swipeleft", onSwipeLeft);
-	hammer.on("swiperight", onSwipeRight);
+	hammer.on("swipeleft", e => swipeBy(+1, e, deck));
+	hammer.on("swiperight", e => swipeBy(-1, e, deck));
 }

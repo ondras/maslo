@@ -1,5 +1,4 @@
 import * as mode from "./mode.js";
-import * as slides from "./slides.js";
 import * as draw from "./draw.js";
 import * as scale from "./scale.js";
 
@@ -37,11 +36,14 @@ function onMouseMove(e) {
 function onClick(e) {
 	if (mode.current != "overview") { return; }
 
-	let index = slides.findIndex(e.target);
-	if (index > -1) {
-		slides.show(index);
-		mode.toggle();
-	}
+	let slide = e.target.closest("maslo-slide");
+	if (!slide) { return; }
+
+	let deck = slide.closest("maslo-deck");
+	if (!deck) { return; }
+
+	deck.show(deck.slides.indexOf(slide));
+	mode.toggle();
 }
 
 export function toggle() {
@@ -62,21 +64,19 @@ function onModeChange(e) {
 	if (active && e.detail.mode == "overview") { toggle(); }
 }
 
-function onSlideChange(e) {
-	if (!active) { return; }
-	draw.hide();
-	draw.show(slides.nodes[e.detail.currentIndex]);
-}
-
-export function init() {
+export function init(deck) {
 	cursor = document.createElement("div");
 	cursor.id = "cursor";
 
 	window.addEventListener("mousedown", onMouseDown);
 	window.addEventListener("mousemove", onMouseMove);
 	window.addEventListener("mouseup", onMouseUp);
-	window.addEventListener("click", onClick);
+	deck.addEventListener("click", onClick);
 
 	window.addEventListener("mode-change", onModeChange);
-	window.addEventListener("slide-change", onSlideChange);
+	deck.addEventListener("change", e => {
+		if (!active) { return; }
+		draw.hide();
+		draw.show(deck.slides[e.detail.currentIndex]);
+	});
 }

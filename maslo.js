@@ -1261,677 +1261,6 @@ return Ke}()
     mod
   ));
 
-  // node_modules/markdown-it-attrs/utils.js
-  var require_utils = __commonJS({
-    "node_modules/markdown-it-attrs/utils.js"(exports) {
-      exports.getAttrs = function(str, start2, options) {
-        const allowedKeyChars = /[^\t\n\f />"'=]/;
-        const pairSeparator = " ";
-        const keySeparator = "=";
-        const classChar = ".";
-        const idChar = "#";
-        const attrs = [];
-        let key = "";
-        let value = "";
-        let parsingKey = true;
-        let valueInsideQuotes = false;
-        for (let i = start2 + options.leftDelimiter.length; i < str.length; i++) {
-          if (str.slice(i, i + options.rightDelimiter.length) === options.rightDelimiter) {
-            if (key !== "") {
-              attrs.push([key, value]);
-            }
-            break;
-          }
-          const char_ = str.charAt(i);
-          if (char_ === keySeparator && parsingKey) {
-            parsingKey = false;
-            continue;
-          }
-          if (char_ === classChar && key === "") {
-            if (str.charAt(i + 1) === classChar) {
-              key = "css-module";
-              i += 1;
-            } else {
-              key = "class";
-            }
-            parsingKey = false;
-            continue;
-          }
-          if (char_ === idChar && key === "") {
-            key = "id";
-            parsingKey = false;
-            continue;
-          }
-          if (char_ === '"' && value === "" && !valueInsideQuotes) {
-            valueInsideQuotes = true;
-            continue;
-          }
-          if (char_ === '"' && valueInsideQuotes) {
-            valueInsideQuotes = false;
-            continue;
-          }
-          if (char_ === pairSeparator && !valueInsideQuotes) {
-            if (key === "") {
-              continue;
-            }
-            attrs.push([key, value]);
-            key = "";
-            value = "";
-            parsingKey = true;
-            continue;
-          }
-          if (parsingKey && char_.search(allowedKeyChars) === -1) {
-            continue;
-          }
-          if (parsingKey) {
-            key += char_;
-            continue;
-          }
-          value += char_;
-        }
-        if (options.allowedAttributes && options.allowedAttributes.length) {
-          const allowedAttributes = options.allowedAttributes;
-          return attrs.filter(function(attrPair) {
-            const attr = attrPair[0];
-            function isAllowedAttribute(allowedAttribute) {
-              return attr === allowedAttribute || allowedAttribute instanceof RegExp && allowedAttribute.test(attr);
-            }
-            return allowedAttributes.some(isAllowedAttribute);
-          });
-        }
-        return attrs;
-      };
-      exports.addAttrs = function(attrs, token) {
-        for (let j = 0, l = attrs.length; j < l; ++j) {
-          const key = attrs[j][0];
-          if (key === "class") {
-            token.attrJoin("class", attrs[j][1]);
-          } else if (key === "css-module") {
-            token.attrJoin("css-module", attrs[j][1]);
-          } else {
-            token.attrPush(attrs[j]);
-          }
-        }
-        return token;
-      };
-      exports.hasDelimiters = function(where, options) {
-        if (!where) {
-          throw new Error('Parameter `where` not passed. Should be "start", "end" or "only".');
-        }
-        return function(str) {
-          const minCurlyLength = options.leftDelimiter.length + 1 + options.rightDelimiter.length;
-          if (!str || typeof str !== "string" || str.length < minCurlyLength) {
-            return false;
-          }
-          function validCurlyLength(curly) {
-            const isClass = curly.charAt(options.leftDelimiter.length) === ".";
-            const isId = curly.charAt(options.leftDelimiter.length) === "#";
-            return isClass || isId ? curly.length >= minCurlyLength + 1 : curly.length >= minCurlyLength;
-          }
-          let start2, end, slice, nextChar;
-          const rightDelimiterMinimumShift = minCurlyLength - options.rightDelimiter.length;
-          switch (where) {
-            case "start":
-              slice = str.slice(0, options.leftDelimiter.length);
-              start2 = slice === options.leftDelimiter ? 0 : -1;
-              end = start2 === -1 ? -1 : str.indexOf(options.rightDelimiter, rightDelimiterMinimumShift);
-              nextChar = str.charAt(end + options.rightDelimiter.length);
-              if (nextChar && options.rightDelimiter.indexOf(nextChar) !== -1) {
-                end = -1;
-              }
-              break;
-            case "end":
-              start2 = str.lastIndexOf(options.leftDelimiter);
-              end = start2 === -1 ? -1 : str.indexOf(options.rightDelimiter, start2 + rightDelimiterMinimumShift);
-              end = end === str.length - options.rightDelimiter.length ? end : -1;
-              break;
-            case "only":
-              slice = str.slice(0, options.leftDelimiter.length);
-              start2 = slice === options.leftDelimiter ? 0 : -1;
-              slice = str.slice(str.length - options.rightDelimiter.length);
-              end = slice === options.rightDelimiter ? str.length - options.rightDelimiter.length : -1;
-              break;
-            default:
-              throw new Error(`Unexpected case ${where}, expected 'start', 'end' or 'only'`);
-          }
-          return start2 !== -1 && end !== -1 && validCurlyLength(str.substring(start2, end + options.rightDelimiter.length));
-        };
-      };
-      exports.removeDelimiter = function(str, options) {
-        const start2 = escapeRegExp(options.leftDelimiter);
-        const end = escapeRegExp(options.rightDelimiter);
-        const curly = new RegExp(
-          "[ \\n]?" + start2 + "[^" + start2 + end + "]+" + end + "$"
-        );
-        const pos = str.search(curly);
-        return pos !== -1 ? str.slice(0, pos) : str;
-      };
-      function escapeRegExp(s) {
-        return s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-      }
-      exports.escapeRegExp = escapeRegExp;
-      exports.getMatchingOpeningToken = function(tokens, i) {
-        if (tokens[i].type === "softbreak") {
-          return false;
-        }
-        if (tokens[i].nesting === 0) {
-          return tokens[i];
-        }
-        const level = tokens[i].level;
-        const type = tokens[i].type.replace("_close", "_open");
-        for (; i >= 0; --i) {
-          if (tokens[i].type === type && tokens[i].level === level) {
-            return tokens[i];
-          }
-        }
-        return false;
-      };
-      var HTML_ESCAPE_TEST_RE2 = /[&<>"]/;
-      var HTML_ESCAPE_REPLACE_RE2 = /[&<>"]/g;
-      var HTML_REPLACEMENTS2 = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;"
-      };
-      function replaceUnsafeChar2(ch) {
-        return HTML_REPLACEMENTS2[ch];
-      }
-      exports.escapeHtml = function(str) {
-        if (HTML_ESCAPE_TEST_RE2.test(str)) {
-          return str.replace(HTML_ESCAPE_REPLACE_RE2, replaceUnsafeChar2);
-        }
-        return str;
-      };
-    }
-  });
-
-  // node_modules/markdown-it-attrs/patterns.js
-  var require_patterns = __commonJS({
-    "node_modules/markdown-it-attrs/patterns.js"(exports, module) {
-      "use strict";
-      var utils = require_utils();
-      module.exports = (options) => {
-        const __hr = new RegExp("^ {0,3}[-*_]{3,} ?" + utils.escapeRegExp(options.leftDelimiter) + "[^" + utils.escapeRegExp(options.rightDelimiter) + "]");
-        return [
-          {
-            /**
-             * ```python {.cls}
-             * for i in range(10):
-             *     print(i)
-             * ```
-             */
-            name: "fenced code blocks",
-            tests: [
-              {
-                shift: 0,
-                block: true,
-                info: utils.hasDelimiters("end", options)
-              }
-            ],
-            transform: (tokens, i) => {
-              const token = tokens[i];
-              const start2 = token.info.lastIndexOf(options.leftDelimiter);
-              const attrs = utils.getAttrs(token.info, start2, options);
-              utils.addAttrs(attrs, token);
-              token.info = utils.removeDelimiter(token.info, options);
-            }
-          },
-          {
-            /**
-             * bla `click()`{.c} ![](img.png){.d}
-             *
-             * differs from 'inline attributes' as it does
-             * not have a closing tag (nesting: -1)
-             */
-            name: "inline nesting 0",
-            tests: [
-              {
-                shift: 0,
-                type: "inline",
-                children: [
-                  {
-                    shift: -1,
-                    type: (str) => str === "image" || str === "code_inline"
-                  },
-                  {
-                    shift: 0,
-                    type: "text",
-                    content: utils.hasDelimiters("start", options)
-                  }
-                ]
-              }
-            ],
-            transform: (tokens, i, j) => {
-              const token = tokens[i].children[j];
-              const endChar = token.content.indexOf(options.rightDelimiter);
-              const attrToken = tokens[i].children[j - 1];
-              const attrs = utils.getAttrs(token.content, 0, options);
-              utils.addAttrs(attrs, attrToken);
-              if (token.content.length === endChar + options.rightDelimiter.length) {
-                tokens[i].children.splice(j, 1);
-              } else {
-                token.content = token.content.slice(endChar + options.rightDelimiter.length);
-              }
-            }
-          },
-          {
-            /**
-             * | h1 |
-             * | -- |
-             * | c1 |
-             *
-             * {.c}
-             */
-            name: "tables",
-            tests: [
-              {
-                // let this token be i, such that for-loop continues at
-                // next token after tokens.splice
-                shift: 0,
-                type: "table_close"
-              },
-              {
-                shift: 1,
-                type: "paragraph_open"
-              },
-              {
-                shift: 2,
-                type: "inline",
-                content: utils.hasDelimiters("only", options)
-              }
-            ],
-            transform: (tokens, i) => {
-              const token = tokens[i + 2];
-              const tableOpen = utils.getMatchingOpeningToken(tokens, i);
-              const attrs = utils.getAttrs(token.content, 0, options);
-              utils.addAttrs(attrs, tableOpen);
-              tokens.splice(i + 1, 3);
-            }
-          },
-          {
-            /**
-             * *emphasis*{.with attrs=1}
-             */
-            name: "inline attributes",
-            tests: [
-              {
-                shift: 0,
-                type: "inline",
-                children: [
-                  {
-                    shift: -1,
-                    nesting: -1
-                    // closing inline tag, </em>{.a}
-                  },
-                  {
-                    shift: 0,
-                    type: "text",
-                    content: utils.hasDelimiters("start", options)
-                  }
-                ]
-              }
-            ],
-            transform: (tokens, i, j) => {
-              const token = tokens[i].children[j];
-              const content = token.content;
-              const attrs = utils.getAttrs(content, 0, options);
-              const openingToken = utils.getMatchingOpeningToken(tokens[i].children, j - 1);
-              utils.addAttrs(attrs, openingToken);
-              token.content = content.slice(content.indexOf(options.rightDelimiter) + options.rightDelimiter.length);
-            }
-          },
-          {
-            /**
-             * - item
-             * {.a}
-             */
-            name: "list softbreak",
-            tests: [
-              {
-                shift: -2,
-                type: "list_item_open"
-              },
-              {
-                shift: 0,
-                type: "inline",
-                children: [
-                  {
-                    position: -2,
-                    type: "softbreak"
-                  },
-                  {
-                    position: -1,
-                    type: "text",
-                    content: utils.hasDelimiters("only", options)
-                  }
-                ]
-              }
-            ],
-            transform: (tokens, i, j) => {
-              const token = tokens[i].children[j];
-              const content = token.content;
-              const attrs = utils.getAttrs(content, 0, options);
-              let ii = i - 2;
-              while (tokens[ii - 1] && tokens[ii - 1].type !== "ordered_list_open" && tokens[ii - 1].type !== "bullet_list_open") {
-                ii--;
-              }
-              utils.addAttrs(attrs, tokens[ii - 1]);
-              tokens[i].children = tokens[i].children.slice(0, -2);
-            }
-          },
-          {
-            /**
-             * - nested list
-             *   - with double \n
-             *   {.a} <-- apply to nested ul
-             *
-             * {.b} <-- apply to root <ul>
-             */
-            name: "list double softbreak",
-            tests: [
-              {
-                // let this token be i = 0 so that we can erase
-                // the <p>{.a}</p> tokens below
-                shift: 0,
-                type: (str) => str === "bullet_list_close" || str === "ordered_list_close"
-              },
-              {
-                shift: 1,
-                type: "paragraph_open"
-              },
-              {
-                shift: 2,
-                type: "inline",
-                content: utils.hasDelimiters("only", options),
-                children: (arr) => arr.length === 1
-              },
-              {
-                shift: 3,
-                type: "paragraph_close"
-              }
-            ],
-            transform: (tokens, i) => {
-              const token = tokens[i + 2];
-              const content = token.content;
-              const attrs = utils.getAttrs(content, 0, options);
-              const openingToken = utils.getMatchingOpeningToken(tokens, i);
-              utils.addAttrs(attrs, openingToken);
-              tokens.splice(i + 1, 3);
-            }
-          },
-          {
-            /**
-             * - end of {.list-item}
-             */
-            name: "list item end",
-            tests: [
-              {
-                shift: -2,
-                type: "list_item_open"
-              },
-              {
-                shift: 0,
-                type: "inline",
-                children: [
-                  {
-                    position: -1,
-                    type: "text",
-                    content: utils.hasDelimiters("end", options)
-                  }
-                ]
-              }
-            ],
-            transform: (tokens, i, j) => {
-              const token = tokens[i].children[j];
-              const content = token.content;
-              const attrs = utils.getAttrs(content, content.lastIndexOf(options.leftDelimiter), options);
-              utils.addAttrs(attrs, tokens[i - 2]);
-              const trimmed = content.slice(0, content.lastIndexOf(options.leftDelimiter));
-              token.content = last(trimmed) !== " " ? trimmed : trimmed.slice(0, -1);
-            }
-          },
-          {
-            /**
-             * something with softbreak
-             * {.cls}
-             */
-            name: "\n{.a} softbreak then curly in start",
-            tests: [
-              {
-                shift: 0,
-                type: "inline",
-                children: [
-                  {
-                    position: -2,
-                    type: "softbreak"
-                  },
-                  {
-                    position: -1,
-                    type: "text",
-                    content: utils.hasDelimiters("only", options)
-                  }
-                ]
-              }
-            ],
-            transform: (tokens, i, j) => {
-              const token = tokens[i].children[j];
-              const attrs = utils.getAttrs(token.content, 0, options);
-              let ii = i + 1;
-              while (tokens[ii + 1] && tokens[ii + 1].nesting === -1) {
-                ii++;
-              }
-              const openingToken = utils.getMatchingOpeningToken(tokens, ii);
-              utils.addAttrs(attrs, openingToken);
-              tokens[i].children = tokens[i].children.slice(0, -2);
-            }
-          },
-          {
-            /**
-             * horizontal rule --- {#id}
-             */
-            name: "horizontal rule",
-            tests: [
-              {
-                shift: 0,
-                type: "paragraph_open"
-              },
-              {
-                shift: 1,
-                type: "inline",
-                children: (arr) => arr.length === 1,
-                content: (str) => str.match(__hr) !== null
-              },
-              {
-                shift: 2,
-                type: "paragraph_close"
-              }
-            ],
-            transform: (tokens, i) => {
-              const token = tokens[i];
-              token.type = "hr";
-              token.tag = "hr";
-              token.nesting = 0;
-              const content = tokens[i + 1].content;
-              const start2 = content.lastIndexOf(options.leftDelimiter);
-              const attrs = utils.getAttrs(content, start2, options);
-              utils.addAttrs(attrs, token);
-              token.markup = content;
-              tokens.splice(i + 1, 2);
-            }
-          },
-          {
-            /**
-             * end of {.block}
-             */
-            name: "end of block",
-            tests: [
-              {
-                shift: 0,
-                type: "inline",
-                children: [
-                  {
-                    position: -1,
-                    content: utils.hasDelimiters("end", options),
-                    type: (t) => t !== "code_inline" && t !== "math_inline"
-                  }
-                ]
-              }
-            ],
-            transform: (tokens, i, j) => {
-              const token = tokens[i].children[j];
-              const content = token.content;
-              const attrs = utils.getAttrs(content, content.lastIndexOf(options.leftDelimiter), options);
-              let ii = i + 1;
-              do
-                if (tokens[ii] && tokens[ii].nesting === -1) {
-                  break;
-                }
-              while (ii++ < tokens.length);
-              const openingToken = utils.getMatchingOpeningToken(tokens, ii);
-              utils.addAttrs(attrs, openingToken);
-              const trimmed = content.slice(0, content.lastIndexOf(options.leftDelimiter));
-              token.content = last(trimmed) !== " " ? trimmed : trimmed.slice(0, -1);
-            }
-          }
-        ];
-      };
-      function last(arr) {
-        return arr.slice(-1)[0];
-      }
-    }
-  });
-
-  // node_modules/markdown-it-attrs/index.js
-  var require_markdown_it_attrs = __commonJS({
-    "node_modules/markdown-it-attrs/index.js"(exports, module) {
-      "use strict";
-      var patternsConfig = require_patterns();
-      var defaultOptions2 = {
-        leftDelimiter: "{",
-        rightDelimiter: "}",
-        allowedAttributes: []
-      };
-      module.exports = function attributes(md, options_) {
-        let options = Object.assign({}, defaultOptions2);
-        options = Object.assign(options, options_);
-        const patterns = patternsConfig(options);
-        function curlyAttrs(state) {
-          const tokens = state.tokens;
-          for (let i = 0; i < tokens.length; i++) {
-            for (let p = 0; p < patterns.length; p++) {
-              const pattern = patterns[p];
-              let j = null;
-              const match2 = pattern.tests.every((t) => {
-                const res = test2(tokens, i, t);
-                if (res.j !== null) {
-                  j = res.j;
-                }
-                return res.match;
-              });
-              if (match2) {
-                pattern.transform(tokens, i, j);
-                if (pattern.name === "inline attributes" || pattern.name === "inline nesting 0") {
-                  p--;
-                }
-              }
-            }
-          }
-        }
-        md.core.ruler.before("linkify", "curly_attributes", curlyAttrs);
-      };
-      function test2(tokens, i, t) {
-        const res = {
-          match: false,
-          j: null
-          // position of child
-        };
-        const ii = t.shift !== void 0 ? i + t.shift : t.position;
-        if (t.shift !== void 0 && ii < 0) {
-          return res;
-        }
-        const token = get2(tokens, ii);
-        if (token === void 0) {
-          return res;
-        }
-        for (const key of Object.keys(t)) {
-          if (key === "shift" || key === "position") {
-            continue;
-          }
-          if (token[key] === void 0) {
-            return res;
-          }
-          if (key === "children" && isArrayOfObjects(t.children)) {
-            if (token.children.length === 0) {
-              return res;
-            }
-            let match2;
-            const childTests = t.children;
-            const children = token.children;
-            if (childTests.every((tt) => tt.position !== void 0)) {
-              match2 = childTests.every((tt) => test2(children, tt.position, tt).match);
-              if (match2) {
-                const j = last(childTests).position;
-                res.j = j >= 0 ? j : children.length + j;
-              }
-            } else {
-              for (let j = 0; j < children.length; j++) {
-                match2 = childTests.every((tt) => test2(children, j, tt).match);
-                if (match2) {
-                  res.j = j;
-                  break;
-                }
-              }
-            }
-            if (match2 === false) {
-              return res;
-            }
-            continue;
-          }
-          switch (typeof t[key]) {
-            case "boolean":
-            case "number":
-            case "string":
-              if (token[key] !== t[key]) {
-                return res;
-              }
-              break;
-            case "function":
-              if (!t[key](token[key])) {
-                return res;
-              }
-              break;
-            case "object":
-              if (isArrayOfFunctions(t[key])) {
-                const r = t[key].every((tt) => tt(token[key]));
-                if (r === false) {
-                  return res;
-                }
-                break;
-              }
-            // fall through for objects !== arrays of functions
-            default:
-              throw new Error(`Unknown type of pattern test (key: ${key}). Test should be of type boolean, number, string, function or array of functions.`);
-          }
-        }
-        res.match = true;
-        return res;
-      }
-      function isArrayOfObjects(arr) {
-        return Array.isArray(arr) && arr.length && arr.every((i) => typeof i === "object");
-      }
-      function isArrayOfFunctions(arr) {
-        return Array.isArray(arr) && arr.length && arr.every((i) => typeof i === "function");
-      }
-      function get2(arr, n) {
-        return n >= 0 ? arr[n] : arr[arr.length + n];
-      }
-      function last(arr) {
-        return arr.slice(-1)[0] || {};
-      }
-    }
-  });
-
   // node_modules/hammerjs/hammer.js
   var require_hammer = __commonJS({
     "node_modules/hammerjs/hammer.js"(exports, module) {
@@ -3728,6 +3057,677 @@ return Ke}()
     }
   });
 
+  // node_modules/markdown-it-attrs/utils.js
+  var require_utils = __commonJS({
+    "node_modules/markdown-it-attrs/utils.js"(exports) {
+      exports.getAttrs = function(str, start2, options) {
+        const allowedKeyChars = /[^\t\n\f />"'=]/;
+        const pairSeparator = " ";
+        const keySeparator = "=";
+        const classChar = ".";
+        const idChar = "#";
+        const attrs = [];
+        let key = "";
+        let value = "";
+        let parsingKey = true;
+        let valueInsideQuotes = false;
+        for (let i = start2 + options.leftDelimiter.length; i < str.length; i++) {
+          if (str.slice(i, i + options.rightDelimiter.length) === options.rightDelimiter) {
+            if (key !== "") {
+              attrs.push([key, value]);
+            }
+            break;
+          }
+          const char_ = str.charAt(i);
+          if (char_ === keySeparator && parsingKey) {
+            parsingKey = false;
+            continue;
+          }
+          if (char_ === classChar && key === "") {
+            if (str.charAt(i + 1) === classChar) {
+              key = "css-module";
+              i += 1;
+            } else {
+              key = "class";
+            }
+            parsingKey = false;
+            continue;
+          }
+          if (char_ === idChar && key === "") {
+            key = "id";
+            parsingKey = false;
+            continue;
+          }
+          if (char_ === '"' && value === "" && !valueInsideQuotes) {
+            valueInsideQuotes = true;
+            continue;
+          }
+          if (char_ === '"' && valueInsideQuotes) {
+            valueInsideQuotes = false;
+            continue;
+          }
+          if (char_ === pairSeparator && !valueInsideQuotes) {
+            if (key === "") {
+              continue;
+            }
+            attrs.push([key, value]);
+            key = "";
+            value = "";
+            parsingKey = true;
+            continue;
+          }
+          if (parsingKey && char_.search(allowedKeyChars) === -1) {
+            continue;
+          }
+          if (parsingKey) {
+            key += char_;
+            continue;
+          }
+          value += char_;
+        }
+        if (options.allowedAttributes && options.allowedAttributes.length) {
+          const allowedAttributes = options.allowedAttributes;
+          return attrs.filter(function(attrPair) {
+            const attr = attrPair[0];
+            function isAllowedAttribute(allowedAttribute) {
+              return attr === allowedAttribute || allowedAttribute instanceof RegExp && allowedAttribute.test(attr);
+            }
+            return allowedAttributes.some(isAllowedAttribute);
+          });
+        }
+        return attrs;
+      };
+      exports.addAttrs = function(attrs, token) {
+        for (let j = 0, l = attrs.length; j < l; ++j) {
+          const key = attrs[j][0];
+          if (key === "class") {
+            token.attrJoin("class", attrs[j][1]);
+          } else if (key === "css-module") {
+            token.attrJoin("css-module", attrs[j][1]);
+          } else {
+            token.attrPush(attrs[j]);
+          }
+        }
+        return token;
+      };
+      exports.hasDelimiters = function(where, options) {
+        if (!where) {
+          throw new Error('Parameter `where` not passed. Should be "start", "end" or "only".');
+        }
+        return function(str) {
+          const minCurlyLength = options.leftDelimiter.length + 1 + options.rightDelimiter.length;
+          if (!str || typeof str !== "string" || str.length < minCurlyLength) {
+            return false;
+          }
+          function validCurlyLength(curly) {
+            const isClass = curly.charAt(options.leftDelimiter.length) === ".";
+            const isId = curly.charAt(options.leftDelimiter.length) === "#";
+            return isClass || isId ? curly.length >= minCurlyLength + 1 : curly.length >= minCurlyLength;
+          }
+          let start2, end, slice, nextChar;
+          const rightDelimiterMinimumShift = minCurlyLength - options.rightDelimiter.length;
+          switch (where) {
+            case "start":
+              slice = str.slice(0, options.leftDelimiter.length);
+              start2 = slice === options.leftDelimiter ? 0 : -1;
+              end = start2 === -1 ? -1 : str.indexOf(options.rightDelimiter, rightDelimiterMinimumShift);
+              nextChar = str.charAt(end + options.rightDelimiter.length);
+              if (nextChar && options.rightDelimiter.indexOf(nextChar) !== -1) {
+                end = -1;
+              }
+              break;
+            case "end":
+              start2 = str.lastIndexOf(options.leftDelimiter);
+              end = start2 === -1 ? -1 : str.indexOf(options.rightDelimiter, start2 + rightDelimiterMinimumShift);
+              end = end === str.length - options.rightDelimiter.length ? end : -1;
+              break;
+            case "only":
+              slice = str.slice(0, options.leftDelimiter.length);
+              start2 = slice === options.leftDelimiter ? 0 : -1;
+              slice = str.slice(str.length - options.rightDelimiter.length);
+              end = slice === options.rightDelimiter ? str.length - options.rightDelimiter.length : -1;
+              break;
+            default:
+              throw new Error(`Unexpected case ${where}, expected 'start', 'end' or 'only'`);
+          }
+          return start2 !== -1 && end !== -1 && validCurlyLength(str.substring(start2, end + options.rightDelimiter.length));
+        };
+      };
+      exports.removeDelimiter = function(str, options) {
+        const start2 = escapeRegExp(options.leftDelimiter);
+        const end = escapeRegExp(options.rightDelimiter);
+        const curly = new RegExp(
+          "[ \\n]?" + start2 + "[^" + start2 + end + "]+" + end + "$"
+        );
+        const pos = str.search(curly);
+        return pos !== -1 ? str.slice(0, pos) : str;
+      };
+      function escapeRegExp(s) {
+        return s.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+      }
+      exports.escapeRegExp = escapeRegExp;
+      exports.getMatchingOpeningToken = function(tokens, i) {
+        if (tokens[i].type === "softbreak") {
+          return false;
+        }
+        if (tokens[i].nesting === 0) {
+          return tokens[i];
+        }
+        const level = tokens[i].level;
+        const type = tokens[i].type.replace("_close", "_open");
+        for (; i >= 0; --i) {
+          if (tokens[i].type === type && tokens[i].level === level) {
+            return tokens[i];
+          }
+        }
+        return false;
+      };
+      var HTML_ESCAPE_TEST_RE2 = /[&<>"]/;
+      var HTML_ESCAPE_REPLACE_RE2 = /[&<>"]/g;
+      var HTML_REPLACEMENTS2 = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;"
+      };
+      function replaceUnsafeChar2(ch) {
+        return HTML_REPLACEMENTS2[ch];
+      }
+      exports.escapeHtml = function(str) {
+        if (HTML_ESCAPE_TEST_RE2.test(str)) {
+          return str.replace(HTML_ESCAPE_REPLACE_RE2, replaceUnsafeChar2);
+        }
+        return str;
+      };
+    }
+  });
+
+  // node_modules/markdown-it-attrs/patterns.js
+  var require_patterns = __commonJS({
+    "node_modules/markdown-it-attrs/patterns.js"(exports, module) {
+      "use strict";
+      var utils = require_utils();
+      module.exports = (options) => {
+        const __hr = new RegExp("^ {0,3}[-*_]{3,} ?" + utils.escapeRegExp(options.leftDelimiter) + "[^" + utils.escapeRegExp(options.rightDelimiter) + "]");
+        return [
+          {
+            /**
+             * ```python {.cls}
+             * for i in range(10):
+             *     print(i)
+             * ```
+             */
+            name: "fenced code blocks",
+            tests: [
+              {
+                shift: 0,
+                block: true,
+                info: utils.hasDelimiters("end", options)
+              }
+            ],
+            transform: (tokens, i) => {
+              const token = tokens[i];
+              const start2 = token.info.lastIndexOf(options.leftDelimiter);
+              const attrs = utils.getAttrs(token.info, start2, options);
+              utils.addAttrs(attrs, token);
+              token.info = utils.removeDelimiter(token.info, options);
+            }
+          },
+          {
+            /**
+             * bla `click()`{.c} ![](img.png){.d}
+             *
+             * differs from 'inline attributes' as it does
+             * not have a closing tag (nesting: -1)
+             */
+            name: "inline nesting 0",
+            tests: [
+              {
+                shift: 0,
+                type: "inline",
+                children: [
+                  {
+                    shift: -1,
+                    type: (str) => str === "image" || str === "code_inline"
+                  },
+                  {
+                    shift: 0,
+                    type: "text",
+                    content: utils.hasDelimiters("start", options)
+                  }
+                ]
+              }
+            ],
+            transform: (tokens, i, j) => {
+              const token = tokens[i].children[j];
+              const endChar = token.content.indexOf(options.rightDelimiter);
+              const attrToken = tokens[i].children[j - 1];
+              const attrs = utils.getAttrs(token.content, 0, options);
+              utils.addAttrs(attrs, attrToken);
+              if (token.content.length === endChar + options.rightDelimiter.length) {
+                tokens[i].children.splice(j, 1);
+              } else {
+                token.content = token.content.slice(endChar + options.rightDelimiter.length);
+              }
+            }
+          },
+          {
+            /**
+             * | h1 |
+             * | -- |
+             * | c1 |
+             *
+             * {.c}
+             */
+            name: "tables",
+            tests: [
+              {
+                // let this token be i, such that for-loop continues at
+                // next token after tokens.splice
+                shift: 0,
+                type: "table_close"
+              },
+              {
+                shift: 1,
+                type: "paragraph_open"
+              },
+              {
+                shift: 2,
+                type: "inline",
+                content: utils.hasDelimiters("only", options)
+              }
+            ],
+            transform: (tokens, i) => {
+              const token = tokens[i + 2];
+              const tableOpen = utils.getMatchingOpeningToken(tokens, i);
+              const attrs = utils.getAttrs(token.content, 0, options);
+              utils.addAttrs(attrs, tableOpen);
+              tokens.splice(i + 1, 3);
+            }
+          },
+          {
+            /**
+             * *emphasis*{.with attrs=1}
+             */
+            name: "inline attributes",
+            tests: [
+              {
+                shift: 0,
+                type: "inline",
+                children: [
+                  {
+                    shift: -1,
+                    nesting: -1
+                    // closing inline tag, </em>{.a}
+                  },
+                  {
+                    shift: 0,
+                    type: "text",
+                    content: utils.hasDelimiters("start", options)
+                  }
+                ]
+              }
+            ],
+            transform: (tokens, i, j) => {
+              const token = tokens[i].children[j];
+              const content = token.content;
+              const attrs = utils.getAttrs(content, 0, options);
+              const openingToken = utils.getMatchingOpeningToken(tokens[i].children, j - 1);
+              utils.addAttrs(attrs, openingToken);
+              token.content = content.slice(content.indexOf(options.rightDelimiter) + options.rightDelimiter.length);
+            }
+          },
+          {
+            /**
+             * - item
+             * {.a}
+             */
+            name: "list softbreak",
+            tests: [
+              {
+                shift: -2,
+                type: "list_item_open"
+              },
+              {
+                shift: 0,
+                type: "inline",
+                children: [
+                  {
+                    position: -2,
+                    type: "softbreak"
+                  },
+                  {
+                    position: -1,
+                    type: "text",
+                    content: utils.hasDelimiters("only", options)
+                  }
+                ]
+              }
+            ],
+            transform: (tokens, i, j) => {
+              const token = tokens[i].children[j];
+              const content = token.content;
+              const attrs = utils.getAttrs(content, 0, options);
+              let ii = i - 2;
+              while (tokens[ii - 1] && tokens[ii - 1].type !== "ordered_list_open" && tokens[ii - 1].type !== "bullet_list_open") {
+                ii--;
+              }
+              utils.addAttrs(attrs, tokens[ii - 1]);
+              tokens[i].children = tokens[i].children.slice(0, -2);
+            }
+          },
+          {
+            /**
+             * - nested list
+             *   - with double \n
+             *   {.a} <-- apply to nested ul
+             *
+             * {.b} <-- apply to root <ul>
+             */
+            name: "list double softbreak",
+            tests: [
+              {
+                // let this token be i = 0 so that we can erase
+                // the <p>{.a}</p> tokens below
+                shift: 0,
+                type: (str) => str === "bullet_list_close" || str === "ordered_list_close"
+              },
+              {
+                shift: 1,
+                type: "paragraph_open"
+              },
+              {
+                shift: 2,
+                type: "inline",
+                content: utils.hasDelimiters("only", options),
+                children: (arr) => arr.length === 1
+              },
+              {
+                shift: 3,
+                type: "paragraph_close"
+              }
+            ],
+            transform: (tokens, i) => {
+              const token = tokens[i + 2];
+              const content = token.content;
+              const attrs = utils.getAttrs(content, 0, options);
+              const openingToken = utils.getMatchingOpeningToken(tokens, i);
+              utils.addAttrs(attrs, openingToken);
+              tokens.splice(i + 1, 3);
+            }
+          },
+          {
+            /**
+             * - end of {.list-item}
+             */
+            name: "list item end",
+            tests: [
+              {
+                shift: -2,
+                type: "list_item_open"
+              },
+              {
+                shift: 0,
+                type: "inline",
+                children: [
+                  {
+                    position: -1,
+                    type: "text",
+                    content: utils.hasDelimiters("end", options)
+                  }
+                ]
+              }
+            ],
+            transform: (tokens, i, j) => {
+              const token = tokens[i].children[j];
+              const content = token.content;
+              const attrs = utils.getAttrs(content, content.lastIndexOf(options.leftDelimiter), options);
+              utils.addAttrs(attrs, tokens[i - 2]);
+              const trimmed = content.slice(0, content.lastIndexOf(options.leftDelimiter));
+              token.content = last(trimmed) !== " " ? trimmed : trimmed.slice(0, -1);
+            }
+          },
+          {
+            /**
+             * something with softbreak
+             * {.cls}
+             */
+            name: "\n{.a} softbreak then curly in start",
+            tests: [
+              {
+                shift: 0,
+                type: "inline",
+                children: [
+                  {
+                    position: -2,
+                    type: "softbreak"
+                  },
+                  {
+                    position: -1,
+                    type: "text",
+                    content: utils.hasDelimiters("only", options)
+                  }
+                ]
+              }
+            ],
+            transform: (tokens, i, j) => {
+              const token = tokens[i].children[j];
+              const attrs = utils.getAttrs(token.content, 0, options);
+              let ii = i + 1;
+              while (tokens[ii + 1] && tokens[ii + 1].nesting === -1) {
+                ii++;
+              }
+              const openingToken = utils.getMatchingOpeningToken(tokens, ii);
+              utils.addAttrs(attrs, openingToken);
+              tokens[i].children = tokens[i].children.slice(0, -2);
+            }
+          },
+          {
+            /**
+             * horizontal rule --- {#id}
+             */
+            name: "horizontal rule",
+            tests: [
+              {
+                shift: 0,
+                type: "paragraph_open"
+              },
+              {
+                shift: 1,
+                type: "inline",
+                children: (arr) => arr.length === 1,
+                content: (str) => str.match(__hr) !== null
+              },
+              {
+                shift: 2,
+                type: "paragraph_close"
+              }
+            ],
+            transform: (tokens, i) => {
+              const token = tokens[i];
+              token.type = "hr";
+              token.tag = "hr";
+              token.nesting = 0;
+              const content = tokens[i + 1].content;
+              const start2 = content.lastIndexOf(options.leftDelimiter);
+              const attrs = utils.getAttrs(content, start2, options);
+              utils.addAttrs(attrs, token);
+              token.markup = content;
+              tokens.splice(i + 1, 2);
+            }
+          },
+          {
+            /**
+             * end of {.block}
+             */
+            name: "end of block",
+            tests: [
+              {
+                shift: 0,
+                type: "inline",
+                children: [
+                  {
+                    position: -1,
+                    content: utils.hasDelimiters("end", options),
+                    type: (t) => t !== "code_inline" && t !== "math_inline"
+                  }
+                ]
+              }
+            ],
+            transform: (tokens, i, j) => {
+              const token = tokens[i].children[j];
+              const content = token.content;
+              const attrs = utils.getAttrs(content, content.lastIndexOf(options.leftDelimiter), options);
+              let ii = i + 1;
+              do
+                if (tokens[ii] && tokens[ii].nesting === -1) {
+                  break;
+                }
+              while (ii++ < tokens.length);
+              const openingToken = utils.getMatchingOpeningToken(tokens, ii);
+              utils.addAttrs(attrs, openingToken);
+              const trimmed = content.slice(0, content.lastIndexOf(options.leftDelimiter));
+              token.content = last(trimmed) !== " " ? trimmed : trimmed.slice(0, -1);
+            }
+          }
+        ];
+      };
+      function last(arr) {
+        return arr.slice(-1)[0];
+      }
+    }
+  });
+
+  // node_modules/markdown-it-attrs/index.js
+  var require_markdown_it_attrs = __commonJS({
+    "node_modules/markdown-it-attrs/index.js"(exports, module) {
+      "use strict";
+      var patternsConfig = require_patterns();
+      var defaultOptions2 = {
+        leftDelimiter: "{",
+        rightDelimiter: "}",
+        allowedAttributes: []
+      };
+      module.exports = function attributes(md, options_) {
+        let options = Object.assign({}, defaultOptions2);
+        options = Object.assign(options, options_);
+        const patterns = patternsConfig(options);
+        function curlyAttrs(state) {
+          const tokens = state.tokens;
+          for (let i = 0; i < tokens.length; i++) {
+            for (let p = 0; p < patterns.length; p++) {
+              const pattern = patterns[p];
+              let j = null;
+              const match2 = pattern.tests.every((t) => {
+                const res = test2(tokens, i, t);
+                if (res.j !== null) {
+                  j = res.j;
+                }
+                return res.match;
+              });
+              if (match2) {
+                pattern.transform(tokens, i, j);
+                if (pattern.name === "inline attributes" || pattern.name === "inline nesting 0") {
+                  p--;
+                }
+              }
+            }
+          }
+        }
+        md.core.ruler.before("linkify", "curly_attributes", curlyAttrs);
+      };
+      function test2(tokens, i, t) {
+        const res = {
+          match: false,
+          j: null
+          // position of child
+        };
+        const ii = t.shift !== void 0 ? i + t.shift : t.position;
+        if (t.shift !== void 0 && ii < 0) {
+          return res;
+        }
+        const token = get2(tokens, ii);
+        if (token === void 0) {
+          return res;
+        }
+        for (const key of Object.keys(t)) {
+          if (key === "shift" || key === "position") {
+            continue;
+          }
+          if (token[key] === void 0) {
+            return res;
+          }
+          if (key === "children" && isArrayOfObjects(t.children)) {
+            if (token.children.length === 0) {
+              return res;
+            }
+            let match2;
+            const childTests = t.children;
+            const children = token.children;
+            if (childTests.every((tt) => tt.position !== void 0)) {
+              match2 = childTests.every((tt) => test2(children, tt.position, tt).match);
+              if (match2) {
+                const j = last(childTests).position;
+                res.j = j >= 0 ? j : children.length + j;
+              }
+            } else {
+              for (let j = 0; j < children.length; j++) {
+                match2 = childTests.every((tt) => test2(children, j, tt).match);
+                if (match2) {
+                  res.j = j;
+                  break;
+                }
+              }
+            }
+            if (match2 === false) {
+              return res;
+            }
+            continue;
+          }
+          switch (typeof t[key]) {
+            case "boolean":
+            case "number":
+            case "string":
+              if (token[key] !== t[key]) {
+                return res;
+              }
+              break;
+            case "function":
+              if (!t[key](token[key])) {
+                return res;
+              }
+              break;
+            case "object":
+              if (isArrayOfFunctions(t[key])) {
+                const r = t[key].every((tt) => tt(token[key]));
+                if (r === false) {
+                  return res;
+                }
+                break;
+              }
+            // fall through for objects !== arrays of functions
+            default:
+              throw new Error(`Unknown type of pattern test (key: ${key}). Test should be of type boolean, number, string, function or array of functions.`);
+          }
+        }
+        res.match = true;
+        return res;
+      }
+      function isArrayOfObjects(arr) {
+        return Array.isArray(arr) && arr.length && arr.every((i) => typeof i === "object");
+      }
+      function isArrayOfFunctions(arr) {
+        return Array.isArray(arr) && arr.length && arr.every((i) => typeof i === "function");
+      }
+      function get2(arr, n) {
+        return n >= 0 ? arr[n] : arr[arr.length + n];
+      }
+      function last(arr) {
+        return arr.slice(-1)[0] || {};
+      }
+    }
+  });
+
   // js/style.js
   function load(href) {
     let node2 = document.createElement("link");
@@ -3740,6 +3740,220 @@ return Ke}()
       node2.onerror = (e) => resolve(console.warn(e));
     });
   }
+
+  // js/scale.js
+  var root = document.documentElement;
+  var current = 1;
+
+  // js/mode.js
+  var node = document.body;
+  var current2 = "";
+  function setMode(mode) {
+    if (current2 == mode) {
+      return;
+    }
+    try {
+      node.classList.remove(current2);
+    } catch (e) {
+    }
+    current2 = mode;
+    node.classList.add(current2);
+    let detail = { mode };
+    window.dispatchEvent(new CustomEvent("mode-change", { detail }));
+  }
+  function toggle() {
+    setMode(current2 == "full" ? "overview" : "full");
+  }
+
+  // js/draw.js
+  var path = [];
+  var paths = [];
+  var ctx = null;
+  function drawPath(path2) {
+    ctx.beginPath();
+    path2.forEach((pos, index) => {
+      index ? ctx.lineTo(pos[0], pos[1]) : ctx.moveTo(pos[0], pos[1]);
+    });
+    ctx.stroke();
+  }
+  function redraw() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    paths.forEach(drawPath);
+    if (path.length > 1) {
+      drawPath(path);
+    }
+  }
+  function setupStyle(parent) {
+    let style = getComputedStyle(parent);
+    ctx.strokeStyle = style.getPropertyValue("--highlight");
+    ctx.lineWidth = style.getPropertyValue("--brush");
+    ctx.lineJoin = ctx.lineCap = "round";
+  }
+  function start(pos) {
+    path.push(pos);
+  }
+  function stop() {
+    if (path.length > 1) {
+      paths.push(path);
+    }
+    path = [];
+  }
+  function add(pos) {
+    path.push(pos);
+    redraw();
+  }
+  function show(parent) {
+    parent.append(ctx.canvas);
+    ctx.canvas.width = parent.offsetWidth;
+    ctx.canvas.height = parent.offsetHeight;
+    setupStyle(parent);
+  }
+  function hide() {
+    paths = [];
+    redraw();
+    ctx.canvas.parentNode.removeChild(ctx.canvas);
+  }
+
+  // js/mouse.js
+  var active = false;
+  var drawing = false;
+  var cursor = null;
+  function eventToPosition(e) {
+    let rect = slides.nodes[slides.currentIndex].getBoundingClientRect();
+    return [e.clientX - rect.left, e.clientY - rect.top].map((x) => x / current);
+  }
+  function onMouseDown(e) {
+    if (!active || current2 == "overview") {
+      return;
+    }
+    drawing = true;
+    start(eventToPosition(e));
+  }
+  function onMouseUp(e) {
+    stop();
+    drawing = false;
+  }
+  function onMouseMove(e) {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+    if (drawing) {
+      e.preventDefault();
+      add(eventToPosition(e));
+    }
+  }
+  function onClick(e) {
+    if (current2 != "overview") {
+      return;
+    }
+    let slide = e.target.closest("maslo-slide");
+    if (!slide) {
+      return;
+    }
+    let deck = slide.closest("maslo-deck");
+    if (!deck) {
+      return;
+    }
+    deck.show(deck.slides.indexOf(slide));
+    toggle();
+  }
+  function toggle2() {
+    if (!active && current2 == "overview") {
+      return;
+    }
+    active = !active;
+    document.body.classList.toggle("cursor", active);
+    if (active) {
+      document.body.append(cursor);
+      show(slides.nodes[slides.currentIndex]);
+    } else {
+      cursor.remove();
+      hide();
+    }
+  }
+  function onModeChange(e) {
+    if (active && e.detail.mode == "overview") {
+      toggle2();
+    }
+  }
+  function init(deck) {
+    cursor = document.createElement("div");
+    cursor.id = "cursor";
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    deck.addEventListener("click", onClick);
+    window.addEventListener("mode-change", onModeChange);
+    deck.addEventListener("change", (e) => {
+      if (!active) {
+        return;
+      }
+      hide();
+      show(deck.slides[e.detail.currentIndex]);
+    });
+  }
+
+  // js/control.js
+  var import_hammerjs = __toESM(require_hammer());
+  function onKeyDown(e, deck) {
+    switch (e.code) {
+      case "Home":
+        deck.show(0);
+        break;
+      case "End":
+        deck.show(deck.slides.length - 1);
+        break;
+      case "ArrowLeft":
+      case "ArrowUp":
+      case "PageUp":
+      case "Backspace":
+        deck.show(deck.currentIndex - 1);
+        break;
+      case "ArrowRight":
+      case "ArrowDown":
+      case "PageDown":
+      case "Space":
+        deck.show(deck.currentIndex + 1);
+        break;
+      case "CapsLock":
+        toggle2();
+        break;
+      case "Escape":
+        toggle();
+        break;
+    }
+  }
+  function swipeBy(diff, e, deck) {
+    if (e.pointerType == "mouse" || active) {
+      return;
+    }
+    deck.show(deck.currentIndex + diff);
+  }
+  function init2(deck) {
+    window.addEventListener("keydown", (e) => onKeyDown(e, deck));
+    let hammer = new import_hammerjs.default(window);
+    hammer.on("swipeleft", (e) => swipeBy(1, e, deck));
+    hammer.on("swiperight", (e) => swipeBy(-1, e, deck));
+  }
+
+  // js/url.js
+  function get() {
+    if (location.hash) {
+      return Number(location.hash.substring(1)) - 1;
+    } else {
+      return 0;
+    }
+  }
+  function set(index) {
+    location.hash = index ? index + 1 : "";
+  }
+  function init3(deck) {
+    deck.show(get());
+    window.addEventListener("hashchange", (_) => deck.show(get()));
+    deck.addEventListener("change", (e) => set(e.detail.currentIndex));
+  }
+
+  // js/title.js
+  var title = document.title;
 
   // node_modules/markdown-it/lib/common/utils.mjs
   var utils_exports = {};
@@ -5480,7 +5694,7 @@ return Ke}()
         if (currentToken.type === "text" && state.md.linkify.test(currentToken.content)) {
           const text2 = currentToken.content;
           let links = state.md.linkify.match(text2);
-          const nodes2 = [];
+          const nodes = [];
           let level = currentToken.level;
           let lastPos = 0;
           if (links.length > 0 && links[0].index === 0 && i > 0 && tokens[i - 1].type === "text_special") {
@@ -5505,32 +5719,32 @@ return Ke}()
               const token = new state.Token("text", "", 0);
               token.content = text2.slice(lastPos, pos);
               token.level = level;
-              nodes2.push(token);
+              nodes.push(token);
             }
             const token_o = new state.Token("link_open", "a", 1);
             token_o.attrs = [["href", fullUrl]];
             token_o.level = level++;
             token_o.markup = "linkify";
             token_o.info = "auto";
-            nodes2.push(token_o);
+            nodes.push(token_o);
             const token_t = new state.Token("text", "", 0);
             token_t.content = urlText;
             token_t.level = level;
-            nodes2.push(token_t);
+            nodes.push(token_t);
             const token_c = new state.Token("link_close", "a", -1);
             token_c.level = --level;
             token_c.markup = "linkify";
             token_c.info = "auto";
-            nodes2.push(token_c);
+            nodes.push(token_c);
             lastPos = links[ln].lastIndex;
           }
           if (lastPos < text2.length) {
             const token = new state.Token("text", "", 0);
             token.content = text2.slice(lastPos);
             token.level = level;
-            nodes2.push(token);
+            nodes.push(token);
           }
-          blockTokens[j].children = tokens = arrayReplaceAt(tokens, i, nodes2);
+          blockTokens[j].children = tokens = arrayReplaceAt(tokens, i, nodes);
         }
       }
     }
@@ -8447,12 +8661,12 @@ return Ke}()
     this.re = {};
     compile(this);
   }
-  LinkifyIt.prototype.add = function add(schema, definition) {
+  LinkifyIt.prototype.add = function add2(schema, definition) {
     this.__schemas__[schema] = definition;
     compile(this);
     return this;
   };
-  LinkifyIt.prototype.set = function set(options) {
+  LinkifyIt.prototype.set = function set2(options) {
     this.__opts__ = assign2(this.__opts__, options);
     return this;
   };
@@ -9157,9 +9371,9 @@ return Ke}()
   customElements.define("maslo-slide", Slide);
 
   // js/parser.js
-  function newSlide(slides) {
+  function newSlide(slides2) {
     let slide = new Slide();
-    slides.push(slide);
+    slides2.push(slide);
     return slide;
   }
   function parse(source, options) {
@@ -9168,363 +9382,19 @@ return Ke}()
     md.use(import_markdown_it_attrs.default);
     let tmp = document.createElement("div");
     tmp.innerHTML = md.render(source);
-    let slides = [];
-    let slide = newSlide(slides);
+    let slides2 = [];
+    let slide = newSlide(slides2);
     [...tmp.children].forEach((child) => {
       if (child.nodeName == "HR") {
-        slide = newSlide(slides);
+        slide = newSlide(slides2);
       } else {
         slide.append(child);
       }
     });
-    return slides;
+    return slides2;
   }
 
-  // js/slides.js
-  var nodes = [];
-  var currentIndex = -1;
-  var root = document.documentElement;
-  function initFromString(str, node2, options) {
-    nodes = parse(str, options);
-    node2.replaceWith(...nodes);
-    root.style.setProperty("--total", nodes.length);
-  }
-  function findIndex(node2) {
-    return nodes.findIndex((slide) => {
-      let tmp = node2;
-      while (tmp) {
-        if (tmp == slide) {
-          return true;
-        }
-        tmp = tmp.parentNode;
-      }
-      return false;
-    });
-  }
-  function show(index) {
-    index = Math.max(index, 0);
-    index = Math.min(index, nodes.length - 1);
-    if (index == currentIndex) {
-      return;
-    }
-    currentIndex = index;
-    nodes.forEach((node2, i) => node2.classList.toggle("current", i == currentIndex));
-    let detail = { currentIndex };
-    window.dispatchEvent(new CustomEvent("slide-change", { detail }));
-    root.style.setProperty("--current", currentIndex + 1);
-  }
-  async function init(node2) {
-    let options = {};
-    if ("linkify" in node2.dataset) {
-      options.linkify = node2.dataset.linkify == "true";
-    }
-    let src = node2.dataset.src;
-    if (src) {
-      let response = await fetch(src);
-      let text2 = await response.text();
-      initFromString(text2, node2, options);
-    } else {
-      initFromString(node2.innerHTML, node2, options);
-    }
-  }
-
-  // js/scale.js
-  var scale_exports = {};
-  __export(scale_exports, {
-    current: () => current,
-    init: () => init2
-  });
-  var root2 = document.documentElement;
-  var current = 1;
-  var META = {
-    name: "viewport",
-    content: "width=device-width, initial-scale=1, user-scalable=no"
-  };
-  function sync() {
-    let port = [window.innerWidth, window.innerHeight];
-    let style = getComputedStyle(root2);
-    let target = ["width", "height"].map((prop) => Number(style.getPropertyValue(`--${prop}`)));
-    current = Math.min(port[0] / target[0], port[1] / target[1]);
-    root2.style.setProperty("--scale", current);
-  }
-  function init2() {
-    let meta = document.createElement("meta");
-    Object.assign(meta, META);
-    document.head.append(meta);
-    sync();
-    window.addEventListener("resize", (e) => sync());
-  }
-
-  // js/control.js
-  var control_exports = {};
-  __export(control_exports, {
-    init: () => init6
-  });
-
-  // js/mouse.js
-  var mouse_exports = {};
-  __export(mouse_exports, {
-    active: () => active,
-    init: () => init5,
-    toggle: () => toggle2
-  });
-
-  // js/mode.js
-  var mode_exports = {};
-  __export(mode_exports, {
-    current: () => current2,
-    init: () => init3,
-    toggle: () => toggle
-  });
-  var node = document.body;
-  var current2 = "";
-  function setMode(mode) {
-    if (current2 == mode) {
-      return;
-    }
-    try {
-      node.classList.remove(current2);
-    } catch (e) {
-    }
-    current2 = mode;
-    node.classList.add(current2);
-    let detail = { mode };
-    window.dispatchEvent(new CustomEvent("mode-change", { detail }));
-  }
-  function toggle() {
-    setMode(current2 == "full" ? "overview" : "full");
-  }
-  function init3() {
-    setMode("full");
-  }
-
-  // js/draw.js
-  var draw_exports = {};
-  __export(draw_exports, {
-    add: () => add2,
-    hide: () => hide,
-    init: () => init4,
-    show: () => show2,
-    start: () => start,
-    stop: () => stop
-  });
-  var path = [];
-  var paths = [];
-  var ctx = null;
-  function drawPath(path2) {
-    ctx.beginPath();
-    path2.forEach((pos, index) => {
-      index ? ctx.lineTo(pos[0], pos[1]) : ctx.moveTo(pos[0], pos[1]);
-    });
-    ctx.stroke();
-  }
-  function redraw() {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    paths.forEach(drawPath);
-    if (path.length > 1) {
-      drawPath(path);
-    }
-  }
-  function setupStyle(parent) {
-    let style = getComputedStyle(parent);
-    ctx.strokeStyle = style.getPropertyValue("--highlight");
-    ctx.lineWidth = style.getPropertyValue("--brush");
-    ctx.lineJoin = ctx.lineCap = "round";
-  }
-  function start(pos) {
-    path.push(pos);
-  }
-  function stop() {
-    if (path.length > 1) {
-      paths.push(path);
-    }
-    path = [];
-  }
-  function add2(pos) {
-    path.push(pos);
-    redraw();
-  }
-  function show2(parent) {
-    parent.append(ctx.canvas);
-    ctx.canvas.width = parent.offsetWidth;
-    ctx.canvas.height = parent.offsetHeight;
-    setupStyle(parent);
-  }
-  function hide() {
-    paths = [];
-    redraw();
-    ctx.canvas.parentNode.removeChild(ctx.canvas);
-  }
-  function init4() {
-    let canvas = document.createElement("canvas");
-    canvas.id = "draw";
-    ctx = canvas.getContext("2d");
-  }
-
-  // js/mouse.js
-  var active = false;
-  var drawing = false;
-  var cursor = null;
-  function eventToPosition(e) {
-    let rect = nodes[currentIndex].getBoundingClientRect();
-    return [e.clientX - rect.left, e.clientY - rect.top].map((x) => x / current);
-  }
-  function onMouseDown(e) {
-    if (!active || current2 == "overview") {
-      return;
-    }
-    drawing = true;
-    start(eventToPosition(e));
-  }
-  function onMouseUp(e) {
-    stop();
-    drawing = false;
-  }
-  function onMouseMove(e) {
-    cursor.style.left = `${e.clientX}px`;
-    cursor.style.top = `${e.clientY}px`;
-    if (drawing) {
-      e.preventDefault();
-      add2(eventToPosition(e));
-    }
-  }
-  function onClick(e) {
-    if (current2 != "overview") {
-      return;
-    }
-    let index = findIndex(e.target);
-    if (index > -1) {
-      show(index);
-      toggle();
-    }
-  }
-  function toggle2() {
-    if (!active && current2 == "overview") {
-      return;
-    }
-    active = !active;
-    document.body.classList.toggle("cursor", active);
-    if (active) {
-      document.body.append(cursor);
-      show2(nodes[currentIndex]);
-    } else {
-      cursor.remove();
-      hide();
-    }
-  }
-  function onModeChange(e) {
-    if (active && e.detail.mode == "overview") {
-      toggle2();
-    }
-  }
-  function onSlideChange(e) {
-    if (!active) {
-      return;
-    }
-    hide();
-    show2(nodes[e.detail.currentIndex]);
-  }
-  function init5() {
-    cursor = document.createElement("div");
-    cursor.id = "cursor";
-    window.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("click", onClick);
-    window.addEventListener("mode-change", onModeChange);
-    window.addEventListener("slide-change", onSlideChange);
-  }
-
-  // js/control.js
-  var import_hammerjs = __toESM(require_hammer());
-  function onKeyDown(e) {
-    switch (e.code) {
-      case "Home":
-        show(0);
-        break;
-      case "End":
-        show(nodes.length - 1);
-        break;
-      case "ArrowLeft":
-      case "ArrowUp":
-      case "PageUp":
-      case "Backspace":
-        show(currentIndex - 1);
-        break;
-      case "ArrowRight":
-      case "ArrowDown":
-      case "PageDown":
-      case "Space":
-        show(currentIndex + 1);
-        break;
-      case "CapsLock":
-        toggle2();
-        break;
-      case "Escape":
-        toggle();
-        break;
-    }
-  }
-  function swipeBy(diff, e) {
-    if (e.pointerType == "mouse" || active) {
-      return;
-    }
-    show(currentIndex + diff);
-  }
-  function onSwipeLeft(e) {
-    swipeBy(1, e);
-  }
-  function onSwipeRight(e) {
-    swipeBy(-1, e);
-  }
-  function init6() {
-    window.addEventListener("keydown", onKeyDown);
-    let hammer = new import_hammerjs.default(window);
-    hammer.on("swipeleft", onSwipeLeft);
-    hammer.on("swiperight", onSwipeRight);
-  }
-
-  // js/url.js
-  var url_exports = {};
-  __export(url_exports, {
-    init: () => init7
-  });
-  function onHashChange(e) {
-    show(get());
-  }
-  function onSlideChange2(e) {
-    set2(e.detail.currentIndex);
-  }
-  function get() {
-    if (location.hash) {
-      return Number(location.hash.substring(1)) - 1;
-    } else {
-      return 0;
-    }
-  }
-  function set2(index) {
-    location.hash = index ? index + 1 : "";
-  }
-  function init7() {
-    show(get());
-    window.addEventListener("hashchange", onHashChange);
-    window.addEventListener("slide-change", onSlideChange2);
-  }
-
-  // js/title.js
-  var title_exports = {};
-  __export(title_exports, {
-    init: () => init8
-  });
-  var title = document.title;
-  function onSlideChange3(e) {
-    document.title = `(${e.detail.currentIndex + 1}) ${title}`;
-  }
-  function init8() {
-    window.addEventListener("slide-change", onSlideChange3);
-  }
-
-  // js/maslo.js
+  // js/deck.js
   var base2 = document.currentScript.src;
   function makeURL(rel) {
     return new URL(rel, base2).href;
@@ -9533,20 +9403,55 @@ return Ke}()
     skin && await load(makeURL(`skin/${skin}.css`));
     return load(makeURL("maslo.css"));
   }
-  async function init9(selector) {
-    let node2 = document.querySelector(selector);
-    let skin = "skin" in node2.dataset ? node2.dataset.skin : "dark";
-    try {
-      await initStyles(skin);
-      await init(node2);
-      [scale_exports, control_exports, title_exports, mouse_exports, draw_exports, mode_exports, url_exports].forEach((c) => c.init());
-    } catch (e) {
-      console.log(e);
-      alert("Error loading the app, see console for more details.");
+  var Deck = class extends HTMLElement {
+    constructor() {
+      super();
     }
-    window.dispatchEvent(new CustomEvent("slides-load"));
-  }
-  init9(document.currentScript.dataset.selector || "template");
+    get slides() {
+      return [...this.querySelectorAll("maslo-slide")];
+    }
+    get currentIndex() {
+      return this.slides.findIndex((slide) => slide.classList.contains("current"));
+    }
+    async connectedCallback() {
+      let skin = this.hasAttribute("skin") ? this.getAttribute("skin") : "dark";
+      await initStyles(skin);
+      let options = {};
+      if ("linkify" in this.dataset) {
+        options.linkify = this.dataset.linkify == "true";
+      }
+      let src = this.getAttribute("src");
+      let md = "";
+      if (src) {
+        let response = await fetch(src);
+        md = await response.text();
+      } else {
+        md = this.innerHTML;
+      }
+      let nodes = parse(md, options);
+      this.replaceChildren(...nodes);
+      this.style.setProperty("--total", nodes.length);
+      this.dispatchEvent(new CustomEvent("load"));
+      this.setAttribute("mode", "full");
+      init(this);
+      init2(this);
+      init3(this);
+    }
+    show(index) {
+      let { slides: slides2, currentIndex } = this;
+      index = Math.max(index, 0);
+      index = Math.min(index, slides2.length - 1);
+      if (index == currentIndex) {
+        return;
+      }
+      currentIndex = index;
+      slides2.forEach((slide, i) => slide.classList.toggle("current", i == currentIndex));
+      this.style.setProperty("--current", currentIndex + 1);
+      let detail = { currentIndex };
+      this.dispatchEvent(new CustomEvent("change", { detail }));
+    }
+  };
+  customElements.define("maslo-deck", Deck);
 })();
 /*! Bundled license information:
 
