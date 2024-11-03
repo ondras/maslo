@@ -6,6 +6,14 @@
 
 ---
 
+```js
+function x() {
+  alert(1+2+"ahoj");
+}
+```
+
+---
+
 # Write in Markdown
 
 - Presentation content is written using the [Markdown](https://commonmark.org/) language

@@ -1,26 +1,24 @@
-const root = document.documentElement;
-export let current = 1;
-
 const META = {
 	name: "viewport",
 	content: "width=device-width, initial-scale=1, user-scalable=no"
 }
 
-function sync() {
-	let port = [window.innerWidth, window.innerHeight];
+export function sync(deck) {
+	let deckSize = [deck.offsetWidth, deck.offsetHeight];
 
-	let style = getComputedStyle(root);
-	let target = ["width", "height"].map(prop => Number(style.getPropertyValue(`--${prop}`)));
+	let style = getComputedStyle(deck);
+	let w = Number(style.getPropertyValue("--width"));
+	let h = w / window.eval(style.getPropertyValue("--aspect-ratio"));
 
-	current = Math.min(port[0]/target[0], port[1]/target[1]);
-	root.style.setProperty("--scale", current);
+	deck.style.setProperty("--scale", Math.min(deckSize[0]/w, deckSize[1]/h));
 }
 
-export function init() {
+export function init(deck) {
+	// fixme
 	let meta = document.createElement("meta");
 	Object.assign(meta, META);
 	document.head.append(meta);
 
-	sync();
-	window.addEventListener("resize", e => sync());
+	sync(deck);
+	window.addEventListener("resize", _ => sync(deck));
 }

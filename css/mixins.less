@@ -1,12 +1,12 @@
 @import "variables.less";
 
 .hljs(@name) {
-	@version: "10.7.2";
+	@version: "11.10.0";
 	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
 }
 
 .bg-grid() {
-	.slide {
+	maslo-slide {
 		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
 
 		background-image:

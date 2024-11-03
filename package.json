@@ -9,9 +9,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@highlightjs/cdn-assets": "^11.10.0",
     "esbuild": "^0.24.0",
     "hammerjs": "^2.0.8",
+    "highlight.js": "^11.10.0",
     "less": "^4.2.0",
     "markdown-it": "^14.1.0",
     "markdown-it-attrs": "^4.2.0"

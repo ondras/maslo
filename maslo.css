@@ -134,6 +134,11 @@ maslo-slide.current {
 maslo-slide.current ~ .slide {
   counter-increment: slide slide-after;
 }
+maslo-deck {
+  display: block;
+  width: 100dvw;
+  height: 100dvh;
+}
 maslo-deck[mode=full] maslo-slide {
   position: absolute;
   left: 50%;
@@ -226,10 +231,6 @@ maslo-deck[mode=full] maslo-slide:not(.current) {
   }
 }
 @media print {
-  @page {
-    margin: 0;
-    size: 1024px 768px;
-  }
   .slide {
     position: relative;
     page-break-after: always;

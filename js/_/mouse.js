@@ -1,15 +1,21 @@
-import * as mode from "./mode.js";
 import * as draw from "./draw.js";
-import * as scale from "./scale.js";
+import Hammer from "hammerjs";
 
 
 export let active = false;
 let drawing = false;
 let cursor = null;
 
+
+
+function swipeBy(diff, e, deck) {
+	if (e.pointerType == "mouse" || mouse.active) { return; }
+	(diff > 0 ? deck.next() : deck.prev());
+}
+
 function eventToPosition(e) {
 	let rect = slides.nodes[slides.currentIndex].getBoundingClientRect();
-	return [e.clientX-rect.left, e.clientY-rect.top].map(x => x/scale.current);
+	return [e.clientX-rect.left, e.clientY-rect.top].map(x => x/deck.scale);
 }
 
 function onMouseDown(e) {
@@ -42,7 +48,7 @@ function onClick(e) {
 	let deck = slide.closest("maslo-deck");
 	if (!deck) { return; }
 
-	deck.show(deck.slides.indexOf(slide));
+	deck.currentSlide = slide;
 	mode.toggle();
 }
 
@@ -79,4 +85,9 @@ export function init(deck) {
 		draw.hide();
 		draw.show(deck.slides[e.detail.currentIndex]);
 	});
+
+	let hammer = new Hammer(window);
+	hammer.on("swipeleft", e => swipeBy(+1, e, deck));
+	hammer.on("swiperight", e => swipeBy(-1, e, deck));
+
 }

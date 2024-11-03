@@ -1,17 +1,13 @@
 LESSC := npm exec -- lessc
 ESBUILD := npm exec -- esbuild
-HIGHLIGHT := node_modules/@highlightjs/cdn-assets/highlight.min.js
 SKINS := $(wildcard css/skin/*.less)
 SKINS := $(patsubst css/skin/%.less,skin/%.css,$(SKINS))
 APP := maslo
 
 all: $(APP).js $(APP).css skins
 
-$(APP).js: js/*.js $(HIGHLIGHT)
-	echo -n > $@
-	echo "" >> $@
-	cat $(HIGHLIGHT) >> $@
-	$(ESBUILD) --bundle js/$(APP).js >> $@
+$(APP).js: js/*.js
+	$(ESBUILD) --bundle js/$(APP).js --outfile=$@
 
 $(APP).css: css/*.less
 	$(LESSC) css/$(APP).less > $@

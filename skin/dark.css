@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i&subset=latin,latin-ext");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/vs2015.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/vs2015.min.css");
 :root {
   --width: 1024;
   --height: 768;
@@ -18,7 +18,7 @@
   --bg: #fff;
   --link: #00e;
 }
-.slide {
+maslo-slide {
   background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
   background-position: 0 8px;
 }
