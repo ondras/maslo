@@ -1,16 +1,15 @@
 maslo-deck {
-	display: block;
-	width: 100dvw;
-	height: 100dvh;
-
 	@media screen {
 		&[mode=full] {
+			display: block;
+			width: 100dvw;
+			height: 100dvh;
+
 			maslo-slide {
 				position: absolute;
-				left: 50%;
-				top: 50%;
-				translate: -50% -50%;
-				scale: var(--scale);
+				margin: auto;
+				inset: 0;
+				zoom: var(--scale);
 
 				// display:none breaks counters
 				&:not(.current) { visibility: hidden; }
@@ -25,6 +24,33 @@ maslo-deck {
 					top: 0.5em;
 					font-size: 200%;
 				}
+			}
+		}
+	}
+
+	&[mode=overview] {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 32px;
+		justify-content: space-around;
+		background-color: #666;
+
+		--overview-border: 4px;
+		--overview-scale: 0.2;
+		--thickness: calc(var(--overview-border) / var(--overview-scale));
+
+		maslo-slide {
+			zoom: var(--overview-scale);
+			background-color: var(--bg);
+			border-radius: var(--thickness);
+			box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
+
+			&:hover {
+				outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
+			}
+
+			&.current {
+				outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
 			}
 		}
 	}

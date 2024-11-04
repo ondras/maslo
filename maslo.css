@@ -134,18 +134,24 @@ maslo-slide p.questions {
   font-weight: bold;
   text-shadow: 0 0 0.1em var(--color, currentColor);
 }
-maslo-deck {
-  display: block;
-  width: 100dvw;
-  height: 100dvh;
+@media print {
+  maslo-slide {
+    position: relative;
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+  }
 }
 @media screen {
+  maslo-deck[mode=full] {
+    display: block;
+    width: 100dvw;
+    height: 100dvh;
+  }
   maslo-deck[mode=full] maslo-slide {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    translate: -50% -50%;
-    scale: var(--scale);
+    margin: auto;
+    inset: 0;
+    zoom: var(--scale);
   }
   maslo-deck[mode=full] maslo-slide:not(.current) {
     visibility: hidden;
@@ -160,6 +166,28 @@ maslo-deck {
     top: 0.5em;
     font-size: 200%;
   }
+}
+maslo-deck[mode=overview] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: space-around;
+  background-color: #666;
+  --overview-border: 4px;
+  --overview-scale: 0.2;
+  --thickness: calc(var(--overview-border) / var(--overview-scale));
+}
+maslo-deck[mode=overview] maslo-slide {
+  zoom: var(--overview-scale);
+  background-color: var(--bg);
+  border-radius: var(--thickness);
+  box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
+}
+maslo-deck[mode=overview] maslo-slide:hover {
+  outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
+}
+maslo-deck[mode=overview] maslo-slide.current {
+  outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
 }
 @media screen {
   #cursor {
@@ -181,49 +209,5 @@ maslo-deck {
     left: 0;
     top: 0;
     margin: 0;
-  }
-}
-@media screen and (orientation: portrait) and (max-width: 768px) {
-  body.full::before {
-    content: "↻";
-    font-weight: bold;
-    position: fixed;
-    right: 0.5em;
-    top: 0.5em;
-    font-size: 200%;
-  }
-}
-@media screen {
-  body.overview {
-    --thickness: calc(var(--overview-border) / var(--overview-scale));
-    --offset: calc((1 - var(--overview-scale)) * -1px);
-    background-color: #666;
-    overflow-x: hidden;
-  }
-  body.overview maslo-slide {
-    float: left;
-    cursor: pointer;
-    background-color: var(--bg);
-    transform-origin: 0 0;
-    transform: scale(var(--overview-scale));
-    margin-left: 32px;
-    margin-top: 32px;
-    margin-bottom: calc(var(--height) * var(--offset));
-    margin-right: calc(var(--width) * var(--offset));
-    border-radius: var(--thickness);
-    box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
-  }
-  body.overview maslo-slide:hover {
-    box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.25), 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
-  }
-  body.overview maslo-slide.current {
-    box-shadow: 0 0 0 var(--thickness) rgba(255, 255, 255, 0.75), 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
-  }
-}
-@media print {
-  .slide {
-    position: relative;
-    page-break-after: always;
-    -webkit-print-color-adjust: exact;
   }
 }
