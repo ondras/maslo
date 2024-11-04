@@ -104,23 +104,6 @@ blockquote + p {
 blockquote + p::before {
   content: "— ";
 }
-p.poster {
-  margin: 0;
-  height: 100%;
-}
-p.poster img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-p.questions {
-  text-align: center;
-  font-size: 500%;
-  line-height: 1.5;
-  font-weight: bold;
-  text-shadow: 0 0 0.1em var(--color, currentColor);
-}
 maslo-slide {
   display: block;
   width: calc(var(--width) * 1px);
@@ -134,22 +117,41 @@ maslo-slide.current {
 maslo-slide.current ~ .slide {
   counter-increment: slide slide-after;
 }
+maslo-slide p.poster {
+  margin: 0;
+  height: 100%;
+}
+maslo-slide p.poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+maslo-slide p.questions {
+  text-align: center;
+  font-size: 500%;
+  line-height: 1.5;
+  font-weight: bold;
+  text-shadow: 0 0 0.1em var(--color, currentColor);
+}
 maslo-deck {
   display: block;
   width: 100dvw;
   height: 100dvh;
 }
-maslo-deck[mode=full] maslo-slide {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  scale: var(--scale);
+@media screen {
+  maslo-deck[mode=full] maslo-slide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    scale: var(--scale);
+  }
+  maslo-deck[mode=full] maslo-slide:not(.current) {
+    visibility: hidden;
+  }
 }
-maslo-deck[mode=full] maslo-slide:not(.current) {
-  visibility: hidden;
-}
-@media (orientation: portrait) and (max-width: 768px) {
+@media screen and (orientation: portrait) and (max-width: 768px) {
   maslo-deck[mode=full]::before {
     content: "↻";
     font-weight: bold;
@@ -179,18 +181,6 @@ maslo-deck[mode=full] maslo-slide:not(.current) {
     left: 0;
     top: 0;
     margin: 0;
-  }
-}
-@media screen {
-  body.full maslo-slide {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    translate: -50% -50%;
-    scale: var(--scale);
-  }
-  body.full maslo-slide:not(.current) {
-    visibility: hidden;
   }
 }
 @media screen and (orientation: portrait) and (max-width: 768px) {

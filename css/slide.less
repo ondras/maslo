@@ -2,6 +2,7 @@ maslo-slide {
 	display: block;
 	width: calc(var(--width) * 1px);
 	aspect-ratio: var(--aspect-ratio);
+
 	overflow: hidden;
 
 	counter-increment: slide slide-before;
@@ -10,5 +11,33 @@ maslo-slide {
 		& ~ .slide {
 			counter-increment: slide slide-after;
 		}
+	}
+
+
+	p.poster {
+		margin: 0;
+		height: 100%;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+	}
+
+	p.questions {
+		text-align: center;
+		font-size: 500%;
+		line-height: 1.5;
+		font-weight: bold;
+		text-shadow: 0 0 0.1em var(--color, currentColor);
+	}
+
+	// FIXME
+	@media print {
+		position: relative; // anchor for absolute elements; is absolute itself for screen media
+		page-break-after: always;
+		-webkit-print-color-adjust: exact;
 	}
 }
