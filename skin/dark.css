@@ -27,12 +27,12 @@ maslo-slide {
     right: 0;
   }
 }
-.slide > * {
+maslo-slide > * {
   margin-left: 80px;
   margin-right: 80px;
 }
-.slide > ul,
-.slide > ol {
+maslo-slide > ul,
+maslo-slide > ol {
   margin-left: 0;
   padding-left: 80px;
 }

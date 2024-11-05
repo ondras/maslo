@@ -3,17 +3,18 @@
 .google-font("Ubuntu");
 .google-font("Lora");
 .google-font("Lato");
-.hljs("googlecode"); // gruvbox-light, googlecode, vs, xcode
 
 .progress();
-.padding-lr(5);
 
-maslo-deck {
+maslo-deck[skin=light] {
 	--fg: #111;
 	--bg: #ed9;
 	--color: hsl(20, 100%, 20%);
 	--link: var(--fg);
 	font-family: Lora, serif;
+
+	@version: "11.10.0";
+	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/googlecode.min.css");
 
 	::marker {
 		color: rgb(0 0 0 / 0.6);
@@ -37,4 +38,6 @@ maslo-deck {
 		background-color: @tint;
 		div:hover { background-color: @tint; }
 	}
+
+	.padding-lr(5);
 }

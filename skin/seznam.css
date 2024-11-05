@@ -1,10 +1,10 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/googlecode.min.css");
-.slide > * {
+maslo-slide > * {
   margin-left: 80px;
   margin-right: 80px;
 }
-.slide > ul,
-.slide > ol {
+maslo-slide > ul,
+maslo-slide > ol {
   margin-left: 0;
   padding-left: 80px;
 }
