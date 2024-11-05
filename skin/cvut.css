@@ -1,22 +1,6 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-light.min.css");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 :root {
-  --width: 1024;
-  --height: 768;
-  --aspect-ratio: 4 / 3;
-  --scale: 1;
-  --current: 0;
-  --total: 0;
-  --tab-size: 4;
-  --brush: 12;
-  --highlight: rgba(255, 20, 20, 0.8);
-  --overview-scale: 0.3;
-  --overview-border: 4px;
-  --fg: #000;
-  --bg: #fff;
-  --link: #00e;
-}
-:root {
   font-family: Ubuntu, sans-serif;
   --footer-height: 48px;
   --padding-side: 60px;

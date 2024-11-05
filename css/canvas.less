@@ -1,0 +1,16 @@
+maslo-canvas {
+	position: absolute;
+	inset: 0;
+
+	.cursor {
+		position: absolute;
+		@size: calc(1.5px * var(--brush));
+		transform: translate(-50%, -50%);
+		background-color: var(--highlight);
+		border-radius: 50%;
+		width: @size;
+		height: @size;
+
+		body:has(&) { cursor: none; }
+	}
+}

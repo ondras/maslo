@@ -22,8 +22,7 @@ function onKeyDown(e, deck) {
 		break;
 
 		case "Escape":
-			let mode = deck.getAttribute("mode");
-			deck.setAttribute("mode", mode == "full" ? "overview" : "full");
+			deck.mode = (deck.mode == "full" ? "overview" : "full");
 		break;
 	}
 }

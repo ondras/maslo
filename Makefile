@@ -7,7 +7,7 @@ APP := maslo
 all: $(APP).js $(APP).css skins
 
 $(APP).js: js/*.js
-	$(ESBUILD) --bundle js/$(APP).js --outfile=$@
+	$(ESBUILD) --bundle js/$(APP).js --minify --outfile=$@
 
 $(APP).css: css/*.less
 	$(LESSC) css/$(APP).less > $@

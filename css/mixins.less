@@ -1,4 +1,4 @@
-@import "variables.less";
+@u: 16px;
 
 .hljs(@name) {
 	@version: "11.10.0";
@@ -34,7 +34,7 @@
 	}
 
 	@media screen {
-		body::after {
+		maslo-deck::after {
 			font-size: (1.25 * @u);
 			content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
 			color: var(--color);

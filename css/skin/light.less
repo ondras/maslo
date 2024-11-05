@@ -8,37 +8,33 @@
 .progress();
 .padding-lr(5);
 
-:root {
+maslo-deck {
 	--fg: #111;
 	--bg: #ed9;
 	--color: hsl(20, 100%, 20%);
 	--link: var(--fg);
-}
-
-::marker {
-	color: rgb(0 0 0 / 0.6);
-}
-
-body {
 	font-family: Lora, serif;
+
+	::marker {
+		color: rgb(0 0 0 / 0.6);
+	}
+
+	h1 {
+		color: var(--color);
+		font-size: 200%;
+		margin: 0.375em 0;
+		line-height: 1.25;
+	}
+
+	a:hover, a:focus {
+		color: var(--bg);
+	}
+
+	pre {
+		box-shadow: -4px 0 0 var(--color);
+
+		@tint: rgba(0, 0, 0, 0.1);
+		background-color: @tint;
+		div:hover { background-color: @tint; }
+	}
 }
-
-h1 {
-	color: var(--color);
-	font-size: 200%;
-	margin: 0.375em 0;
-	line-height: 1.25;
-}
-
-a:hover, a:focus {
-	color: var(--bg);
-}
-
-pre {
-	box-shadow: -4px 0 0 var(--color);
-
-	@tint: rgba(0, 0, 0, 0.1);
-	background-color: @tint;
-	div:hover { background-color: @tint; }
-}
-

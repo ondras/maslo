@@ -1,7 +1,7 @@
 import * as style from "./style.js";
 import * as parser from "./parser.js";
 import * as keyboard from "./keyboard.js";
-import * as scale from "./scale.js";
+import Canvas from "./canvas.js";
 
 
 let baseStylePromise = null;
@@ -10,18 +10,26 @@ const USE_URL = 1; // fixme
 const USE_TITLE = 1; // fixme
 
 export default class Deck extends HTMLElement {
-	static get observedAttributes() { return ["src", "skin", "mode"]; }
+	static get observedAttributes() { return ["src", "skin"]; }
+	#mode;
+	#internals;
 
 	constructor() {
 		super();
 		keyboard.init(this);
 
+		this.#internals = this.attachInternals();
+
 		if (!baseStylePromise) { baseStylePromise = style.load("maslo.css"); }
-		baseStylePromise.then(() => scale.init(this));
 
 		if (USE_URL) {
 			window.addEventListener("popstate", _ => this.currentIndex = getIndexFromUrl());
 		}
+
+		this.mode = "full";
+
+		let ro = new ResizeObserver(_ => syncScale(this));
+		ro.observe(this);
 	}
 
 	get title() { return documentTitle; } // fixme
@@ -54,6 +62,15 @@ export default class Deck extends HTMLElement {
 
 	get scale() { return Number(this.style.getPropertyValue("--scale")); }
 
+	get mode() { return this.#mode; }
+	set mode(mode) {
+		this.#mode = mode;
+
+		const { states } = this.#internals;
+		states.clear();
+		states.add(mode);
+	}
+
 	attributeChangedCallback(name, oldValue, newValue) {
 		switch (name) {
 			case "src": this.#load(newValue); break;
@@ -61,11 +78,8 @@ export default class Deck extends HTMLElement {
 			case "skin":
 				baseStylePromise.then(async _ => {
 					await style.load(`skin/${newValue}.css`);
-					scale.sync(this);
+					syncScale(this);
 				})
-			break;
-
-			case "mode":
 			break;
 		}
 	}
@@ -76,8 +90,6 @@ export default class Deck extends HTMLElement {
 			let url = URL.createObjectURL(blob);
 			await this.#load(url);
 		}
-
-		if (!this.hasAttribute("mode")) { this.setAttribute("mode", "full"); }
 	}
 
 	first() {
@@ -102,6 +114,12 @@ export default class Deck extends HTMLElement {
 	}
 
 	toggleDraw() {
+		const { currentSlide } = this;
+		let old = currentSlide.querySelector("maslo-canvas");
+		if (old) { old.remove(); return; }
+
+		let canvas = new Canvas();
+		currentSlide.append(canvas);
 		// FIXME
 	}
 
@@ -128,4 +146,14 @@ function getIndexFromUrl() {
 
 function saveIndexToUrl(index) {
 	history.replaceState(null, "", `#${index+1}`);
+}
+
+function syncScale(deck) {
+	let deckSize = [deck.offsetWidth, deck.offsetHeight];
+
+	let style = getComputedStyle(deck);
+	let w = Number(style.getPropertyValue("--width"));
+	let h = w / window.eval(style.getPropertyValue("--aspect-ratio"));
+
+	deck.style.setProperty("--scale", Math.min(deckSize[0]/w, deckSize[1]/h));
 }

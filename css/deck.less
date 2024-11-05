@@ -1,6 +1,31 @@
 maslo-deck {
+	--width: 1024;
+	--height: 768;
+	--aspect-ratio: 4 / 3;
+	--scale: 1;
+	--current: 0;
+	--total: 0;
+	--tab-size: 4;
+	--brush: 12;
+	--highlight: rgba(255, 20, 20, 0.8);
+
+	--overview-scale: 0.3;
+	--overview-border: 4px;
+
+	--fg: #000;
+	--bg: #fff;
+	--link: #00e;
+
+	touch-action: none;
+	counter-reset: slide slide-before slide-current slide-after;
+	box-sizing: border-box;
+	color: var(--fg);
+	background-color: var(--bg);
+
+	* { box-sizing: inherit; }
+
 	@media screen {
-		&[mode=full] {
+		&:state(full) {
 			display: block;
 			width: 100dvw;
 			height: 100dvh;
@@ -28,15 +53,13 @@ maslo-deck {
 		}
 	}
 
-	&[mode=overview] {
+	&:state(overview) {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 32px;
 		justify-content: space-around;
 		background-color: #666;
 
-		--overview-border: 4px;
-		--overview-scale: 0.2;
 		--thickness: calc(var(--overview-border) / var(--overview-scale));
 
 		maslo-slide {

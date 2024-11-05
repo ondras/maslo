@@ -4,28 +4,7 @@
   box-sizing: inherit;
 }
 body {
-  touch-action: none;
-  counter-reset: slide slide-before slide-current slide-after;
   margin: 0;
-  box-sizing: border-box;
-  color: var(--fg);
-  background-color: var(--bg);
-}
-:root {
-  --width: 1024;
-  --height: 768;
-  --aspect-ratio: 4 / 3;
-  --scale: 1;
-  --current: 0;
-  --total: 0;
-  --tab-size: 4;
-  --brush: 12;
-  --highlight: rgba(255, 20, 20, 0.8);
-  --overview-scale: 0.3;
-  --overview-border: 4px;
-  --fg: #000;
-  --bg: #fff;
-  --link: #00e;
 }
 @font-face {
   font-family: input;
@@ -49,7 +28,7 @@ body {
   font-style: italic;
   src: url(font/Input-BoldItalic.ttf);
 }
-body {
+maslo-deck {
   -moz-tab-size: var(--tab-size);
   tab-size: var(--tab-size);
   font-size: 32px;
@@ -114,7 +93,7 @@ maslo-slide {
 maslo-slide.current {
   counter-increment: slide slide-current;
 }
-maslo-slide.current ~ .slide {
+maslo-slide.current ~ maslo-slide {
   counter-increment: slide slide-after;
 }
 maslo-slide p.poster {
@@ -141,24 +120,48 @@ maslo-slide p.questions {
     -webkit-print-color-adjust: exact;
   }
 }
+maslo-deck {
+  --width: 1024;
+  --height: 768;
+  --aspect-ratio: 4 / 3;
+  --scale: 1;
+  --current: 0;
+  --total: 0;
+  --tab-size: 4;
+  --brush: 12;
+  --highlight: rgba(255, 20, 20, 0.8);
+  --overview-scale: 0.3;
+  --overview-border: 4px;
+  --fg: #000;
+  --bg: #fff;
+  --link: #00e;
+  touch-action: none;
+  counter-reset: slide slide-before slide-current slide-after;
+  box-sizing: border-box;
+  color: var(--fg);
+  background-color: var(--bg);
+}
+maslo-deck * {
+  box-sizing: inherit;
+}
 @media screen {
-  maslo-deck[mode=full] {
+  maslo-deck:state(full) {
     display: block;
     width: 100dvw;
     height: 100dvh;
   }
-  maslo-deck[mode=full] maslo-slide {
+  maslo-deck:state(full) maslo-slide {
     position: absolute;
     margin: auto;
     inset: 0;
     zoom: var(--scale);
   }
-  maslo-deck[mode=full] maslo-slide:not(.current) {
+  maslo-deck:state(full) maslo-slide:not(.current) {
     visibility: hidden;
   }
 }
 @media screen and (orientation: portrait) and (max-width: 768px) {
-  maslo-deck[mode=full]::before {
+  maslo-deck:state(full)::before {
     content: "↻";
     font-weight: bold;
     position: fixed;
@@ -167,47 +170,38 @@ maslo-slide p.questions {
     font-size: 200%;
   }
 }
-maslo-deck[mode=overview] {
+maslo-deck:state(overview) {
   display: flex;
   flex-wrap: wrap;
   gap: 32px;
   justify-content: space-around;
   background-color: #666;
-  --overview-border: 4px;
-  --overview-scale: 0.2;
   --thickness: calc(var(--overview-border) / var(--overview-scale));
 }
-maslo-deck[mode=overview] maslo-slide {
+maslo-deck:state(overview) maslo-slide {
   zoom: var(--overview-scale);
   background-color: var(--bg);
   border-radius: var(--thickness);
   box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
 }
-maslo-deck[mode=overview] maslo-slide:hover {
+maslo-deck:state(overview) maslo-slide:hover {
   outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
 }
-maslo-deck[mode=overview] maslo-slide.current {
+maslo-deck:state(overview) maslo-slide.current {
   outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
 }
-@media screen {
-  #cursor {
-    position: fixed;
-    transform: translate(-50%, -50%);
-    background-color: var(--highlight);
-    border-radius: 50%;
-    width: calc(1.5px * var(--brush));
-    height: calc(1.5px * var(--brush));
-    z-index: 1;
-  }
-  body.cursor {
-    cursor: none;
-  }
+maslo-canvas {
+  position: absolute;
+  inset: 0;
 }
-@media screen {
-  #draw {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 0;
-  }
+maslo-canvas .cursor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: var(--highlight);
+  border-radius: 50%;
+  width: calc(1.5px * var(--brush));
+  height: calc(1.5px * var(--brush));
+}
+body:has(maslo-canvas .cursor) {
+  cursor: none;
 }
