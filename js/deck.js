@@ -8,7 +8,6 @@ const USE_URL = 1; // fixme
 const USE_TITLE = 1; // fixme
 
 export default class Deck extends HTMLElement {
-	static get observedAttributes() { return ["src"]; }
 	#mode;
 	#internals;
 
@@ -67,18 +66,23 @@ export default class Deck extends HTMLElement {
 		states.add(mode);
 	}
 
-	attributeChangedCallback(name, oldValue, newValue) {
-		switch (name) {
-			case "src": this.#load(newValue); break;
-		}
-	}
-
 	async connectedCallback() {
-		if (!this.hasAttribute("src")) {
-			let blob = new Blob([this.innerHTML], {type: "text/markdown"});
-			let url = URL.createObjectURL(blob);
-			await this.#load(url);
+		const src = this.getAttribute("src");
+		let md;
+
+		if (src) {
+			let response = await fetch(src);
+			md = await response.text();
+		} else {
+			md = this.innerHTML;
 		}
+
+		let nodes = parser.parse(md);
+		this.replaceChildren(...nodes);
+		this.style.setProperty("--total", nodes.length);
+		this.dispatchEvent(new CustomEvent("load"));
+
+		this.currentIndex = (USE_URL ? getIndexFromUrl() : 0);
 	}
 
 	first() {
@@ -111,20 +115,7 @@ export default class Deck extends HTMLElement {
 		currentSlide.append(canvas);
 		// FIXME
 	}
-
-	async #load(src) {
-		let response = await fetch(src);
-		let md = await response.text();
-
-		let nodes = parser.parse(md);
-		this.replaceChildren(...nodes);
-		this.style.setProperty("--total", nodes.length);
-		this.dispatchEvent(new CustomEvent("load"));
-
-		this.currentIndex = (USE_URL ? getIndexFromUrl() : 0);
-	}
 }
-
 customElements.define("maslo-deck", Deck);
 
 
