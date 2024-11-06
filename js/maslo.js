@@ -6,7 +6,12 @@ const META = {
 	name: "viewport",
 	content: "width=device-width, initial-scale=1, user-scalable=no"
 }
-
 let meta = document.createElement("meta");
 Object.assign(meta, META);
-document.head.append(meta);
+
+let link = document.createElement("link");
+link.rel = "stylesheet";
+link.href = new URL("maslo.css", document.currentScript.src).href;
+
+document.head.append(meta, link);
+

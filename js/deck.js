@@ -1,16 +1,14 @@
-import * as style from "./style.js";
 import * as parser from "./parser.js";
 import * as keyboard from "./keyboard.js";
 import Canvas from "./canvas.js";
 
 
-let baseStylePromise = null;
 let documentTitle = document.title;
 const USE_URL = 1; // fixme
 const USE_TITLE = 1; // fixme
 
 export default class Deck extends HTMLElement {
-	static get observedAttributes() { return ["src", "skin"]; }
+	static get observedAttributes() { return ["src"]; }
 	#mode;
 	#internals;
 
@@ -19,8 +17,6 @@ export default class Deck extends HTMLElement {
 		keyboard.init(this);
 
 		this.#internals = this.attachInternals();
-
-		if (!baseStylePromise) { baseStylePromise = style.load("maslo.css"); }
 
 		if (USE_URL) {
 			window.addEventListener("popstate", _ => this.currentIndex = getIndexFromUrl());
@@ -74,13 +70,6 @@ export default class Deck extends HTMLElement {
 	attributeChangedCallback(name, oldValue, newValue) {
 		switch (name) {
 			case "src": this.#load(newValue); break;
-
-			case "skin":
-				baseStylePromise.then(async _ => {
-					await style.load(`skin/${newValue}.css`);
-					syncScale(this);
-				})
-			break;
 		}
 	}
 

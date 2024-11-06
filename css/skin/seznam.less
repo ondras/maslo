@@ -1,76 +1,75 @@
 @import "../mixins.less";
 
-.hljs("googlecode"); // gruvbox-light, googlecode, vs, xcode
-.padding-lr(5);
-
-:root {
+maslo-deck[skin=seznam] {
 	--bg: #fff;
 	--fg: #141313;
 	--seznam: #de0000;
 	--footer-height: 40px;
-}
-
-body {
 	font-family: Arial, sans-serif;
-}
-
-h1 {
-	color: var(--seznam);
-	font-size: 150%;
-	line-height: 1;
-	margin: 0;
-	padding: 1em 0;
-}
-
-.slide::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: var(--footer-height);
-	line-height: var(--footer-height);
-	padding: 0 80px;
-	font-size: 50%;
-	background-color: var(--seznam);
-	color: var(--bg);
-}
-
-.slide:not(:first-of-type)::after {
-	content: "www.seznam.cz";
-}
-
-.slide:first-of-type {
-	background:
-		url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat,
-		url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 3.5in no-repeat
-	;
 
 	h1 {
-		font-size: 200%;
+		color: var(--seznam);
+		font-size: 150%;
+		line-height: 1;
+		margin: 0;
+		padding: 1em 0;
 	}
 
-	h2 {
-		font-size: 100%;
-	}
-
-	h3 {
-		font-size: 24px;
-		line-height: 2;
-		color: #3c3c3c;
-		font-weight: normal;
-	}
-}
-
-.slide:last-of-type {
-	background: url(img/seznam-2.png) 50% no-repeat;
-
-	h1 {
-		color: var(--fg);
-		font-size: 100%;
+	maslo-slide::after {
+		content: "";
 		position: absolute;
-		bottom: var(--footer-height);
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: var(--footer-height);
+		line-height: var(--footer-height);
+		padding: 0 80px;
+		font-size: 50%;
+		background-color: var(--seznam);
+		color: var(--bg);
 	}
-}
 
-/* pismo prvni: 60/24/16, 40/24/18/12 */
+	maslo-slide:not(:first-of-type)::after {
+		content: "www.seznam.cz";
+	}
+
+	maslo-slide:first-of-type {
+		background:
+			url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat,
+			url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 3.5in no-repeat
+		;
+
+		h1 {
+			font-size: 200%;
+		}
+
+		h2 {
+			font-size: 100%;
+		}
+
+		h3 {
+			font-size: 24px;
+			line-height: 2;
+			color: #3c3c3c;
+			font-weight: normal;
+		}
+	}
+
+	maslo-slide:last-of-type {
+		background: url(img/seznam-2.png) 50% no-repeat;
+
+		h1 {
+			color: var(--fg);
+			font-size: 100%;
+			position: absolute;
+			bottom: var(--footer-height);
+		}
+	}
+
+	/* pismo prvni: 60/24/16, 40/24/18/12 */
+
+	@version: "11.10.0";
+	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/googlecode.min.css");
+
+	.padding-lr(5);
+}

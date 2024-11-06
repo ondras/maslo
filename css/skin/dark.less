@@ -1,41 +1,38 @@
 @import "../mixins.less";
 
 .google-font("Ubuntu");
-.google-font("Lora");
-.google-font("Lato");
-.hljs("vs2015"); // vs2015, agate, dracula, gruvbox-dark
 
-.bg-grid();
-.progress();
-.padding-lr(5);
-
-:root {
+maslo-deck[skin=dark] {
+	font-family: Ubuntu, sans-serif;
 	--bg: #000;
 	--fg: #eee;
 	--color: hsl(180, 50%, 50%);
 	--link: var(--fg);
-}
 
-::marker {
-	color: rgb(255 255 255 / 0.6);
-}
+	@version: "11.10.0";
+	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/vs2015.min.css");
 
-body {
-	font-family: Ubuntu, sans-serif;
-}
+	::marker {
+		color: rgb(255 255 255 / 0.6);
+	}
 
-h1 {
-	color: var(--color);
-	font-size: 200%;
-	margin: 0.375em 0;
-	line-height: 1.25;
-}
+	h1 {
+		color: var(--color);
+		font-size: 200%;
+		margin: 0.375em 0;
+		line-height: 1.25;
+	}
 
-pre {
-	box-shadow:  -4px 0 0 var(--color);
+	pre {
+		box-shadow:  -4px 0 0 var(--color);
 
-	@tint: rgba(255, 255, 255, 0.1);
-	background-color: @tint;
-	div:hover { background-color: @tint; }
+		@tint: rgba(255, 255, 255, 0.1);
+		background-color: @tint;
+		div:hover { background-color: @tint; }
+	}
+
+	.bg-grid();
+	.progress();
+	.padding-lr(5);
 }
 
