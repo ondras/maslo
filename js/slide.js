@@ -16,7 +16,7 @@ export default class Slide extends HTMLElement {
 			}
 		});
 
-		let hammer = new Hammer(this);
+		let hammer = new Hammer(this, {cssProps:{}});
 		hammer.on("swipeleft", e => onSwipe(e));
 		hammer.on("swiperight", e => onSwipe(e));
 	}
