@@ -4,18 +4,18 @@
 maslo-deck {
   --width: 1024px;
   --aspect-ratio: 4 / 3;
-  --scale: 1;
-  --current: 0;
-  --total: 0;
-  --tab-size: 4;
   --brush: 12;
   --highlight: rgba(255, 20, 20, 0.8);
   --overview-scale: 0.3;
   --overview-border: 4px;
+  --overview-bg: #666;
   --fg: #000;
   --bg: #fff;
   --link: #00e;
-  touch-action: none;
+  --tab-size: 2;
+  --scale: 1;
+  --current: 0;
+  --total: 0;
   counter-reset: slide slide-before slide-current slide-after;
   box-sizing: border-box;
   color: var(--fg);
@@ -54,7 +54,7 @@ maslo-deck:state(overview) {
   flex-wrap: wrap;
   gap: 32px;
   justify-content: space-around;
-  background-color: #666;
+  background-color: var(--overview-bg);
   --thickness: calc(var(--overview-border) / var(--overview-scale));
 }
 maslo-deck:state(overview) maslo-slide {
@@ -77,13 +77,13 @@ body:has(maslo-deck[standalone]) {
   margin: 0;
 }
 maslo-slide {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: var(--width);
   aspect-ratio: var(--aspect-ratio);
-  overflow: hidden;
-  tab-size: var(--tab-size);
   font-size: 32px;
   line-height: 1.5;
+  gap: 1em;
 }
 maslo-slide:state(before) {
   counter-increment: slide slide-before;
@@ -100,6 +100,10 @@ maslo-slide:state(after) {
     page-break-after: always;
     -webkit-print-color-adjust: exact;
   }
+}
+maslo-slide > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 @font-face {
   font-family: input;
@@ -144,6 +148,7 @@ maslo-slide li {
   margin: 0.5em 0;
 }
 maslo-slide pre {
+  tab-size: var(--tab-size);
   counter-reset: line;
 }
 maslo-slide pre div::before {

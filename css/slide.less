@@ -1,14 +1,13 @@
 maslo-slide {
-	display: block;
+	display: flex;
+	flex-direction: column;
 
 	width: var(--width);
 	aspect-ratio: var(--aspect-ratio);
 
-	overflow: hidden;
-	tab-size: var(--tab-size);
-
 	font-size: (2 * @u);
-	line-height: (3/2);
+	line-height: 1.5;
+	gap: 1em;
 
 	&:state(before) { counter-increment: slide slide-before; }
 	&:state(current) { counter-increment: slide slide-current; }
@@ -20,4 +19,9 @@ maslo-slide {
 		page-break-after: always;
 		-webkit-print-color-adjust: exact;
 	}
+	> * {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+	}
+
 }
