@@ -31,7 +31,17 @@ maslo-deck[skin=dark] {
 		div:hover { background-color: @tint; }
 	}
 
-	.bg-grid();
+	maslo-slide {
+		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
+
+		background-image:
+			radial-gradient(rgb(0 0 0 / 0.75), rgb(0 0 0 / 1)),
+			repeating-linear-gradient(to right, @pattern),
+			repeating-linear-gradient(to bottom, @pattern)
+		;
+		background-position: 0 (@u / 2);
+	}
+
 	.progress();
 	.padding-lr(5);
 }

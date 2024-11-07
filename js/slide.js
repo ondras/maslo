@@ -1,6 +1,8 @@
 import Hammer from "hammerjs";
 
 
+const HAMMER_OPTIONS = {cssProps:{}};
+
 export default class Slide extends HTMLElement {
 	#internals = this.attachInternals();
 
@@ -9,7 +11,6 @@ export default class Slide extends HTMLElement {
 	constructor() {
 		super();
 
-		console.log(this.#internals)
 		this.addEventListener("click", e => {
 			const { deck } = this;
 			if (deck.mode == "overview") {
@@ -19,29 +20,29 @@ export default class Slide extends HTMLElement {
 			}
 		});
 
-		let hammer = new Hammer(this, {cssProps:{}});
+		let hammer = new Hammer(this, HAMMER_OPTIONS);
 		hammer.on("swipeleft", e => onSwipe(e));
 		hammer.on("swiperight", e => onSwipe(e));
 	}
 
 	show() {
-		const { states } = this.#internals;
-		states.delete("before");
-		states.delete("after");
-		states.add("current")
+		setSingleState(this.#internals.states, "current");
 	}
 
 	hide(state) {
-		const { states } = this.#internals;
-		states.delete("current");
-		states.delete("before");
-		states.delete("after");
-		states.add(state)
+		setSingleState(this.#internals.states, state);
 	}
 
 	next() { return false; }
 }
 customElements.define("maslo-slide", Slide);
+
+function setSingleState(states, state) {
+	states.delete("before");
+	states.delete("after");
+	states.delete("current");
+	states.add(state);
+}
 
 function onSwipe(e) {
 	if (e.pointerType == "mouse") { return; }

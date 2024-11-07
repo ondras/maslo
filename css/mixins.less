@@ -1,23 +1,5 @@
 @u: 16px;
 
-.hljs(@name) {
-	@version: "11.10.0";
-	@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/@{name}.min.css");
-}
-
-.bg-grid() {
-	maslo-slide {
-		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
-
-		background-image:
-			radial-gradient(rgb(0 0 0 / 0.75), rgb(0 0 0 / 1)),
-			repeating-linear-gradient(to right, @pattern),
-			repeating-linear-gradient(to bottom, @pattern)
-		;
-		background-position: 0 (@u / 2);
-	}
-}
-
 .google-font(@name, @widths: "400,400i,700,700i") {
 	@import (css) url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
 }
