@@ -2,11 +2,14 @@ import Hammer from "hammerjs";
 
 
 export default class Slide extends HTMLElement {
+	#internals = this.attachInternals();
+
 	get deck() { return this.closest("maslo-deck"); }
 
 	constructor() {
 		super();
 
+		console.log(this.#internals)
 		this.addEventListener("click", e => {
 			const { deck } = this;
 			if (deck.mode == "overview") {
@@ -21,10 +24,22 @@ export default class Slide extends HTMLElement {
 		hammer.on("swiperight", e => onSwipe(e));
 	}
 
-	first() {}
-	last() {}
+	show() {
+		const { states } = this.#internals;
+		states.delete("before");
+		states.delete("after");
+		states.add("current")
+	}
+
+	hide(state) {
+		const { states } = this.#internals;
+		states.delete("current");
+		states.delete("before");
+		states.delete("after");
+		states.add(state)
+	}
+
 	next() { return false; }
-	prev() { return false; }
 }
 customElements.define("maslo-slide", Slide);
 

@@ -1,17 +1,13 @@
 maslo-slide {
 	display: block;
-	width: calc(var(--width) * 1px);
+	width: var(--width);
 	aspect-ratio: var(--aspect-ratio);
 
 	overflow: hidden;
 
-	counter-increment: slide slide-before;
-	&.current {
-		counter-increment: slide slide-current;
-		& ~ maslo-slide {
-			counter-increment: slide slide-after;
-		}
-	}
+	&:state(before) { counter-increment: slide slide-before; }
+	&:state(current) { counter-increment: slide slide-current; }
+	&:state(after) { counter-increment: slide slide-after; }
 
 	p.poster {
 		margin: 0;

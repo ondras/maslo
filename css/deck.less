@@ -1,6 +1,5 @@
 maslo-deck {
-	--width: 1024;
-	--height: 768;
+	--width: 1024px;
 	--aspect-ratio: 4 / 3;
 	--scale: 1;
 	--current: 0;
@@ -21,14 +20,13 @@ maslo-deck {
 	box-sizing: border-box;
 	color: var(--fg);
 	background-color: var(--bg);
+	position: relative;
 
 	* { box-sizing: inherit; }
 
 	@media screen {
 		&:state(full) {
 			display: block;
-			width: 100dvw;
-			height: 100dvh;
 
 			maslo-slide {
 				position: absolute;
@@ -37,9 +35,10 @@ maslo-deck {
 				zoom: var(--scale);
 
 				// display:none breaks counters
-				&:not(.current) { visibility: hidden; }
+				&:not(:state(current)) { visibility: hidden; }
 			}
 
+			// fixme zrevidovat
 			@media (orientation: portrait) and (max-width: 768px) {
 				&::before {
 					content: "↻";
@@ -72,9 +71,15 @@ maslo-deck {
 				outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
 			}
 
-			&.current {
+			&:state(current) {
 				outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
 			}
 		}
+	}
+
+	&[standalone] {
+		width: 100dvw;
+		min-height: 100dvh;
+		body:has(&) { margin: 0; }
 	}
 }

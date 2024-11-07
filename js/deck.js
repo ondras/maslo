@@ -9,13 +9,12 @@ const USE_TITLE = 1; // fixme
 
 export default class Deck extends HTMLElement {
 	#mode;
-	#internals;
+	#internals = this.attachInternals();
 
 	constructor() {
 		super();
 		keyboard.init(this);
 
-		this.#internals = this.attachInternals();
 
 		if (USE_URL) {
 			window.addEventListener("popstate", _ => this.currentIndex = getIndexFromUrl());
@@ -30,29 +29,33 @@ export default class Deck extends HTMLElement {
 	get title() { return documentTitle; } // fixme
 	get slides() { return [...this.querySelectorAll("maslo-slide")]; }
 
-	get currentIndex() { return this.slides.findIndex(slide => slide.classList.contains("current")); }
+	get currentIndex() { return this.slides.indexOf(this.currentSlide); }
 	set currentIndex(index) {
 		let { slides, currentIndex } = this;
 
+		// validate
 		index = Math.max(index, 0);
 		index = Math.min(index, slides.length-1);
 		if (index == currentIndex) { return; }
 
-		slides.forEach((slide, i) => slide.classList.toggle("current", i == index));
+		// hide old, show new
+		slides.forEach((s, i) => {
+			if (i == index) {
+				s.show();
+			} else {
+				s.hide(i > index ? "after" : "before");
+			}
+		})
 
-		const { currentSlide } = this;
-		if (index > currentIndex) { currentSlide.first(); } else { currentSlide.last(); }
-
-		currentIndex = index;
-		this.style.setProperty("--current", currentIndex+1);
-
-		if (USE_URL) { saveIndexToUrl(currentIndex); }
-		if (USE_TITLE) { document.title = `(${currentIndex+1}) ${this.title}`; }
+		// publish
+		this.style.setProperty("--current", index+1);
+		if (USE_URL) { saveIndexToUrl(index); }
+		if (USE_TITLE) { document.title = `(${index+1}) ${this.title}`; }
 
 		this.dispatchEvent(new CustomEvent("change"));
 	}
 
-	get currentSlide() { return this.slides[this.currentIndex]; }
+	get currentSlide() { return this.querySelector("maslo-slide:state(current)"); }
 	set currentSlide(slide) { this.currentIndex = this.slides.indexOf(slide); }
 
 	get scale() { return Number(this.style.getPropertyValue("--scale")); }
@@ -85,25 +88,13 @@ export default class Deck extends HTMLElement {
 		this.currentIndex = (USE_URL ? getIndexFromUrl() : 0);
 	}
 
-	first() {
-		this.currentIndex = 0;
-	}
-
-	last() {
-		this.currentIndex = this.slides.length-1;
-		this.currentSlide.last();
-	}
-
+	first() { this.currentIndex = 0; }
+	last() { this.currentIndex = this.slides.length-1; }
+	prev() { this.currentIndex--; }
 	next() {
 		const { currentSlide } = this;
 		let processed = currentSlide.next();
 		if (!processed) { this.currentIndex++; }
-	}
-
-	prev() {
-		const { currentSlide } = this;
-		let processed = currentSlide.prev();
-		if (!processed) { this.currentIndex--; }
 	}
 
 	toggleDraw() {
@@ -132,7 +123,7 @@ function syncScale(deck) {
 	let deckSize = [deck.offsetWidth, deck.offsetHeight];
 
 	let style = getComputedStyle(deck);
-	let w = Number(style.getPropertyValue("--width"));
+	let w = parseInt(style.getPropertyValue("--width"));
 	let h = w / window.eval(style.getPropertyValue("--aspect-ratio"));
 
 	deck.style.setProperty("--scale", Math.min(deckSize[0]/w, deckSize[1]/h));

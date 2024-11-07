@@ -1,9 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
-body {
-  margin: 0;
-}
 @font-face {
   font-family: input;
   font-weight: normal;
@@ -83,15 +80,17 @@ blockquote + p::before {
 }
 maslo-slide {
   display: block;
-  width: calc(var(--width) * 1px);
+  width: var(--width);
   aspect-ratio: var(--aspect-ratio);
   overflow: hidden;
+}
+maslo-slide:state(before) {
   counter-increment: slide slide-before;
 }
-maslo-slide.current {
+maslo-slide:state(current) {
   counter-increment: slide slide-current;
 }
-maslo-slide.current ~ maslo-slide {
+maslo-slide:state(after) {
   counter-increment: slide slide-after;
 }
 maslo-slide p.poster {
@@ -119,8 +118,7 @@ maslo-slide p.questions {
   }
 }
 maslo-deck {
-  --width: 1024;
-  --height: 768;
+  --width: 1024px;
   --aspect-ratio: 4 / 3;
   --scale: 1;
   --current: 0;
@@ -138,6 +136,7 @@ maslo-deck {
   box-sizing: border-box;
   color: var(--fg);
   background-color: var(--bg);
+  position: relative;
 }
 maslo-deck * {
   box-sizing: inherit;
@@ -145,8 +144,6 @@ maslo-deck * {
 @media screen {
   maslo-deck:state(full) {
     display: block;
-    width: 100dvw;
-    height: 100dvh;
   }
   maslo-deck:state(full) maslo-slide {
     position: absolute;
@@ -154,7 +151,7 @@ maslo-deck * {
     inset: 0;
     zoom: var(--scale);
   }
-  maslo-deck:state(full) maslo-slide:not(.current) {
+  maslo-deck:state(full) maslo-slide:not(:state(current)) {
     visibility: hidden;
   }
 }
@@ -185,8 +182,15 @@ maslo-deck:state(overview) maslo-slide {
 maslo-deck:state(overview) maslo-slide:hover {
   outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
 }
-maslo-deck:state(overview) maslo-slide.current {
+maslo-deck:state(overview) maslo-slide:state(current) {
   outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
+}
+maslo-deck[standalone] {
+  width: 100dvw;
+  min-height: 100dvh;
+}
+body:has(maslo-deck[standalone]) {
+  margin: 0;
 }
 maslo-canvas {
   position: absolute;
@@ -489,8 +493,7 @@ maslo-deck[skin=cvut] {
   --footer-height: 48px;
   --padding-side: 60px;
   --color: #0063a8;
-  --width: 1600;
-  --height: 900;
+  --aspect-ratio: 16 / 9;
 }
 maslo-deck[skin=cvut] a {
   text-decoration: underline;
