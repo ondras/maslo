@@ -1,33 +1,18 @@
 maslo-slide {
 	display: block;
+
 	width: var(--width);
 	aspect-ratio: var(--aspect-ratio);
 
 	overflow: hidden;
+	tab-size: var(--tab-size);
+
+	font-size: (2 * @u);
+	line-height: (3/2);
 
 	&:state(before) { counter-increment: slide slide-before; }
 	&:state(current) { counter-increment: slide slide-current; }
 	&:state(after) { counter-increment: slide slide-after; }
-
-	p.poster {
-		margin: 0;
-		height: 100%;
-
-		img {
-			display: block;
-			width: 100%;
-			height: 100%;
-			object-fit: contain;
-		}
-	}
-
-	p.questions {
-		text-align: center;
-		font-size: 500%;
-		line-height: 1.5;
-		font-weight: bold;
-		text-shadow: 0 0 0.1em var(--color, currentColor);
-	}
 
 	// FIXME
 	@media print {

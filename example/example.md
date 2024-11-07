@@ -55,6 +55,15 @@ function x() {
 
 ---
 
+# Reveal
+
+- Item 1 (no reveal)
+- Item 2 {.reveal}
+- Item 3 {.reveal}
+- Item 4 {.reveal}
+
+---
+
 # Keyboard reference
 
 - `Space`, `PageDown`, `→`, `↓`: next slide

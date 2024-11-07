@@ -7,6 +7,7 @@ export default class Slide extends HTMLElement {
 	#internals = this.attachInternals();
 
 	get deck() { return this.closest("maslo-deck"); }
+	get reveals() { return [...this.querySelectorAll(".reveal")]; }
 
 	constructor() {
 		super();
@@ -25,15 +26,34 @@ export default class Slide extends HTMLElement {
 		hammer.on("swiperight", e => onSwipe(e));
 	}
 
+	connectedCallback() {
+		this.#reset();
+	}
+
 	show() {
 		setSingleState(this.#internals.states, "current");
 	}
 
 	hide(state) {
 		setSingleState(this.#internals.states, state);
+		this.#reset();
 	}
 
-	next() { return false; }
+	next() {
+		const { reveals } = this;
+		let firstHidden = reveals.find(node => node.hidden);
+		if (firstHidden) {
+			firstHidden.hidden = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	#reset() {
+		const { reveals } = this;
+		reveals.forEach(node => node.hidden = true);
+	}
 }
 customElements.define("maslo-slide", Slide);
 

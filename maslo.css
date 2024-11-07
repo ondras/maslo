@@ -1,122 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
-@font-face {
-  font-family: input;
-  font-weight: normal;
-  src: url(font/Input-Regular.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: bold;
-  src: url(font/Input-Bold.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: normal;
-  font-style: italic;
-  src: url(font/Input-Italic.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: bold;
-  font-style: italic;
-  src: url(font/Input-BoldItalic.ttf);
-}
-maslo-deck {
-  -moz-tab-size: var(--tab-size);
-  tab-size: var(--tab-size);
-  font-size: 32px;
-  line-height: 1.5;
-}
-li {
-  margin: 0.5em 0;
-}
-pre {
-  counter-reset: line;
-}
-pre div::before {
-  content: " ";
-  display: inline-block;
-  text-align: right;
-  width: 4ch;
-  padding-right: 16px;
-  opacity: var(--marker-opacity);
-  font-weight: normal;
-}
-pre div:not(:empty) {
-  counter-increment: line;
-}
-pre div:not(:empty)::before {
-  content: counter(line) ".";
-}
-code {
-  font-size: 25.6px;
-  line-height: 1.875;
-  font-family: input, monospace;
-  font-weight: bold;
-}
-a {
-  color: var(--link);
-  text-decoration: none;
-  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
-  transition: background-size 300ms, color 300ms;
-}
-a:focus,
-a:hover {
-  background-size: 100% 100%;
-}
-blockquote p::before {
-  content: open-quote;
-}
-blockquote p::after {
-  content: close-quote;
-}
-blockquote + p {
-  text-align: right;
-}
-blockquote + p::before {
-  content: "— ";
-}
-maslo-slide {
-  display: block;
-  width: var(--width);
-  aspect-ratio: var(--aspect-ratio);
-  overflow: hidden;
-}
-maslo-slide:state(before) {
-  counter-increment: slide slide-before;
-}
-maslo-slide:state(current) {
-  counter-increment: slide slide-current;
-}
-maslo-slide:state(after) {
-  counter-increment: slide slide-after;
-}
-maslo-slide p.poster {
-  margin: 0;
-  height: 100%;
-}
-maslo-slide p.poster img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-maslo-slide p.questions {
-  text-align: center;
-  font-size: 500%;
-  line-height: 1.5;
-  font-weight: bold;
-  text-shadow: 0 0 0.1em var(--color, currentColor);
-}
-@media print {
-  maslo-slide {
-    position: relative;
-    page-break-after: always;
-    -webkit-print-color-adjust: exact;
-  }
-}
 maslo-deck {
   --width: 1024px;
   --aspect-ratio: 4 / 3;
@@ -191,6 +75,119 @@ maslo-deck[standalone] {
 }
 body:has(maslo-deck[standalone]) {
   margin: 0;
+}
+maslo-slide {
+  display: block;
+  width: var(--width);
+  aspect-ratio: var(--aspect-ratio);
+  overflow: hidden;
+  tab-size: var(--tab-size);
+  font-size: 32px;
+  line-height: 1.5;
+}
+maslo-slide:state(before) {
+  counter-increment: slide slide-before;
+}
+maslo-slide:state(current) {
+  counter-increment: slide slide-current;
+}
+maslo-slide:state(after) {
+  counter-increment: slide slide-after;
+}
+@media print {
+  maslo-slide {
+    position: relative;
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+  }
+}
+@font-face {
+  font-family: input;
+  font-weight: normal;
+  src: url(font/Input-Regular.ttf);
+}
+@font-face {
+  font-family: input;
+  font-weight: bold;
+  src: url(font/Input-Bold.ttf);
+}
+@font-face {
+  font-family: input;
+  font-weight: normal;
+  font-style: italic;
+  src: url(font/Input-Italic.ttf);
+}
+@font-face {
+  font-family: input;
+  font-weight: bold;
+  font-style: italic;
+  src: url(font/Input-BoldItalic.ttf);
+}
+maslo-slide p.poster {
+  margin: 0;
+  height: 100%;
+}
+maslo-slide p.poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+maslo-slide p.questions {
+  text-align: center;
+  font-size: 500%;
+  line-height: 1.5;
+  font-weight: bold;
+  text-shadow: 0 0 0.1em var(--color, currentColor);
+}
+maslo-slide li {
+  margin: 0.5em 0;
+}
+maslo-slide pre {
+  counter-reset: line;
+}
+maslo-slide pre div::before {
+  content: " ";
+  display: inline-block;
+  text-align: right;
+  width: 4ch;
+  padding-right: 16px;
+  opacity: var(--marker-opacity);
+  font-weight: normal;
+}
+maslo-slide pre div:not(:empty) {
+  counter-increment: line;
+}
+maslo-slide pre div:not(:empty)::before {
+  content: counter(line) ".";
+}
+maslo-slide code {
+  font-size: 25.6px;
+  line-height: 1.875;
+  font-family: input, monospace;
+  font-weight: bold;
+}
+maslo-slide a {
+  color: var(--link);
+  text-decoration: none;
+  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+  transition: background-size 300ms, color 300ms;
+}
+maslo-slide a:focus,
+maslo-slide a:hover {
+  background-size: 100% 100%;
+}
+maslo-slide blockquote p::before {
+  content: open-quote;
+}
+maslo-slide blockquote p::after {
+  content: close-quote;
+}
+maslo-slide blockquote + p {
+  text-align: right;
+}
+maslo-slide blockquote + p::before {
+  content: "— ";
 }
 maslo-canvas {
   position: absolute;

@@ -1,0 +1,99 @@
+@import "mixins.less";
+
+@font-face {
+	font-family: input;
+	font-weight: normal;
+	src: url(font/Input-Regular.ttf);
+}
+
+@font-face {
+	font-family: input;
+	font-weight: bold;
+	src: url(font/Input-Bold.ttf);
+}
+
+@font-face {
+	font-family: input;
+	font-weight: normal;
+	font-style: italic;
+	src: url(font/Input-Italic.ttf);
+}
+
+@font-face {
+	font-family: input;
+	font-weight: bold;
+	font-style: italic;
+	src: url(font/Input-BoldItalic.ttf);
+}
+
+maslo-slide {
+
+	p.poster {
+		margin: 0;
+		height: 100%;
+
+		img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+	}
+
+	p.questions {
+		text-align: center;
+		font-size: 500%;
+		line-height: 1.5;
+		font-weight: bold;
+		text-shadow: 0 0 0.1em var(--color, currentColor);
+	}
+
+	li {
+		margin: 0.5em 0;
+	}
+
+	pre {
+		counter-reset: line;
+
+		div::before {
+			content: " "; // empty need some content as well to be visible
+			display: inline-block;
+			text-align: right;
+			width: 4ch;
+			padding-right: @u;
+			opacity: var(--marker-opacity);
+			font-weight: normal;
+		}
+
+		div:not(:empty) {
+			counter-increment: line;
+			&::before { content: counter(line) "."; }
+		}
+	}
+
+	code {
+		font-size: (1.6 * @u);
+		line-height: (3 / 1.6);
+		font-family: input, monospace;
+		font-weight: bold;
+	}
+
+	a {
+		color: var(--link);
+		text-decoration: none;
+		background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+		transition: background-size 300ms, color 300ms;
+
+		&:focus, &:hover { background-size: 100% 100%; }
+	}
+
+	blockquote {
+		p::before { content: open-quote; }
+		p::after { content: close-quote; }
+
+		& + p {
+			text-align: right;
+			&::before { content: "— "; }
+		}
+	}
+}
