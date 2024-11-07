@@ -1,10 +1,12 @@
 import Hammer from "hammerjs";
+import Canvas from "./canvas.js";
 
 
 const HAMMER_OPTIONS = {cssProps:{}};
 
 export default class Slide extends HTMLElement {
 	#internals = this.attachInternals();
+	#hammer;
 
 	get deck() { return this.closest("maslo-deck"); }
 	get reveals() { return [...this.querySelectorAll(".reveal")]; }
@@ -20,23 +22,67 @@ export default class Slide extends HTMLElement {
 				deck.currentSlide = this;
 			}
 		});
+	}
 
-		let hammer = new Hammer(this, HAMMER_OPTIONS);
-		hammer.on("swipeleft", e => onSwipe(e));
-		hammer.on("swiperight", e => onSwipe(e));
+	get drawing() {
+		return !!this.querySelector("maslo-canvas");
+	}
+
+	set drawing(drawing) {
+		if (drawing == this.drawing) { return; }
+
+		if (drawing) {
+			this.append(new Canvas());
+		} else {
+			this.querySelector("maslo-canvas").remove();
+		}
 	}
 
 	connectedCallback() {
 		this.#reset();
 	}
 
+	handleEvent(e) {
+		if (e.type == "keydown") {
+			switch (e.code) {
+				case "CapsLock": this.drawing = !this.drawing; break;
+			}
+		} else {
+			if (e.pointerType == "mouse") { return; }
+			const { deck } = this;
+			switch (e.type) {
+				case "swipeleft": deck.next(); break;
+				case "swiperight": deck.prev(); break;
+			}
+		}
+	}
+
 	show() {
-		setSingleState(this.#internals.states, "current");
+		const { states } = this.#internals;
+		states.clear();
+		states.add("current");
+
+		let hammer = new Hammer(this, HAMMER_OPTIONS);
+		hammer.on("swipeleft swiperight", e => this.handleEvent(e));
+		this.#hammer = hammer;
+
+		window.addEventListener("keydown", this);
 	}
 
 	hide(state) {
-		setSingleState(this.#internals.states, state);
+		const { states } = this.#internals;
+		states.clear();
+		states.add(state);
+
+		this.drawing = false;
 		this.#reset();
+
+		if (this.#hammer) {
+			this.#hammer.destroy();
+			this.#hammer = null;
+		}
+
+		window.removeEventListener("keydown", this);
 	}
 
 	next() {
@@ -65,11 +111,4 @@ function setSingleState(states, state) {
 }
 
 function onSwipe(e) {
-	if (e.pointerType == "mouse") { return; }
-	const deck = e.target.closest("maslo-deck");
-
-	switch (e.type) {
-		case "swipeleft": deck.next(); break;
-		case "swiperight": deck.prev(); break;
-	}
 }

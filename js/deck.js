@@ -1,11 +1,7 @@
 import * as parser from "./parser.js";
-import * as keyboard from "./keyboard.js";
-import Canvas from "./canvas.js";
 
 
 let documentTitle = document.title;
-const USE_URL = 1; // fixme
-const USE_TITLE = 1; // fixme
 
 export default class Deck extends HTMLElement {
 	#mode;
@@ -13,25 +9,21 @@ export default class Deck extends HTMLElement {
 
 	constructor() {
 		super();
-		keyboard.init(this);
-
-
-		if (USE_URL) {
-			window.addEventListener("popstate", _ => this.currentIndex = getIndexFromUrl());
-		}
-
 		this.mode = "full";
+
+		window.addEventListener("keydown", e => onKeyDown(e, this));
 
 		let ro = new ResizeObserver(_ => syncScale(this));
 		ro.observe(this);
 	}
 
+	get standalone() { return this.hasAttribute("standalone"); }
 	get title() { return documentTitle; } // fixme
 	get slides() { return [...this.querySelectorAll("maslo-slide")]; }
 
 	get currentIndex() { return this.slides.indexOf(this.currentSlide); }
 	set currentIndex(index) {
-		let { slides, currentIndex } = this;
+		let { slides, currentIndex, standalone } = this;
 
 		// validate
 		index = Math.max(index, 0);
@@ -49,8 +41,8 @@ export default class Deck extends HTMLElement {
 
 		// publish
 		this.style.setProperty("--current", index+1);
-		if (USE_URL) { saveIndexToUrl(index); }
-		if (USE_TITLE) { document.title = `(${index+1}) ${this.title}`; }
+		if (standalone) { saveIndexToUrl(index); }
+		if (standalone) { document.title = `(${index+1}) ${this.title}`; }
 
 		this.dispatchEvent(new CustomEvent("change"));
 	}
@@ -67,9 +59,13 @@ export default class Deck extends HTMLElement {
 		const { states } = this.#internals;
 		states.clear();
 		states.add(mode);
+
+		const { currentSlide } = this;
+		if (currentSlide) { currentSlide.drawing = false; }
 	}
 
 	async connectedCallback() {
+		const { standalone } = this;
 		const src = this.getAttribute("src");
 		let md;
 
@@ -85,7 +81,12 @@ export default class Deck extends HTMLElement {
 		this.style.setProperty("--total", nodes.length);
 		this.dispatchEvent(new CustomEvent("load"));
 
-		this.currentIndex = (USE_URL ? getIndexFromUrl() : 0);
+		if (standalone) {
+			this.currentIndex = getIndexFromUrl();
+			window.addEventListener("popstate", _ => this.currentIndex = getIndexFromUrl());
+		} else {
+			this.currentIndex = 0;
+		}
 	}
 
 	first() { this.currentIndex = 0; }
@@ -97,15 +98,6 @@ export default class Deck extends HTMLElement {
 		if (!processed) { this.currentIndex++; }
 	}
 
-	toggleDraw() {
-		const { currentSlide } = this;
-		let old = currentSlide.querySelector("maslo-canvas");
-		if (old) { old.remove(); return; }
-
-		let canvas = new Canvas();
-		currentSlide.append(canvas);
-		// FIXME
-	}
 }
 customElements.define("maslo-deck", Deck);
 
@@ -127,4 +119,29 @@ function syncScale(deck) {
 	let h = w / window.eval(style.getPropertyValue("--aspect-ratio"));
 
 	deck.style.setProperty("--scale", Math.min(deckSize[0]/w, deckSize[1]/h));
+}
+
+function onKeyDown(e, deck) {
+	switch (e.code) {
+		case "Home": deck.first(); break;
+		case "End": deck.last(); break;
+
+		case "ArrowLeft":
+		case "ArrowUp":
+		case "PageUp":
+		case "Backspace":
+			deck.prev();
+		break;
+
+		case "ArrowRight":
+		case "ArrowDown":
+		case "PageDown":
+		case "Space":
+			deck.next();
+		break;
+
+		case "Escape":
+			deck.mode = (deck.mode == "full" ? "overview" : "full");
+		break;
+	}
 }
