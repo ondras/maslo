@@ -3,31 +3,30 @@
 .google-font("Ubuntu");
 
 maslo-deck[skin=dark] {
-	font-family: Ubuntu, sans-serif;
-	color: #eee;
 	--bg: #000;
 	--color: hsl(180, 50%, 50%);
+	color: #eee;
+	font-family: Ubuntu, sans-serif;
 
 	@version: "11.10.0";
 	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/vs2015.min.css");
 
-	::marker {
-		color: rgb(255 255 255 / 0.6);
-	}
+	::marker, pre div::before  { color: rgba(255 255 255 / 0.6); }
+
+	maslo-slide > * { margin-bottom: 0; }
+	li + li, li ul, li ol, h1 { margin-top: 0.5em; }
 
 	h1 {
 		color: var(--color);
 		font-size: 200%;
-		margin: 0.375em 0;
-		line-height: 1.25;
+		line-height: 1;
 	}
 
 	pre {
-		box-shadow:  -4px 0 0 var(--color);
-
-		@tint: rgba(255, 255, 255, 0.1);
-		background-color: @tint;
-		div:hover { background-color: @tint; }
+		box-shadow: -4px 0 0 var(--color);
+		--tint: rgba(255, 255, 255, 0.1);
+		background-color: var(--tint);
+		div:hover { background-color: var(--tint); }
 	}
 
 	maslo-slide {
@@ -38,11 +37,9 @@ maslo-deck[skin=dark] {
 			repeating-linear-gradient(to right, @pattern),
 			repeating-linear-gradient(to bottom, @pattern)
 		;
-		background-position: 0 (@u / 2);
 	}
 
 	.fancy-link(var(--color), inherit);
 	.progress(var(--color));
 	.padding-lr(5);
 }
-

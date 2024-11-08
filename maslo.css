@@ -335,10 +335,10 @@ maslo-deck[skin=light] a:hover {
   }
 }
 maslo-deck[skin=dark] {
-  font-family: Ubuntu, sans-serif;
-  color: #eee;
   --bg: #000;
   --color: hsl(180, 50%, 50%);
+  color: #eee;
+  font-family: Ubuntu, sans-serif;
 }
 maslo-deck[skin=dark] pre code.hljs {
   display: block;
@@ -433,25 +433,34 @@ maslo-deck[skin=dark] .hljs-deletion {
   display: inline-block;
   width: 100%;
 }
-maslo-deck[skin=dark] ::marker {
-  color: rgba(255, 255, 255, 0.6);
+maslo-deck[skin=dark] ::marker,
+maslo-deck[skin=dark] pre div::before {
+  color: rgba(255 255 255 / 0.6);
+}
+maslo-deck[skin=dark] maslo-slide > * {
+  margin-bottom: 0;
+}
+maslo-deck[skin=dark] li + li,
+maslo-deck[skin=dark] li ul,
+maslo-deck[skin=dark] li ol,
+maslo-deck[skin=dark] h1 {
+  margin-top: 0.5em;
 }
 maslo-deck[skin=dark] h1 {
   color: var(--color);
   font-size: 200%;
-  margin: 0.375em 0;
-  line-height: 1.25;
+  line-height: 1;
 }
 maslo-deck[skin=dark] pre {
   box-shadow: -4px 0 0 var(--color);
-  background-color: rgba(255, 255, 255, 0.1);
+  --tint: rgba(255, 255, 255, 0.1);
+  background-color: var(--tint);
 }
 maslo-deck[skin=dark] pre div:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--tint);
 }
 maslo-deck[skin=dark] maslo-slide {
   background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
-  background-position: 0 8px;
 }
 maslo-deck[skin=dark] a {
   color: inherit;
