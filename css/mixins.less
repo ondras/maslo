@@ -4,7 +4,7 @@
 	@import (css) url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
 }
 
-.progress() {
+.progress(@color) {
 	@counter-style circle-empty {
 		system: additive;
 		additive-symbols: 1 "○", 0 "";
@@ -19,7 +19,7 @@
 		&::after {
 			font-size: (1.25 * @u);
 			content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
-			color: var(--color);
+			color: @color;
 			display: block;
 			text-align: center;
 			position: fixed;
@@ -40,6 +40,20 @@
 		> ul, > ol {
 			margin-left: 0;
 			padding-left: @margin;
+		}
+	}
+}
+
+.fancy-link(@bg-color, @hover-color) {
+	a {
+		color: inherit;
+		text-decoration: none;
+		background: no-repeat linear-gradient(@bg-color, @bg-color) 0 100% / 100% calc(1em / 12);
+		transition: background-size 300ms, color 300ms;
+
+		&:focus, &:hover {
+			background-size: 100% 100%;
+			color: @hover-color;
 		}
 	}
 }

@@ -3,38 +3,33 @@
 .google-font("Lora");
 
 maslo-deck[skin=light] {
-	--fg: #111;
 	--bg: #ed9;
 	--color: hsl(20, 100%, 20%);
-	--link: var(--fg);
+	color: #111;
 	font-family: Lora, serif;
 
 	@version: "11.10.0";
 	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/googlecode.min.css");
 
-	::marker {
-		color: rgb(0 0 0 / 0.6);
-	}
+	::marker, pre div::before  { color: rgba(0 0 0 / 0.6); }
+
+	maslo-slide > * { margin-bottom: 0; }
+	li + li, li ul, li ol, h1 { margin-top: 0.5em; }
 
 	h1 {
 		color: var(--color);
 		font-size: 200%;
-		margin: 0.375em 0;
-		line-height: 1.25;
-	}
-
-	a:hover, a:focus {
-		color: var(--bg);
+		line-height: 1;
 	}
 
 	pre {
 		box-shadow: -4px 0 0 var(--color);
-
-		@tint: rgba(0, 0, 0, 0.1);
-		background-color: @tint;
-		div:hover { background-color: @tint; }
+		--tint: rgba(0 0 0 / 0.1);
+		background-color: var(--tint);
+		div:hover { background-color: var(--tint); }
 	}
 
 	.padding-lr(5);
-	.progress();
+	.fancy-link(var(--color), var(--bg));
+	.progress(var(--color));
 }

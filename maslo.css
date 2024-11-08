@@ -9,16 +9,13 @@ maslo-deck {
   --overview-scale: 0.3;
   --overview-border: 4px;
   --overview-bg: #666;
-  --fg: #000;
-  --bg: #fff;
-  --link: #00e;
+  --bg: Canvas;
   --tab-size: 2;
   --scale: 1;
   --current: 0;
   --total: 0;
   counter-reset: slide slide-before slide-current slide-after;
   box-sizing: border-box;
-  color: var(--fg);
   background-color: var(--bg);
   position: relative;
 }
@@ -76,35 +73,6 @@ maslo-deck[standalone] {
 body:has(maslo-deck[standalone]) {
   margin: 0;
 }
-maslo-slide {
-  display: flex;
-  flex-direction: column;
-  width: var(--width);
-  aspect-ratio: var(--aspect-ratio);
-  font-size: 32px;
-  line-height: 1.5;
-  gap: 1em;
-}
-maslo-slide:state(before) {
-  counter-increment: slide slide-before;
-}
-maslo-slide:state(current) {
-  counter-increment: slide slide-current;
-}
-maslo-slide:state(after) {
-  counter-increment: slide slide-after;
-}
-@media print {
-  maslo-slide {
-    position: relative;
-    page-break-after: always;
-    -webkit-print-color-adjust: exact;
-  }
-}
-maslo-slide > * {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-}
 @font-face {
   font-family: input;
   font-weight: normal;
@@ -127,6 +95,48 @@ maslo-slide > * {
   font-style: italic;
   src: url(font/Input-BoldItalic.ttf);
 }
+maslo-slide {
+  display: flex;
+  flex-direction: column;
+  width: var(--width);
+  aspect-ratio: var(--aspect-ratio);
+  font-size: 32px;
+  line-height: 1.5;
+}
+maslo-slide:state(before) {
+  counter-increment: slide slide-before;
+}
+maslo-slide:state(current) {
+  counter-increment: slide slide-current;
+}
+maslo-slide:state(after) {
+  counter-increment: slide slide-after;
+}
+maslo-slide code {
+  font-family: input, monospace;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: calc(48/28);
+}
+maslo-slide blockquote p::before {
+  content: open-quote;
+}
+maslo-slide blockquote p::after {
+  content: close-quote;
+}
+maslo-slide blockquote + p {
+  text-align: right;
+}
+maslo-slide blockquote + p::before {
+  content: "— ";
+}
+@media print {
+  maslo-slide {
+    position: relative;
+    page-break-after: always;
+    -webkit-print-color-adjust: exact;
+  }
+}
 maslo-slide p.poster {
   margin: 0;
   height: 100%;
@@ -144,9 +154,6 @@ maslo-slide p.questions {
   font-weight: bold;
   text-shadow: 0 0 0.1em var(--color, currentColor);
 }
-maslo-slide li {
-  margin: 0.5em 0;
-}
 maslo-slide pre {
   tab-size: var(--tab-size);
   counter-reset: line;
@@ -157,7 +164,6 @@ maslo-slide pre div::before {
   text-align: right;
   width: 4ch;
   padding-right: 16px;
-  opacity: var(--marker-opacity);
   font-weight: normal;
 }
 maslo-slide pre div:not(:empty) {
@@ -165,34 +171,6 @@ maslo-slide pre div:not(:empty) {
 }
 maslo-slide pre div:not(:empty)::before {
   content: counter(line) ".";
-}
-maslo-slide code {
-  font-size: 25.6px;
-  line-height: 1.875;
-  font-family: input, monospace;
-  font-weight: bold;
-}
-maslo-slide a {
-  color: var(--link);
-  text-decoration: none;
-  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
-  transition: background-size 300ms, color 300ms;
-}
-maslo-slide a:focus,
-maslo-slide a:hover {
-  background-size: 100% 100%;
-}
-maslo-slide blockquote p::before {
-  content: open-quote;
-}
-maslo-slide blockquote p::after {
-  content: close-quote;
-}
-maslo-slide blockquote + p {
-  text-align: right;
-}
-maslo-slide blockquote + p::before {
-  content: "— ";
 }
 maslo-canvas {
   position: absolute;
@@ -210,10 +188,9 @@ body:has(maslo-canvas .cursor) {
   cursor: none;
 }
 maslo-deck[skin=light] {
-  --fg: #111;
   --bg: #ed9;
   --color: hsl(20, 100%, 20%);
-  --link: var(--fg);
+  color: #111;
   font-family: Lora, serif;
 }
 maslo-deck[skin=light] pre code.hljs {
@@ -290,25 +267,31 @@ maslo-deck[skin=light] .hljs-strong {
 maslo-deck[skin=light] .hljs-emphasis {
   font-style: italic;
 }
-maslo-deck[skin=light] ::marker {
-  color: rgba(0, 0, 0, 0.6);
+maslo-deck[skin=light] ::marker,
+maslo-deck[skin=light] pre div::before {
+  color: rgba(0 0 0 / 0.6);
+}
+maslo-deck[skin=light] maslo-slide > * {
+  margin-bottom: 0;
+}
+maslo-deck[skin=light] li + li,
+maslo-deck[skin=light] li ul,
+maslo-deck[skin=light] li ol,
+maslo-deck[skin=light] h1 {
+  margin-top: 0.5em;
 }
 maslo-deck[skin=light] h1 {
   color: var(--color);
   font-size: 200%;
-  margin: 0.375em 0;
-  line-height: 1.25;
-}
-maslo-deck[skin=light] a:hover,
-maslo-deck[skin=light] a:focus {
-  color: var(--bg);
+  line-height: 1;
 }
 maslo-deck[skin=light] pre {
   box-shadow: -4px 0 0 var(--color);
-  background-color: rgba(0, 0, 0, 0.1);
+  --tint: rgba(0 0 0 / 0.1);
+  background-color: var(--tint);
 }
 maslo-deck[skin=light] pre div:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--tint);
 }
 maslo-deck[skin=light] maslo-slide > * {
   margin-left: 80px;
@@ -318,6 +301,17 @@ maslo-deck[skin=light] maslo-slide > ul,
 maslo-deck[skin=light] maslo-slide > ol {
   margin-left: 0;
   padding-left: 80px;
+}
+maslo-deck[skin=light] a {
+  color: inherit;
+  text-decoration: none;
+  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+  transition: background-size 300ms, color 300ms;
+}
+maslo-deck[skin=light] a:focus,
+maslo-deck[skin=light] a:hover {
+  background-size: 100% 100%;
+  color: var(--bg);
 }
 @counter-style circle-empty {
   system: additive;
@@ -342,10 +336,9 @@ maslo-deck[skin=light] maslo-slide > ol {
 }
 maslo-deck[skin=dark] {
   font-family: Ubuntu, sans-serif;
+  color: #eee;
   --bg: #000;
-  --fg: #eee;
   --color: hsl(180, 50%, 50%);
-  --link: var(--fg);
 }
 maslo-deck[skin=dark] pre code.hljs {
   display: block;
@@ -459,6 +452,17 @@ maslo-deck[skin=dark] pre div:hover {
 maslo-deck[skin=dark] maslo-slide {
   background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
   background-position: 0 8px;
+}
+maslo-deck[skin=dark] a {
+  color: inherit;
+  text-decoration: none;
+  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+  transition: background-size 300ms, color 300ms;
+}
+maslo-deck[skin=dark] a:focus,
+maslo-deck[skin=dark] a:hover {
+  background-size: 100% 100%;
+  color: inherit;
 }
 @counter-style circle-empty {
   system: additive;
@@ -637,7 +641,7 @@ maslo-deck[skin=cvut] .hljs-link {
 }
 maslo-deck[skin=seznam] {
   --bg: #fff;
-  --fg: #141313;
+  color: #141313;
   --seznam: #de0000;
   --footer-height: 40px;
   font-family: Arial, sans-serif;
@@ -685,7 +689,6 @@ maslo-deck[skin=seznam] maslo-slide:last-of-type {
   background: url(img/seznam-2.png) 50% no-repeat;
 }
 maslo-deck[skin=seznam] maslo-slide:last-of-type h1 {
-  color: var(--fg);
   font-size: 100%;
   position: absolute;
   bottom: var(--footer-height);

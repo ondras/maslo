@@ -4,10 +4,9 @@
 
 maslo-deck[skin=dark] {
 	font-family: Ubuntu, sans-serif;
+	color: #eee;
 	--bg: #000;
-	--fg: #eee;
 	--color: hsl(180, 50%, 50%);
-	--link: var(--fg);
 
 	@version: "11.10.0";
 	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/vs2015.min.css");
@@ -42,7 +41,8 @@ maslo-deck[skin=dark] {
 		background-position: 0 (@u / 2);
 	}
 
-	.progress();
+	.fancy-link(var(--color), inherit);
+	.progress(var(--color));
 	.padding-lr(5);
 }
 

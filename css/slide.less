@@ -1,3 +1,8 @@
+@font-face { font-family: input; font-weight: normal; src: url(font/Input-Regular.ttf); }
+@font-face { font-family: input; font-weight: bold; src: url(font/Input-Bold.ttf); }
+@font-face { font-family: input; font-weight: normal; font-style: italic; src: url(font/Input-Italic.ttf); }
+@font-face { font-family: input; font-weight: bold; font-style: italic; src: url(font/Input-BoldItalic.ttf); }
+
 maslo-slide {
 	display: flex;
 	flex-direction: column;
@@ -5,23 +10,35 @@ maslo-slide {
 	width: var(--width);
 	aspect-ratio: var(--aspect-ratio);
 
-	font-size: (2 * @u);
+	font-size: 32px;
 	line-height: 1.5;
-	gap: 1em;
 
 	&:state(before) { counter-increment: slide slide-before; }
 	&:state(current) { counter-increment: slide slide-current; }
 	&:state(after) { counter-increment: slide slide-after; }
+
+	code {
+		font-family: input, monospace;
+		font-weight: bold;
+		font-size: 28px;
+		line-height: calc(48/28);
+	}
+
+	blockquote {
+		p::before { content: open-quote; }
+		p::after { content: close-quote; }
+
+		& + p {
+			text-align: right;
+			&::before { content: "— "; }
+		}
+	}
 
 	// FIXME
 	@media print {
 		position: relative; // anchor for absolute elements; is absolute itself for screen media
 		page-break-after: always;
 		-webkit-print-color-adjust: exact;
-	}
-	> * {
-		margin-top: 0 !important;
-		margin-bottom: 0 !important;
 	}
 
 }
