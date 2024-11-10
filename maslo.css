@@ -118,6 +118,25 @@ maslo-slide code {
   font-size: 87.5%;
   line-height: calc(48/28);
 }
+maslo-slide pre {
+  tab-size: 2;
+  counter-reset: line;
+}
+maslo-slide pre .line {
+  display: flex;
+}
+maslo-slide pre .line::before {
+  content: " ";
+  text-align: right;
+  flex: 0 0 4ch;
+  padding-right: 1ch;
+}
+maslo-slide pre .line:has(code:not(:empty)) {
+  counter-increment: line;
+}
+maslo-slide pre .line:has(code:not(:empty))::before {
+  content: counter(line) ".";
+}
 maslo-slide blockquote p::before {
   content: open-quote;
 }
@@ -155,25 +174,6 @@ maslo-slide p.questions {
   line-height: 1.5;
   font-weight: bold;
   text-shadow: 0 0 0.1em var(--color, currentColor);
-}
-maslo-slide pre {
-  tab-size: 2;
-  counter-reset: line;
-}
-maslo-slide pre .line {
-  display: flex;
-}
-maslo-slide pre .line::before {
-  content: " ";
-  text-align: right;
-  width: 4ch;
-  padding-right: 1ch;
-}
-maslo-slide pre .line:has(code:not(:empty)) {
-  counter-increment: line;
-}
-maslo-slide pre .line:has(code:not(:empty))::before {
-  content: counter(line) ".";
 }
 maslo-canvas {
   position: absolute;

@@ -25,6 +25,27 @@ maslo-slide {
 		line-height: calc(48/28);
 	}
 
+	pre {
+		tab-size: 2;
+		counter-reset: line;
+
+		.line {
+			display: flex;
+
+			&::before {
+				content: " "; // empty need some content as well to be visible
+				text-align: right;
+				flex: 0 0 4ch;
+				padding-right: 1ch;
+			}
+
+			&:has(code:not(:empty)) {
+				counter-increment: line;
+				&::before { content: counter(line) "."; }
+			}
+		}
+	}
+
 	blockquote {
 		p::before { content: open-quote; }
 		p::after { content: close-quote; }

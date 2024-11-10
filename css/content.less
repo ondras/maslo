@@ -18,25 +18,5 @@ maslo-slide {
 		font-weight: bold;
 		text-shadow: 0 0 0.1em var(--color, currentColor);
 	}
-
-	pre {
-		tab-size: 2;
-		counter-reset: line;
-
-		.line {
-			display: flex;
-
-			&::before {
-				content: " "; // empty need some content as well to be visible
-				text-align: right;
-				width: 4ch;
-				padding-right: 1ch;
-			}
-
-			&:has(code:not(:empty)) {
-				counter-increment: line;
-				&::before { content: counter(line) "."; }
-			}
-		}
-	}
 }
+
