@@ -24,10 +24,7 @@ export default class Slide extends HTMLElement {
 		});
 	}
 
-	get drawing() {
-		return !!this.querySelector("maslo-canvas");
-	}
-
+	get drawing() { return !!this.querySelector("maslo-canvas"); }
 	set drawing(drawing) {
 		if (drawing == this.drawing) { return; }
 
@@ -86,29 +83,13 @@ export default class Slide extends HTMLElement {
 	}
 
 	next() {
-		const { reveals } = this;
-		let firstHidden = reveals.find(node => node.hidden);
-		if (firstHidden) {
-			firstHidden.hidden = false;
-			return true;
-		} else {
-			return false;
-		}
+		let firstHidden = this.reveals.find(node => node.hidden);
+		if (firstHidden) { firstHidden.hidden = false; }
+		return firstHidden;
 	}
 
 	#reset() {
-		const { reveals } = this;
-		reveals.forEach(node => node.hidden = true);
+		this.reveals.forEach(node => node.hidden = true);
 	}
 }
 customElements.define("maslo-slide", Slide);
-
-function setSingleState(states, state) {
-	states.delete("before");
-	states.delete("after");
-	states.delete("current");
-	states.add(state);
-}
-
-function onSwipe(e) {
-}

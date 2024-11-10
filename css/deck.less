@@ -19,6 +19,7 @@ maslo-deck {
 	box-sizing: border-box;
 	background-color: var(--bg);
 	position: relative;
+	overflow: hidden;
 
 	* { box-sizing: inherit; }
 
@@ -53,8 +54,9 @@ maslo-deck {
 	&:state(overview) {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 32px;
-		justify-content: space-around;
+		--gap: 32px;
+		padding: var(--gap);
+		gap: var(--gap);
 		background-color: var(--overview-bg);
 
 		--thickness: calc(var(--overview-border) / var(--overview-scale));

@@ -7,6 +7,9 @@ export default class Deck extends HTMLElement {
 	#mode;
 	#internals = this.attachInternals();
 
+	get standalone() { return this.hasAttribute("standalone"); }
+	get slides() { return [...this.querySelectorAll("maslo-slide")]; }
+
 	constructor() {
 		super();
 		this.mode = "full";
@@ -16,10 +19,6 @@ export default class Deck extends HTMLElement {
 		let ro = new ResizeObserver(_ => syncScale(this));
 		ro.observe(this);
 	}
-
-	get standalone() { return this.hasAttribute("standalone"); }
-	get title() { return documentTitle; } // fixme
-	get slides() { return [...this.querySelectorAll("maslo-slide")]; }
 
 	get currentIndex() { return this.slides.indexOf(this.currentSlide); }
 	set currentIndex(index) {
@@ -32,25 +31,19 @@ export default class Deck extends HTMLElement {
 
 		// hide old, show new
 		slides.forEach((s, i) => {
-			if (i == index) {
-				s.show();
-			} else {
-				s.hide(i > index ? "after" : "before");
-			}
+			(i == index ? s.show() : s.hide(i > index ? "after" : "before"));
 		})
 
 		// publish
 		this.style.setProperty("--current", index+1);
 		if (standalone) { saveIndexToUrl(index); }
-		if (standalone) { document.title = `(${index+1}) ${this.title}`; }
+		if (standalone) { document.title = `(${index+1}) ${documentTitle}`; }
 
 		this.dispatchEvent(new CustomEvent("change"));
 	}
 
 	get currentSlide() { return this.querySelector("maslo-slide:state(current)"); }
 	set currentSlide(slide) { this.currentIndex = this.slides.indexOf(slide); }
-
-	get scale() { return Number(this.style.getPropertyValue("--scale")); }
 
 	get mode() { return this.#mode; }
 	set mode(mode) {
@@ -97,10 +90,8 @@ export default class Deck extends HTMLElement {
 		let processed = currentSlide.next();
 		if (!processed) { this.currentIndex++; }
 	}
-
 }
 customElements.define("maslo-deck", Deck);
-
 
 function getIndexFromUrl() {
 	let url = new URL(location.href);

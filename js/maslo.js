@@ -1,5 +1,6 @@
-import "./slide.js"; // FIXME register
-import "./deck.js"; // FIXME register
+// register components
+import "./slide.js";
+import "./deck.js";
 
 
 const META = {
@@ -14,4 +15,3 @@ link.rel = "stylesheet";
 link.href = new URL("maslo.css", document.currentScript.src).href;
 
 document.head.append(meta, link);
-
