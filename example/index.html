@@ -11,5 +11,21 @@
 		<template data-src="example.md" data-skin="light"></template>
 		<script src="https://cdn.jsdelivr.net/npm/ma-sl-o@2/maslo.min.js"></script>
 -->
+
+	<style>
+		@page {
+			margin: 0;
+			size: a4 landscape;
+		}
+
+		@media print {
+			maslo-slide {
+				margin: auto;
+				page-break-after: auto;
+				page-break-inside: avoid;
+			}
+		}
+	</style>
+
 	</body>
 </html>
