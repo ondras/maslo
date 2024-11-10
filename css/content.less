@@ -1,12 +1,10 @@
-@import "mixins.less";
-
 maslo-slide {
-	p.poster {
-		margin: 0;
-		height: 100%;
+	.maslo-poster {
+		flex: auto;
+		overflow: hidden;
+		&:only-child { margin: 0; }
 
 		img {
-			display: block;
 			width: 100%;
 			height: 100%;
 			object-fit: contain;
@@ -22,21 +20,23 @@ maslo-slide {
 	}
 
 	pre {
-		tab-size: var(--tab-size);
+		tab-size: 2;
 		counter-reset: line;
 
-		div::before {
-			content: " "; // empty need some content as well to be visible
-			display: inline-block;
-			text-align: right;
-			width: 4ch;
-			padding-right: @u;
-			font-weight: normal;
-		}
+		.line {
+			display: flex;
 
-		div:not(:empty) {
-			counter-increment: line;
-			&::before { content: counter(line) "."; }
+			&::before {
+				content: " "; // empty need some content as well to be visible
+				text-align: right;
+				width: 4ch;
+				padding-right: 1ch;
+			}
+
+			&:has(code:not(:empty)) {
+				counter-increment: line;
+				&::before { content: counter(line) "."; }
+			}
 		}
 	}
 }

@@ -1,52 +1,48 @@
-@import "../mixins.less";
+@import "mixins.less";
 
 maslo-deck[skin=seznam] {
 	--bg: #fff;
-	color: #141313;
 	--seznam: #de0000;
 	--footer-height: 40px;
+	color: #141313;
 	font-family: Arial, sans-serif;
+
+	a {
+		color: #00e;
+		text-decoration: none;
+	}
+
+	li + li, li ul, li ol { margin-top: 0.5em; }
 
 	h1 {
 		color: var(--seznam);
 		font-size: 150%;
 		line-height: 1;
-		margin: 0;
-		padding: 1em 0;
+		margin: 1em 0;
 	}
 
 	maslo-slide::after {
 		content: "";
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
+		margin-top: auto;
+		display: flex;
+		flex: none;
+		align-items: center;
 		height: var(--footer-height);
-		line-height: var(--footer-height);
 		padding: 0 80px;
 		font-size: 50%;
 		background-color: var(--seznam);
 		color: var(--bg);
 	}
-
-	maslo-slide:not(:first-of-type)::after {
-		content: "www.seznam.cz";
-	}
+	maslo-slide:not(:first-of-type)::after { content: "www.seznam.cz"; }
 
 	maslo-slide:first-of-type {
 		background:
 			url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat,
-			url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 3.5in no-repeat
+			url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 336px no-repeat
 		;
 
-		h1 {
-			font-size: 200%;
-		}
-
-		h2 {
-			font-size: 100%;
-		}
-
+		h1 { font-size: 200%; }
+		h2 { font-size: 100%; }
 		h3 {
 			font-size: 24px;
 			line-height: 2;
@@ -59,16 +55,20 @@ maslo-deck[skin=seznam] {
 		background: url(img/seznam-2.png) 50% no-repeat;
 
 		h1 {
+			color: inherit;
 			font-size: 100%;
-			position: absolute;
-			bottom: var(--footer-height);
+			order: 1;
+			margin-top: auto;
+		}
+
+		&::after {
+			order: 1;
+			margin-top: 0;
 		}
 	}
-
-	/* pismo prvni: 60/24/16, 40/24/18/12 */
 
 	@version: "11.10.0";
 	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/googlecode.min.css");
 
-	.padding-lr(5);
+	.padding-lr(80px);
 }

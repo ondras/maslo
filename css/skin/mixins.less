@@ -1,5 +1,3 @@
-@u: 16px;
-
 .google-font(@name, @widths: "400,400i,700,700i") {
 	@import (css) url("https://fonts.googleapis.com/css?family=@{name}:@{widths}&subset=latin,latin-ext");
 }
@@ -17,7 +15,7 @@
 
 	@media screen {
 		&::after {
-			font-size: (1.25 * @u);
+			font-size: 20px;
 			content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
 			color: @color;
 			display: block;
@@ -30,8 +28,7 @@
 	}
 }
 
-.padding-lr(@num) {
-	@margin: (@num * @u);
+.padding-lr(@margin) {
 	maslo-slide {
 		> * {
 			margin-left: @margin;

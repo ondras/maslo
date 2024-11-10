@@ -1,4 +1,4 @@
-@import "../mixins.less";
+@import "mixins.less";
 
 .google-font("Ubuntu");
 
@@ -30,7 +30,7 @@ maslo-deck[skin=dark] {
 	}
 
 	maslo-slide {
-		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent @u;
+		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px;
 
 		background-image:
 			radial-gradient(rgb(0 0 0 / 0.75), rgb(0 0 0 / 1)),
@@ -41,5 +41,5 @@ maslo-deck[skin=dark] {
 
 	.fancy-link(var(--color), inherit);
 	.progress(var(--color));
-	.padding-lr(5);
+	.padding-lr(80px);
 }

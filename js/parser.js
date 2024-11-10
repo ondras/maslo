@@ -4,13 +4,26 @@ import Slide from "./slide.js";
 import hljs from "highlight.js/lib/common";
 
 
+function splitLines(str) {
+	let lines = str.trim().split("\n");
+	let openSpans = [];
+
+	return lines.map(line => {
+		let prefix = openSpans.join("");
+		let spans = line.match(/<\/?span.*?>/g) || [];
+		spans.forEach(span => {
+			(span.startsWith("</") ? openSpans.pop() : openSpans.push(span));
+		});
+		let suffix = openSpans.map(_ => "</span>").join("");
+		return prefix + line + suffix;
+	});
+}
+
 function highlight(str, language) {
-	if (language && hljs.getLanguage(language)) {
-		let html = hljs.highlight(str, {language}).value;
-		return html.replace(/([^\n]*)\n/g, `<div>$1</div>`);
-	} else {
-		return "";
-	}
+	let html = str;
+	if (language && hljs.getLanguage(language)) { html = hljs.highlight(str, {language}).value; }
+	let lines = splitLines(html).map(line => `<div class="line"><code>${line}</code></div>`);
+	return `<pre>${lines.join("")}</pre>`;
 }
 
 export function parse(source) {

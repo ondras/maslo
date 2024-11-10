@@ -12,9 +12,10 @@
 - items
 
 ```js
-function x() {
-  alert(1+2+"ahoj");
-}
+let x = `aaa${2+3}
+	${1+1}
+	bbb
+`;
 ```
 
 ---
@@ -47,7 +48,13 @@ function x() {
 
 ---
 
-![](poster.png) {.poster}
+![](poster.png) {.maslo-poster}
+
+---
+
+# asd
+
+![](poster.png) {.maslo-poster}
 
 ---
 
