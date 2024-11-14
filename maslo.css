@@ -154,8 +154,8 @@ maslo-slide blockquote + p::before {
 @media print {
   maslo-slide {
     position: relative;
-    page-break-after: always;
-    -webkit-print-color-adjust: exact;
+    margin: auto;
+    page-break-inside: avoid;
   }
 }
 maslo-slide .maslo-poster {
@@ -732,4 +732,8 @@ maslo-deck[skin=seznam] maslo-slide > ul,
 maslo-deck[skin=seznam] maslo-slide > ol {
   margin-left: 0;
   padding-left: 80px;
+}
+@page {
+  margin: 0;
+  size: a4 landscape;
 }
