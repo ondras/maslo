@@ -120,7 +120,7 @@ maslo-slide pre .line {
 maslo-slide pre .line::before {
   content: " ";
   text-align: right;
-  flex: 0 0 4ch;
+  flex: 0 0 3ch;
   padding-right: 1ch;
 }
 maslo-slide pre .line:has(code:not(:empty)) {
