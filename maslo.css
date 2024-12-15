@@ -36,16 +36,6 @@ maslo-deck * {
     visibility: hidden;
   }
 }
-@media screen and (orientation: portrait) and (max-width: 768px) {
-  maslo-deck:state(full)::before {
-    content: "↻";
-    font-weight: bold;
-    position: fixed;
-    right: 0.5em;
-    top: 0.5em;
-    font-size: 200%;
-  }
-}
 maslo-deck:state(overview) {
   display: flex;
   flex-wrap: wrap;
@@ -154,8 +144,8 @@ maslo-slide blockquote + p::before {
 @media print {
   maslo-slide {
     position: relative;
-    page-break-after: always;
-    -webkit-print-color-adjust: exact;
+    margin: auto;
+    page-break-inside: avoid;
   }
 }
 maslo-slide .maslo-poster {
@@ -732,4 +722,8 @@ maslo-deck[skin=seznam] maslo-slide > ul,
 maslo-deck[skin=seznam] maslo-slide > ol {
   margin-left: 0;
   padding-left: 80px;
+}
+@page {
+  margin: 0;
+  size: a4 landscape;
 }
