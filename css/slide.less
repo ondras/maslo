@@ -19,7 +19,7 @@ maslo-slide {
 	&:state(after) { counter-increment: slide slide-after; }
 
 	code {
-		font-family: input, monospace;
+		font-family: var(--monospace);
 		font-weight: bold;
 		font-size: 87.5%;
 		line-height: calc(48/28);
@@ -33,6 +33,7 @@ maslo-slide {
 			display: flex;
 
 			&::before {
+				font-family: var(--monospace);
 				content: " "; // empty need some content as well to be visible
 				text-align: right;
 				flex: 0 0 3ch;
