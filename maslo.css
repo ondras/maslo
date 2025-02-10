@@ -547,6 +547,8 @@ maslo-deck[skin=cvut] maslo-slide::before {
   position: absolute;
   right: 8px;
   bottom: var(--footer-height);
+  height: 100px;
+  overflow: hidden;
 }
 maslo-deck[skin=cvut] maslo-slide::after {
   content: "ondrej.zara@firma.seznam.cz";
