@@ -34,10 +34,14 @@ maslo-deck[skin=cvut] {
 	}
 
 	maslo-slide::before {
-		content: url("img/cvut.png");
+		content: "";
+		background-image: url("img/cvut.png");
+		background-repeat: no-repeat;
 		position: absolute;
+		width: 131px;
+		height: 100px;
 		right: 8px;
-		bottom: var(--footer-height);
+		bottom: calc(var(--footer-height) + 8px);
 	}
 
 	maslo-slide::after {
