@@ -22,8 +22,8 @@ function splitLines(str) {
 function highlight(str, language) {
 	let html = str;
 	if (language && hljs.getLanguage(language)) { html = hljs.highlight(str, {language}).value; }
-	let lines = splitLines(html).map(line => `<div class="line"><code>${line}</code></div>`);
-	return `<pre>${lines.join("")}</pre>`;
+	let lines = splitLines(html).map(line => `<div class="line">${line}</div>`);
+	return lines.join("");
 }
 
 export function parse(source) {

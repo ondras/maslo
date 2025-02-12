@@ -11,7 +11,7 @@
 - some
 - items
 
-```js
+```js {id=asd}
 let x = `aaa${2+3}
 	${1+1}
 	bbb

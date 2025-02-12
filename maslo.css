@@ -13,7 +13,6 @@ maslo-deck {
   --scale: 1;
   --current: 0;
   --total: 0;
-  --monospace: input, monospace;
   counter-reset: slide slide-before slide-current slide-after;
   box-sizing: border-box;
   background-color: var(--bg);
@@ -106,7 +105,7 @@ maslo-slide:state(after) {
   counter-increment: slide slide-after;
 }
 maslo-slide code {
-  font-family: var(--monospace);
+  font-family: input, monospace;
   font-weight: bold;
   font-size: 87.5%;
   line-height: calc(48/28);
@@ -119,16 +118,16 @@ maslo-slide pre .line {
   display: flex;
 }
 maslo-slide pre .line::before {
-  font-family: var(--monospace);
+  font-weight: normal;
   content: " ";
   text-align: right;
   flex: 0 0 3ch;
   padding-right: 1ch;
 }
-maslo-slide pre .line:has(code:not(:empty)) {
+maslo-slide pre .line:not(:empty) {
   counter-increment: line;
 }
-maslo-slide pre .line:has(code:not(:empty))::before {
+maslo-slide pre .line:not(:empty)::before {
   content: counter(line) ".";
 }
 maslo-slide blockquote p::before {
