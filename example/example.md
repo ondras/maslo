@@ -16,6 +16,12 @@ let x = `aaa${2+3}
 	${1+1}
 	bbb
 `;
+
+alert()
+```
+
+```css
+body { margin: 2px 3px; }
 ```
 
 ---

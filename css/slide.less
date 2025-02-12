@@ -30,13 +30,12 @@ maslo-slide {
 		counter-reset: line;
 
 		.line {
-			display: flex;
-
 			&::before {
 				font-weight: normal;
-				content: " "; // empty need some content as well to be visible
+				content: ""; // empty need some content as well to be visible
 				text-align: right;
-				flex: 0 0 3ch;
+				display: inline-block;
+				width: 3ch;
 				padding-right: 1ch;
 			}
 

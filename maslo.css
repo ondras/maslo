@@ -114,14 +114,12 @@ maslo-slide pre {
   tab-size: 2;
   counter-reset: line;
 }
-maslo-slide pre .line {
-  display: flex;
-}
 maslo-slide pre .line::before {
   font-weight: normal;
-  content: " ";
+  content: "";
   text-align: right;
-  flex: 0 0 3ch;
+  display: inline-block;
+  width: 3ch;
   padding-right: 1ch;
 }
 maslo-slide pre .line:not(:empty) {
