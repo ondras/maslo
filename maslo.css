@@ -1,732 +1,734 @@
-@import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
-maslo-deck {
-  --width: 1024px;
-  --aspect-ratio: 4 / 3;
-  --brush: 12;
-  --highlight: rgba(255 20 20 / 0.8);
-  --overview-scale: 0.3;
-  --overview-border: 4px;
-  --overview-bg: #666;
-  --bg: Canvas;
-  --scale: 1;
-  --current: 0;
-  --total: 0;
-  counter-reset: slide slide-before slide-current slide-after;
-  box-sizing: border-box;
-  background-color: var(--bg);
-  position: relative;
-  overflow: hidden;
-}
-maslo-deck * {
-  box-sizing: inherit;
-}
-@media screen {
-  maslo-deck:state(full) {
-    display: block;
-  }
-  maslo-deck:state(full) maslo-slide {
-    position: absolute;
-    margin: auto;
-    inset: 0;
-    zoom: var(--scale);
-  }
-  maslo-deck:state(full) maslo-slide:not(:state(current)) {
-    visibility: hidden;
-  }
-}
-maslo-deck:state(overview) {
-  display: flex;
-  flex-wrap: wrap;
-  --gap: 32px;
-  padding: var(--gap);
-  gap: var(--gap);
-  background-color: var(--overview-bg);
-  --thickness: calc(var(--overview-border) / var(--overview-scale));
-}
-maslo-deck:state(overview) maslo-slide {
-  zoom: var(--overview-scale);
-  background-color: var(--bg);
-  border-radius: var(--thickness);
-  box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
-}
-maslo-deck:state(overview) maslo-slide:hover {
-  outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
-}
-maslo-deck:state(overview) maslo-slide:state(current) {
-  outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
-}
-maslo-deck[standalone] {
-  width: 100dvw;
-  min-height: 100dvh;
-}
-body:has(maslo-deck[standalone]) {
-  margin: 0;
-}
-@font-face {
-  font-family: input;
-  font-weight: normal;
-  src: url(font/Input-Regular.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: bold;
-  src: url(font/Input-Bold.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: normal;
-  font-style: italic;
-  src: url(font/Input-Italic.ttf);
-}
-@font-face {
-  font-family: input;
-  font-weight: bold;
-  font-style: italic;
-  src: url(font/Input-BoldItalic.ttf);
-}
-maslo-slide {
-  display: flex;
-  flex-direction: column;
-  width: var(--width);
-  aspect-ratio: var(--aspect-ratio);
-  overflow: hidden;
-  position: relative;
-  /* anchor for potentially absolute content */
-  font-size: 32px;
-  line-height: 1.5;
-}
-maslo-slide:state(before) {
-  counter-increment: slide slide-before;
-}
-maslo-slide:state(current) {
-  counter-increment: slide slide-current;
-}
-maslo-slide:state(after) {
-  counter-increment: slide slide-after;
-}
-maslo-slide code {
-  font-family: input, monospace;
-  font-weight: bold;
-  font-size: 87.5%;
-  line-height: calc(48/28);
-}
-maslo-slide pre {
-  tab-size: 2;
-  counter-reset: line;
-}
-maslo-slide pre .line::before {
-  font-weight: normal;
-  content: "";
-  text-align: right;
-  display: inline-block;
-  width: 3ch;
-  padding-right: 1ch;
-}
-maslo-slide pre .line:not(:empty) {
-  counter-increment: line;
-}
-maslo-slide pre .line:not(:empty)::before {
-  content: counter(line) ".";
-}
-maslo-slide blockquote p::before {
-  content: open-quote;
-}
-maslo-slide blockquote p::after {
-  content: close-quote;
-}
-maslo-slide blockquote + p {
-  text-align: right;
-}
-maslo-slide blockquote + p::before {
-  content: "— ";
-}
-@media print {
-  maslo-slide {
+@layer maslo {
+  @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
+  @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
+  @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
+  maslo-deck {
+    --width: 1024px;
+    --aspect-ratio: 4 / 3;
+    --brush: 12;
+    --highlight: rgba(255 20 20 / 0.8);
+    --overview-scale: 0.3;
+    --overview-border: 4px;
+    --overview-bg: #666;
+    --bg: Canvas;
+    --scale: 1;
+    --current: 0;
+    --total: 0;
+    counter-reset: slide slide-before slide-current slide-after;
+    box-sizing: border-box;
+    background-color: var(--bg);
     position: relative;
-    margin: auto;
-    page-break-inside: avoid;
+    overflow: hidden;
   }
-}
-maslo-slide .maslo-poster {
-  flex: auto;
-  overflow: hidden;
-}
-maslo-slide .maslo-poster:only-child {
-  margin: 0;
-}
-maslo-slide .maslo-poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-maslo-slide p.questions {
-  text-align: center;
-  font-size: 500%;
-  line-height: 1.5;
-  font-weight: bold;
-  text-shadow: 0 0 0.1em var(--color, currentColor);
-}
-maslo-canvas {
-  position: absolute;
-  inset: 0;
-}
-maslo-canvas .cursor {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  background-color: var(--highlight);
-  border-radius: 50%;
-  width: calc(1.5px * var(--brush));
-  height: calc(1.5px * var(--brush));
-}
-body:has(maslo-canvas .cursor) {
-  cursor: none;
-}
-maslo-deck[skin=light] {
-  --bg: #ed9;
-  --color: hsl(20, 100%, 20%);
-  color: #111;
-  font-family: Lora, serif;
-}
-maslo-deck[skin=light] pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
-}
-maslo-deck[skin=light] code.hljs {
-  padding: 3px 5px;
-}
-maslo-deck[skin=light] .hljs {
-  background: #fff;
-  color: #000;
-}
-maslo-deck[skin=light] .hljs-comment,
-maslo-deck[skin=light] .hljs-quote {
-  color: #800;
-}
-maslo-deck[skin=light] .hljs-keyword,
-maslo-deck[skin=light] .hljs-name,
-maslo-deck[skin=light] .hljs-section,
-maslo-deck[skin=light] .hljs-selector-tag,
-maslo-deck[skin=light] .hljs-title {
-  color: #008;
-}
-maslo-deck[skin=light] .hljs-template-variable,
-maslo-deck[skin=light] .hljs-variable {
-  color: #660;
-}
-maslo-deck[skin=light] .hljs-regexp,
-maslo-deck[skin=light] .hljs-selector-attr,
-maslo-deck[skin=light] .hljs-selector-pseudo,
-maslo-deck[skin=light] .hljs-string {
-  color: #080;
-}
-maslo-deck[skin=light] .hljs-bullet,
-maslo-deck[skin=light] .hljs-link,
-maslo-deck[skin=light] .hljs-literal,
-maslo-deck[skin=light] .hljs-meta,
-maslo-deck[skin=light] .hljs-number,
-maslo-deck[skin=light] .hljs-symbol {
-  color: #066;
-}
-maslo-deck[skin=light] .hljs-attr,
-maslo-deck[skin=light] .hljs-built_in,
-maslo-deck[skin=light] .hljs-doctag,
-maslo-deck[skin=light] .hljs-params,
-maslo-deck[skin=light] .hljs-title,
-maslo-deck[skin=light] .hljs-type {
-  color: #606;
-}
-maslo-deck[skin=light] .hljs-attribute,
-maslo-deck[skin=light] .hljs-subst {
-  color: #000;
-}
-maslo-deck[skin=light] .hljs-formula {
-  background-color: #eee;
-  font-style: italic;
-}
-maslo-deck[skin=light] .hljs-selector-class,
-maslo-deck[skin=light] .hljs-selector-id {
-  color: #9b703f;
-}
-maslo-deck[skin=light] .hljs-addition {
-  background-color: #baeeba;
-}
-maslo-deck[skin=light] .hljs-deletion {
-  background-color: #ffc8bd;
-}
-maslo-deck[skin=light] .hljs-doctag,
-maslo-deck[skin=light] .hljs-strong {
-  font-weight: 700;
-}
-maslo-deck[skin=light] .hljs-emphasis {
-  font-style: italic;
-}
-maslo-deck[skin=light] ::marker,
-maslo-deck[skin=light] pre div::before {
-  color: rgba(0 0 0 / 0.6);
-}
-maslo-deck[skin=light] maslo-slide > * {
-  margin-bottom: 0;
-}
-maslo-deck[skin=light] li + li,
-maslo-deck[skin=light] li ul,
-maslo-deck[skin=light] li ol,
-maslo-deck[skin=light] h1 {
-  margin-top: 0.5em;
-}
-maslo-deck[skin=light] h1 {
-  color: var(--color);
-  font-size: 200%;
-  line-height: 1;
-}
-maslo-deck[skin=light] pre {
-  box-shadow: -4px 0 0 var(--color);
-  --tint: rgba(0 0 0 / 0.1);
-  background-color: var(--tint);
-}
-maslo-deck[skin=light] pre div:hover {
-  background-color: var(--tint);
-}
-maslo-deck[skin=light] maslo-slide > * {
-  margin-left: 80px;
-  margin-right: 80px;
-}
-maslo-deck[skin=light] maslo-slide > ul,
-maslo-deck[skin=light] maslo-slide > ol {
-  margin-left: 0;
-  padding-left: 80px;
-}
-maslo-deck[skin=light] a {
-  color: inherit;
-  text-decoration: none;
-  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
-  transition: background-size 300ms, color 300ms;
-}
-maslo-deck[skin=light] a:focus,
-maslo-deck[skin=light] a:hover {
-  background-size: 100% 100%;
-  color: var(--bg);
-}
-@counter-style circle-empty {
-  system: additive;
-  additive-symbols: 1 "○", 0 "";
-}
-@counter-style circle-full {
-  system: additive;
-  additive-symbols: 1 "●", 0 "";
-}
-@media screen {
-  maslo-deck[skin=light]::after {
-    font-size: 20px;
-    content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
-    color: var(--color);
-    display: block;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  maslo-deck * {
+    box-sizing: inherit;
   }
-}
-maslo-deck[skin=dark] {
-  --bg: #000;
-  --color: hsl(180, 50%, 50%);
-  color: #eee;
-  font-family: Ubuntu, sans-serif;
-}
-maslo-deck[skin=dark] pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
-}
-maslo-deck[skin=dark] code.hljs {
-  padding: 3px 5px;
-}
-maslo-deck[skin=dark] .hljs {
-  background: #1e1e1e;
-  color: #dcdcdc;
-}
-maslo-deck[skin=dark] .hljs-keyword,
-maslo-deck[skin=dark] .hljs-literal,
-maslo-deck[skin=dark] .hljs-name,
-maslo-deck[skin=dark] .hljs-symbol {
-  color: #569cd6;
-}
-maslo-deck[skin=dark] .hljs-link {
-  color: #569cd6;
-  text-decoration: underline;
-}
-maslo-deck[skin=dark] .hljs-built_in,
-maslo-deck[skin=dark] .hljs-type {
-  color: #4ec9b0;
-}
-maslo-deck[skin=dark] .hljs-class,
-maslo-deck[skin=dark] .hljs-number {
-  color: #b8d7a3;
-}
-maslo-deck[skin=dark] .hljs-meta .hljs-string,
-maslo-deck[skin=dark] .hljs-string {
-  color: #d69d85;
-}
-maslo-deck[skin=dark] .hljs-regexp,
-maslo-deck[skin=dark] .hljs-template-tag {
-  color: #9a5334;
-}
-maslo-deck[skin=dark] .hljs-formula,
-maslo-deck[skin=dark] .hljs-function,
-maslo-deck[skin=dark] .hljs-params,
-maslo-deck[skin=dark] .hljs-subst,
-maslo-deck[skin=dark] .hljs-title {
-  color: #dcdcdc;
-}
-maslo-deck[skin=dark] .hljs-comment,
-maslo-deck[skin=dark] .hljs-quote {
-  color: #57a64a;
-  font-style: italic;
-}
-maslo-deck[skin=dark] .hljs-doctag {
-  color: #608b4e;
-}
-maslo-deck[skin=dark] .hljs-meta,
-maslo-deck[skin=dark] .hljs-meta .hljs-keyword,
-maslo-deck[skin=dark] .hljs-tag {
-  color: #9b9b9b;
-}
-maslo-deck[skin=dark] .hljs-template-variable,
-maslo-deck[skin=dark] .hljs-variable {
-  color: #bd63c5;
-}
-maslo-deck[skin=dark] .hljs-attr,
-maslo-deck[skin=dark] .hljs-attribute {
-  color: #9cdcfe;
-}
-maslo-deck[skin=dark] .hljs-section {
-  color: gold;
-}
-maslo-deck[skin=dark] .hljs-emphasis {
-  font-style: italic;
-}
-maslo-deck[skin=dark] .hljs-strong {
-  font-weight: 700;
-}
-maslo-deck[skin=dark] .hljs-bullet,
-maslo-deck[skin=dark] .hljs-selector-attr,
-maslo-deck[skin=dark] .hljs-selector-class,
-maslo-deck[skin=dark] .hljs-selector-id,
-maslo-deck[skin=dark] .hljs-selector-pseudo,
-maslo-deck[skin=dark] .hljs-selector-tag {
-  color: #d7ba7d;
-}
-maslo-deck[skin=dark] .hljs-addition {
-  background-color: #144212;
-  display: inline-block;
-  width: 100%;
-}
-maslo-deck[skin=dark] .hljs-deletion {
-  background-color: #600;
-  display: inline-block;
-  width: 100%;
-}
-maslo-deck[skin=dark] ::marker,
-maslo-deck[skin=dark] pre div::before {
-  color: rgba(255 255 255 / 0.6);
-}
-maslo-deck[skin=dark] maslo-slide > * {
-  margin-bottom: 0;
-}
-maslo-deck[skin=dark] li + li,
-maslo-deck[skin=dark] li ul,
-maslo-deck[skin=dark] li ol,
-maslo-deck[skin=dark] h1 {
-  margin-top: 0.5em;
-}
-maslo-deck[skin=dark] h1 {
-  color: var(--color);
-  font-size: 200%;
-  line-height: 1;
-}
-maslo-deck[skin=dark] pre {
-  box-shadow: -4px 0 0 var(--color);
-  --tint: rgba(255, 255, 255, 0.1);
-  background-color: var(--tint);
-}
-maslo-deck[skin=dark] pre div:hover {
-  background-color: var(--tint);
-}
-maslo-deck[skin=dark] maslo-slide {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
-}
-maslo-deck[skin=dark] a {
-  color: inherit;
-  text-decoration: none;
-  background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
-  transition: background-size 300ms, color 300ms;
-}
-maslo-deck[skin=dark] a:focus,
-maslo-deck[skin=dark] a:hover {
-  background-size: 100% 100%;
-  color: inherit;
-}
-@counter-style circle-empty {
-  system: additive;
-  additive-symbols: 1 "○", 0 "";
-}
-@counter-style circle-full {
-  system: additive;
-  additive-symbols: 1 "●", 0 "";
-}
-@media screen {
-  maslo-deck[skin=dark]::after {
-    font-size: 20px;
-    content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
-    color: var(--color);
-    display: block;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  @media screen {
+    maslo-deck:state(full) {
+      display: block;
+    }
+    maslo-deck:state(full) maslo-slide {
+      position: absolute;
+      margin: auto;
+      inset: 0;
+      zoom: var(--scale);
+    }
+    maslo-deck:state(full) maslo-slide:not(:state(current)) {
+      visibility: hidden;
+    }
   }
-}
-maslo-deck[skin=dark] maslo-slide > * {
-  margin-left: 80px;
-  margin-right: 80px;
-}
-maslo-deck[skin=dark] maslo-slide > ul,
-maslo-deck[skin=dark] maslo-slide > ol {
-  margin-left: 0;
-  padding-left: 80px;
-}
-maslo-deck[skin=cvut] {
-  --footer-height: 32px;
-  --color: #0063a8;
-  --aspect-ratio: 16 / 9;
-  --padding-lr: 40px;
-  font-family: Ubuntu, sans-serif;
-}
-maslo-deck[skin=cvut] maslo-slide {
-  font-size: 20px;
-}
-maslo-deck[skin=cvut] maslo-slide > * {
-  margin-bottom: 0;
-}
-maslo-deck[skin=cvut] li + li,
-maslo-deck[skin=cvut] li ul,
-maslo-deck[skin=cvut] li ol,
-maslo-deck[skin=cvut] h1 {
-  margin-top: 0.5em;
-}
-maslo-deck[skin=cvut] maslo-slide > * {
-  margin-left: var(--padding-lr);
-  margin-right: var(--padding-lr);
-}
-maslo-deck[skin=cvut] maslo-slide > ul,
-maslo-deck[skin=cvut] maslo-slide > ol {
-  margin-left: 0;
-  padding-left: var(--padding-lr);
-}
-maslo-deck[skin=cvut] h1 {
-  background-color: #231F20;
-  color: var(--bg);
-  padding-top: 12px;
-  padding-bottom: 12px;
-  margin: 0;
-  line-height: 1;
-  font-size: 150%;
-}
-maslo-deck[skin=cvut] h1,
-maslo-deck[skin=cvut] maslo-slide::after {
-  padding-left: var(--padding-lr);
-  padding-right: var(--padding-lr);
-}
-maslo-deck[skin=cvut] maslo-slide::before {
-  content: "";
-  background-image: url("img/cvut.png");
-  background-repeat: no-repeat;
-  position: absolute;
-  width: 131px;
-  height: 100px;
-  right: 8px;
-  bottom: calc(var(--footer-height) + 8px);
-}
-maslo-deck[skin=cvut] maslo-slide::after {
-  content: "ondrej.zara@firma.seznam.cz";
-  margin-top: auto;
-  display: flex;
-  flex: none;
-  align-items: center;
-  height: var(--footer-height);
-  background-color: var(--color);
-  color: var(--bg);
-  font-size: 70%;
-}
-maslo-deck[skin=cvut] pre {
-  background-color: #e0e0e0;
-  border-radius: 8px;
-  padding: 8px 0;
-}
-maslo-deck[skin=cvut] pre div:hover {
-  background-color: #d0d0d0;
-}
-maslo-deck[skin=cvut] pre code.hljs {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
-}
-maslo-deck[skin=cvut] code.hljs {
-  padding: 3px 5px;
-}
-maslo-deck[skin=cvut] .hljs {
-  color: #383a42;
-  background: #fafafa;
-}
-maslo-deck[skin=cvut] .hljs-comment,
-maslo-deck[skin=cvut] .hljs-quote {
-  color: #a0a1a7;
-  font-style: italic;
-}
-maslo-deck[skin=cvut] .hljs-doctag,
-maslo-deck[skin=cvut] .hljs-formula,
-maslo-deck[skin=cvut] .hljs-keyword {
-  color: #a626a4;
-}
-maslo-deck[skin=cvut] .hljs-deletion,
-maslo-deck[skin=cvut] .hljs-name,
-maslo-deck[skin=cvut] .hljs-section,
-maslo-deck[skin=cvut] .hljs-selector-tag,
-maslo-deck[skin=cvut] .hljs-subst {
-  color: #e45649;
-}
-maslo-deck[skin=cvut] .hljs-literal {
-  color: #0184bb;
-}
-maslo-deck[skin=cvut] .hljs-addition,
-maslo-deck[skin=cvut] .hljs-attribute,
-maslo-deck[skin=cvut] .hljs-meta .hljs-string,
-maslo-deck[skin=cvut] .hljs-regexp,
-maslo-deck[skin=cvut] .hljs-string {
-  color: #50a14f;
-}
-maslo-deck[skin=cvut] .hljs-attr,
-maslo-deck[skin=cvut] .hljs-number,
-maslo-deck[skin=cvut] .hljs-selector-attr,
-maslo-deck[skin=cvut] .hljs-selector-class,
-maslo-deck[skin=cvut] .hljs-selector-pseudo,
-maslo-deck[skin=cvut] .hljs-template-variable,
-maslo-deck[skin=cvut] .hljs-type,
-maslo-deck[skin=cvut] .hljs-variable {
-  color: #986801;
-}
-maslo-deck[skin=cvut] .hljs-bullet,
-maslo-deck[skin=cvut] .hljs-link,
-maslo-deck[skin=cvut] .hljs-meta,
-maslo-deck[skin=cvut] .hljs-selector-id,
-maslo-deck[skin=cvut] .hljs-symbol,
-maslo-deck[skin=cvut] .hljs-title {
-  color: #4078f2;
-}
-maslo-deck[skin=cvut] .hljs-built_in,
-maslo-deck[skin=cvut] .hljs-class .hljs-title,
-maslo-deck[skin=cvut] .hljs-title.class_ {
-  color: #c18401;
-}
-maslo-deck[skin=cvut] .hljs-emphasis {
-  font-style: italic;
-}
-maslo-deck[skin=cvut] .hljs-strong {
-  font-weight: 700;
-}
-maslo-deck[skin=cvut] .hljs-link {
-  text-decoration: underline;
-}
-@media screen {
-  maslo-deck[skin=cvut]::after {
+  maslo-deck:state(overview) {
+    display: flex;
+    flex-wrap: wrap;
+    --gap: 32px;
+    padding: var(--gap);
+    gap: var(--gap);
+    background-color: var(--overview-bg);
+    --thickness: calc(var(--overview-border) / var(--overview-scale));
+  }
+  maslo-deck:state(overview) maslo-slide {
+    zoom: var(--overview-scale);
+    background-color: var(--bg);
+    border-radius: var(--thickness);
+    box-shadow: 0 var(--thickness) calc(2 * var(--thickness)) rgba(0, 0, 0, 0.6);
+  }
+  maslo-deck:state(overview) maslo-slide:hover {
+    outline: var(--thickness) solid rgba(255, 255, 255, 0.25);
+  }
+  maslo-deck:state(overview) maslo-slide:state(current) {
+    outline: var(--thickness) solid rgba(255, 255, 255, 0.75);
+  }
+  maslo-deck[standalone] {
+    width: 100dvw;
+    min-height: 100dvh;
+  }
+  body:has(maslo-deck[standalone]) {
+    margin: 0;
+  }
+  @font-face {
+    font-family: input;
+    font-weight: normal;
+    src: url(font/Input-Regular.ttf);
+  }
+  @font-face {
+    font-family: input;
+    font-weight: bold;
+    src: url(font/Input-Bold.ttf);
+  }
+  @font-face {
+    font-family: input;
+    font-weight: normal;
+    font-style: italic;
+    src: url(font/Input-Italic.ttf);
+  }
+  @font-face {
+    font-family: input;
+    font-weight: bold;
+    font-style: italic;
+    src: url(font/Input-BoldItalic.ttf);
+  }
+  maslo-slide {
+    display: flex;
+    flex-direction: column;
+    width: var(--width);
+    aspect-ratio: var(--aspect-ratio);
+    overflow: hidden;
+    position: relative;
+    /* anchor for potentially absolute content */
+    font-size: 32px;
+    line-height: 1.5;
+  }
+  maslo-slide:state(before) {
+    counter-increment: slide slide-before;
+  }
+  maslo-slide:state(current) {
+    counter-increment: slide slide-current;
+  }
+  maslo-slide:state(after) {
+    counter-increment: slide slide-after;
+  }
+  maslo-slide code {
+    font-family: input, monospace;
+    font-weight: bold;
+    font-size: 87.5%;
+    line-height: calc(48/28);
+  }
+  maslo-slide pre {
+    tab-size: 2;
+    counter-reset: line;
+  }
+  maslo-slide pre .line::before {
+    font-weight: normal;
     content: "";
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    background-color: #fff;
-    transition: width 1s;
-    box-shadow: 0 0 2px 1px #fff;
-    width: calc(100% * var(--current) / var(--total));
+    text-align: right;
+    display: inline-block;
+    width: 3ch;
+    padding-right: 1ch;
   }
-}
-maslo-deck[skin=seznam] {
-  --bg: #fff;
-  --seznam: #de0000;
-  --footer-height: 40px;
-  color: #141313;
-  font-family: Arial, sans-serif;
-}
-maslo-deck[skin=seznam] a {
-  color: #00e;
-  text-decoration: none;
-}
-maslo-deck[skin=seznam] li + li,
-maslo-deck[skin=seznam] li ul,
-maslo-deck[skin=seznam] li ol {
-  margin-top: 0.5em;
-}
-maslo-deck[skin=seznam] h1 {
-  color: var(--seznam);
-  font-size: 150%;
-  line-height: 1;
-  margin: 1em 0;
-}
-maslo-deck[skin=seznam] maslo-slide::after {
-  content: "";
-  margin-top: auto;
-  display: flex;
-  flex: none;
-  align-items: center;
-  height: var(--footer-height);
-  padding: 0 80px;
-  font-size: 50%;
-  background-color: var(--seznam);
-  color: var(--bg);
-}
-maslo-deck[skin=seznam] maslo-slide:not(:first-of-type)::after {
-  content: "www.seznam.cz";
-}
-maslo-deck[skin=seznam] maslo-slide:first-of-type {
-  background: url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat, url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 336px no-repeat;
-}
-maslo-deck[skin=seznam] maslo-slide:first-of-type h1 {
-  font-size: 200%;
-}
-maslo-deck[skin=seznam] maslo-slide:first-of-type h2 {
-  font-size: 100%;
-}
-maslo-deck[skin=seznam] maslo-slide:first-of-type h3 {
-  font-size: 24px;
-  line-height: 2;
-  color: #3c3c3c;
-  font-weight: normal;
-}
-maslo-deck[skin=seznam] maslo-slide:last-of-type {
-  background: url(img/seznam-2.png) 50% no-repeat;
-}
-maslo-deck[skin=seznam] maslo-slide:last-of-type h1 {
-  color: inherit;
-  font-size: 100%;
-  order: 1;
-  margin-top: auto;
-}
-maslo-deck[skin=seznam] maslo-slide:last-of-type::after {
-  order: 1;
-  margin-top: 0;
-}
-maslo-deck[skin=seznam] maslo-slide > * {
-  margin-left: 80px;
-  margin-right: 80px;
-}
-maslo-deck[skin=seznam] maslo-slide > ul,
-maslo-deck[skin=seznam] maslo-slide > ol {
-  margin-left: 0;
-  padding-left: 80px;
+  maslo-slide pre .line:not(:empty) {
+    counter-increment: line;
+  }
+  maslo-slide pre .line:not(:empty)::before {
+    content: counter(line) ".";
+  }
+  maslo-slide blockquote p::before {
+    content: open-quote;
+  }
+  maslo-slide blockquote p::after {
+    content: close-quote;
+  }
+  maslo-slide blockquote + p {
+    text-align: right;
+  }
+  maslo-slide blockquote + p::before {
+    content: "— ";
+  }
+  @media print {
+    maslo-slide {
+      position: relative;
+      margin: auto;
+      page-break-inside: avoid;
+    }
+  }
+  maslo-slide .maslo-poster {
+    flex: auto;
+    overflow: hidden;
+  }
+  maslo-slide .maslo-poster:only-child {
+    margin: 0;
+  }
+  maslo-slide .maslo-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  maslo-slide p.questions {
+    text-align: center;
+    font-size: 500%;
+    line-height: 1.5;
+    font-weight: bold;
+    text-shadow: 0 0 0.1em var(--color, currentColor);
+  }
+  maslo-canvas {
+    position: absolute;
+    inset: 0;
+  }
+  maslo-canvas .cursor {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-color: var(--highlight);
+    border-radius: 50%;
+    width: calc(1.5px * var(--brush));
+    height: calc(1.5px * var(--brush));
+  }
+  body:has(maslo-canvas .cursor) {
+    cursor: none;
+  }
+  maslo-deck[skin=light] {
+    --bg: #ed9;
+    --color: hsl(20, 100%, 20%);
+    color: #111;
+    font-family: Lora, serif;
+  }
+  maslo-deck[skin=light] pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+  }
+  maslo-deck[skin=light] code.hljs {
+    padding: 3px 5px;
+  }
+  maslo-deck[skin=light] .hljs {
+    background: #fff;
+    color: #000;
+  }
+  maslo-deck[skin=light] .hljs-comment,
+  maslo-deck[skin=light] .hljs-quote {
+    color: #800;
+  }
+  maslo-deck[skin=light] .hljs-keyword,
+  maslo-deck[skin=light] .hljs-name,
+  maslo-deck[skin=light] .hljs-section,
+  maslo-deck[skin=light] .hljs-selector-tag,
+  maslo-deck[skin=light] .hljs-title {
+    color: #008;
+  }
+  maslo-deck[skin=light] .hljs-template-variable,
+  maslo-deck[skin=light] .hljs-variable {
+    color: #660;
+  }
+  maslo-deck[skin=light] .hljs-regexp,
+  maslo-deck[skin=light] .hljs-selector-attr,
+  maslo-deck[skin=light] .hljs-selector-pseudo,
+  maslo-deck[skin=light] .hljs-string {
+    color: #080;
+  }
+  maslo-deck[skin=light] .hljs-bullet,
+  maslo-deck[skin=light] .hljs-link,
+  maslo-deck[skin=light] .hljs-literal,
+  maslo-deck[skin=light] .hljs-meta,
+  maslo-deck[skin=light] .hljs-number,
+  maslo-deck[skin=light] .hljs-symbol {
+    color: #066;
+  }
+  maslo-deck[skin=light] .hljs-attr,
+  maslo-deck[skin=light] .hljs-built_in,
+  maslo-deck[skin=light] .hljs-doctag,
+  maslo-deck[skin=light] .hljs-params,
+  maslo-deck[skin=light] .hljs-title,
+  maslo-deck[skin=light] .hljs-type {
+    color: #606;
+  }
+  maslo-deck[skin=light] .hljs-attribute,
+  maslo-deck[skin=light] .hljs-subst {
+    color: #000;
+  }
+  maslo-deck[skin=light] .hljs-formula {
+    background-color: #eee;
+    font-style: italic;
+  }
+  maslo-deck[skin=light] .hljs-selector-class,
+  maslo-deck[skin=light] .hljs-selector-id {
+    color: #9b703f;
+  }
+  maslo-deck[skin=light] .hljs-addition {
+    background-color: #baeeba;
+  }
+  maslo-deck[skin=light] .hljs-deletion {
+    background-color: #ffc8bd;
+  }
+  maslo-deck[skin=light] .hljs-doctag,
+  maslo-deck[skin=light] .hljs-strong {
+    font-weight: 700;
+  }
+  maslo-deck[skin=light] .hljs-emphasis {
+    font-style: italic;
+  }
+  maslo-deck[skin=light] ::marker,
+  maslo-deck[skin=light] pre div::before {
+    color: rgba(0 0 0 / 0.6);
+  }
+  maslo-deck[skin=light] maslo-slide > * {
+    margin-bottom: 0;
+  }
+  maslo-deck[skin=light] li + li,
+  maslo-deck[skin=light] li ul,
+  maslo-deck[skin=light] li ol,
+  maslo-deck[skin=light] h1 {
+    margin-top: 0.5em;
+  }
+  maslo-deck[skin=light] h1 {
+    color: var(--color);
+    font-size: 200%;
+    line-height: 1;
+  }
+  maslo-deck[skin=light] pre {
+    box-shadow: -4px 0 0 var(--color);
+    --tint: rgba(0 0 0 / 0.1);
+    background-color: var(--tint);
+  }
+  maslo-deck[skin=light] pre div:hover {
+    background-color: var(--tint);
+  }
+  maslo-deck[skin=light] maslo-slide > * {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+  maslo-deck[skin=light] maslo-slide > ul,
+  maslo-deck[skin=light] maslo-slide > ol {
+    margin-left: 0;
+    padding-left: 80px;
+  }
+  maslo-deck[skin=light] a {
+    color: inherit;
+    text-decoration: none;
+    background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+    transition: background-size 300ms, color 300ms;
+  }
+  maslo-deck[skin=light] a:focus,
+  maslo-deck[skin=light] a:hover {
+    background-size: 100% 100%;
+    color: var(--bg);
+  }
+  @counter-style circle-empty {
+    system: additive;
+    additive-symbols: 1 "○", 0 "";
+  }
+  @counter-style circle-full {
+    system: additive;
+    additive-symbols: 1 "●", 0 "";
+  }
+  @media screen {
+    maslo-deck[skin=light]::after {
+      font-size: 20px;
+      content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
+      color: var(--color);
+      display: block;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+  maslo-deck[skin=dark] {
+    --bg: #000;
+    --color: hsl(180, 50%, 50%);
+    color: #eee;
+    font-family: Ubuntu, sans-serif;
+  }
+  maslo-deck[skin=dark] pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+  }
+  maslo-deck[skin=dark] code.hljs {
+    padding: 3px 5px;
+  }
+  maslo-deck[skin=dark] .hljs {
+    background: #1e1e1e;
+    color: #dcdcdc;
+  }
+  maslo-deck[skin=dark] .hljs-keyword,
+  maslo-deck[skin=dark] .hljs-literal,
+  maslo-deck[skin=dark] .hljs-name,
+  maslo-deck[skin=dark] .hljs-symbol {
+    color: #569cd6;
+  }
+  maslo-deck[skin=dark] .hljs-link {
+    color: #569cd6;
+    text-decoration: underline;
+  }
+  maslo-deck[skin=dark] .hljs-built_in,
+  maslo-deck[skin=dark] .hljs-type {
+    color: #4ec9b0;
+  }
+  maslo-deck[skin=dark] .hljs-class,
+  maslo-deck[skin=dark] .hljs-number {
+    color: #b8d7a3;
+  }
+  maslo-deck[skin=dark] .hljs-meta .hljs-string,
+  maslo-deck[skin=dark] .hljs-string {
+    color: #d69d85;
+  }
+  maslo-deck[skin=dark] .hljs-regexp,
+  maslo-deck[skin=dark] .hljs-template-tag {
+    color: #9a5334;
+  }
+  maslo-deck[skin=dark] .hljs-formula,
+  maslo-deck[skin=dark] .hljs-function,
+  maslo-deck[skin=dark] .hljs-params,
+  maslo-deck[skin=dark] .hljs-subst,
+  maslo-deck[skin=dark] .hljs-title {
+    color: #dcdcdc;
+  }
+  maslo-deck[skin=dark] .hljs-comment,
+  maslo-deck[skin=dark] .hljs-quote {
+    color: #57a64a;
+    font-style: italic;
+  }
+  maslo-deck[skin=dark] .hljs-doctag {
+    color: #608b4e;
+  }
+  maslo-deck[skin=dark] .hljs-meta,
+  maslo-deck[skin=dark] .hljs-meta .hljs-keyword,
+  maslo-deck[skin=dark] .hljs-tag {
+    color: #9b9b9b;
+  }
+  maslo-deck[skin=dark] .hljs-template-variable,
+  maslo-deck[skin=dark] .hljs-variable {
+    color: #bd63c5;
+  }
+  maslo-deck[skin=dark] .hljs-attr,
+  maslo-deck[skin=dark] .hljs-attribute {
+    color: #9cdcfe;
+  }
+  maslo-deck[skin=dark] .hljs-section {
+    color: gold;
+  }
+  maslo-deck[skin=dark] .hljs-emphasis {
+    font-style: italic;
+  }
+  maslo-deck[skin=dark] .hljs-strong {
+    font-weight: 700;
+  }
+  maslo-deck[skin=dark] .hljs-bullet,
+  maslo-deck[skin=dark] .hljs-selector-attr,
+  maslo-deck[skin=dark] .hljs-selector-class,
+  maslo-deck[skin=dark] .hljs-selector-id,
+  maslo-deck[skin=dark] .hljs-selector-pseudo,
+  maslo-deck[skin=dark] .hljs-selector-tag {
+    color: #d7ba7d;
+  }
+  maslo-deck[skin=dark] .hljs-addition {
+    background-color: #144212;
+    display: inline-block;
+    width: 100%;
+  }
+  maslo-deck[skin=dark] .hljs-deletion {
+    background-color: #600;
+    display: inline-block;
+    width: 100%;
+  }
+  maslo-deck[skin=dark] ::marker,
+  maslo-deck[skin=dark] pre div::before {
+    color: rgba(255 255 255 / 0.6);
+  }
+  maslo-deck[skin=dark] maslo-slide > * {
+    margin-bottom: 0;
+  }
+  maslo-deck[skin=dark] li + li,
+  maslo-deck[skin=dark] li ul,
+  maslo-deck[skin=dark] li ol,
+  maslo-deck[skin=dark] h1 {
+    margin-top: 0.5em;
+  }
+  maslo-deck[skin=dark] h1 {
+    color: var(--color);
+    font-size: 200%;
+    line-height: 1;
+  }
+  maslo-deck[skin=dark] pre {
+    box-shadow: -4px 0 0 var(--color);
+    --tint: rgba(255, 255, 255, 0.1);
+    background-color: var(--tint);
+  }
+  maslo-deck[skin=dark] pre div:hover {
+    background-color: var(--tint);
+  }
+  maslo-deck[skin=dark] maslo-slide {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.75), #000000), repeating-linear-gradient(to right, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px), repeating-linear-gradient(to bottom, var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px);
+  }
+  maslo-deck[skin=dark] a {
+    color: inherit;
+    text-decoration: none;
+    background: no-repeat linear-gradient(var(--color), var(--color)) 0 100% / 100% calc(1em / 12);
+    transition: background-size 300ms, color 300ms;
+  }
+  maslo-deck[skin=dark] a:focus,
+  maslo-deck[skin=dark] a:hover {
+    background-size: 100% 100%;
+    color: inherit;
+  }
+  @counter-style circle-empty {
+    system: additive;
+    additive-symbols: 1 "○", 0 "";
+  }
+  @counter-style circle-full {
+    system: additive;
+    additive-symbols: 1 "●", 0 "";
+  }
+  @media screen {
+    maslo-deck[skin=dark]::after {
+      font-size: 20px;
+      content: counter(slide-before, circle-empty) counter(slide-current, circle-full) counter(slide-after, circle-empty);
+      color: var(--color);
+      display: block;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+  maslo-deck[skin=dark] maslo-slide > * {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+  maslo-deck[skin=dark] maslo-slide > ul,
+  maslo-deck[skin=dark] maslo-slide > ol {
+    margin-left: 0;
+    padding-left: 80px;
+  }
+  maslo-deck[skin=cvut] {
+    --footer-height: 32px;
+    --color: #0063a8;
+    --aspect-ratio: 16 / 9;
+    --padding-lr: 40px;
+    font-family: Ubuntu, sans-serif;
+  }
+  maslo-deck[skin=cvut] maslo-slide {
+    font-size: 20px;
+  }
+  maslo-deck[skin=cvut] maslo-slide > * {
+    margin-bottom: 0;
+  }
+  maslo-deck[skin=cvut] li + li,
+  maslo-deck[skin=cvut] li ul,
+  maslo-deck[skin=cvut] li ol,
+  maslo-deck[skin=cvut] h1 {
+    margin-top: 0.5em;
+  }
+  maslo-deck[skin=cvut] maslo-slide > * {
+    margin-left: var(--padding-lr);
+    margin-right: var(--padding-lr);
+  }
+  maslo-deck[skin=cvut] maslo-slide > ul,
+  maslo-deck[skin=cvut] maslo-slide > ol {
+    margin-left: 0;
+    padding-left: var(--padding-lr);
+  }
+  maslo-deck[skin=cvut] h1 {
+    background-color: #231F20;
+    color: var(--bg);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin: 0;
+    line-height: 1;
+    font-size: 150%;
+  }
+  maslo-deck[skin=cvut] h1,
+  maslo-deck[skin=cvut] maslo-slide::after {
+    padding-left: var(--padding-lr);
+    padding-right: var(--padding-lr);
+  }
+  maslo-deck[skin=cvut] maslo-slide::before {
+    content: "";
+    background-image: url("img/cvut.png");
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 131px;
+    height: 100px;
+    right: 8px;
+    bottom: calc(var(--footer-height) + 8px);
+  }
+  maslo-deck[skin=cvut] maslo-slide::after {
+    content: "ondrej.zara@firma.seznam.cz";
+    margin-top: auto;
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: var(--footer-height);
+    background-color: var(--color);
+    color: var(--bg);
+    font-size: 70%;
+  }
+  maslo-deck[skin=cvut] pre {
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    padding: 8px 0;
+  }
+  maslo-deck[skin=cvut] pre div:hover {
+    background-color: #d0d0d0;
+  }
+  maslo-deck[skin=cvut] pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+  }
+  maslo-deck[skin=cvut] code.hljs {
+    padding: 3px 5px;
+  }
+  maslo-deck[skin=cvut] .hljs {
+    color: #383a42;
+    background: #fafafa;
+  }
+  maslo-deck[skin=cvut] .hljs-comment,
+  maslo-deck[skin=cvut] .hljs-quote {
+    color: #a0a1a7;
+    font-style: italic;
+  }
+  maslo-deck[skin=cvut] .hljs-doctag,
+  maslo-deck[skin=cvut] .hljs-formula,
+  maslo-deck[skin=cvut] .hljs-keyword {
+    color: #a626a4;
+  }
+  maslo-deck[skin=cvut] .hljs-deletion,
+  maslo-deck[skin=cvut] .hljs-name,
+  maslo-deck[skin=cvut] .hljs-section,
+  maslo-deck[skin=cvut] .hljs-selector-tag,
+  maslo-deck[skin=cvut] .hljs-subst {
+    color: #e45649;
+  }
+  maslo-deck[skin=cvut] .hljs-literal {
+    color: #0184bb;
+  }
+  maslo-deck[skin=cvut] .hljs-addition,
+  maslo-deck[skin=cvut] .hljs-attribute,
+  maslo-deck[skin=cvut] .hljs-meta .hljs-string,
+  maslo-deck[skin=cvut] .hljs-regexp,
+  maslo-deck[skin=cvut] .hljs-string {
+    color: #50a14f;
+  }
+  maslo-deck[skin=cvut] .hljs-attr,
+  maslo-deck[skin=cvut] .hljs-number,
+  maslo-deck[skin=cvut] .hljs-selector-attr,
+  maslo-deck[skin=cvut] .hljs-selector-class,
+  maslo-deck[skin=cvut] .hljs-selector-pseudo,
+  maslo-deck[skin=cvut] .hljs-template-variable,
+  maslo-deck[skin=cvut] .hljs-type,
+  maslo-deck[skin=cvut] .hljs-variable {
+    color: #986801;
+  }
+  maslo-deck[skin=cvut] .hljs-bullet,
+  maslo-deck[skin=cvut] .hljs-link,
+  maslo-deck[skin=cvut] .hljs-meta,
+  maslo-deck[skin=cvut] .hljs-selector-id,
+  maslo-deck[skin=cvut] .hljs-symbol,
+  maslo-deck[skin=cvut] .hljs-title {
+    color: #4078f2;
+  }
+  maslo-deck[skin=cvut] .hljs-built_in,
+  maslo-deck[skin=cvut] .hljs-class .hljs-title,
+  maslo-deck[skin=cvut] .hljs-title.class_ {
+    color: #c18401;
+  }
+  maslo-deck[skin=cvut] .hljs-emphasis {
+    font-style: italic;
+  }
+  maslo-deck[skin=cvut] .hljs-strong {
+    font-weight: 700;
+  }
+  maslo-deck[skin=cvut] .hljs-link {
+    text-decoration: underline;
+  }
+  @media screen {
+    maslo-deck[skin=cvut]::after {
+      content: "";
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      background-color: #fff;
+      transition: width 1s;
+      box-shadow: 0 0 2px 1px #fff;
+      width: calc(100% * var(--current) / var(--total));
+    }
+  }
+  maslo-deck[skin=seznam] {
+    --bg: #fff;
+    --seznam: #de0000;
+    --footer-height: 40px;
+    color: #141313;
+    font-family: Arial, sans-serif;
+  }
+  maslo-deck[skin=seznam] a {
+    color: #00e;
+    text-decoration: none;
+  }
+  maslo-deck[skin=seznam] li + li,
+  maslo-deck[skin=seznam] li ul,
+  maslo-deck[skin=seznam] li ol {
+    margin-top: 0.5em;
+  }
+  maslo-deck[skin=seznam] h1 {
+    color: var(--seznam);
+    font-size: 150%;
+    line-height: 1;
+    margin: 1em 0;
+  }
+  maslo-deck[skin=seznam] maslo-slide::after {
+    content: "";
+    margin-top: auto;
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: var(--footer-height);
+    padding: 0 80px;
+    font-size: 50%;
+    background-color: var(--seznam);
+    color: var(--bg);
+  }
+  maslo-deck[skin=seznam] maslo-slide:not(:first-of-type)::after {
+    content: "www.seznam.cz";
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type {
+    background: url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat, url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 336px no-repeat;
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type h1 {
+    font-size: 200%;
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type h2 {
+    font-size: 100%;
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type h3 {
+    font-size: 24px;
+    line-height: 2;
+    color: #3c3c3c;
+    font-weight: normal;
+  }
+  maslo-deck[skin=seznam] maslo-slide:last-of-type {
+    background: url(img/seznam-2.png) 50% no-repeat;
+  }
+  maslo-deck[skin=seznam] maslo-slide:last-of-type h1 {
+    color: inherit;
+    font-size: 100%;
+    order: 1;
+    margin-top: auto;
+  }
+  maslo-deck[skin=seznam] maslo-slide:last-of-type::after {
+    order: 1;
+    margin-top: 0;
+  }
+  maslo-deck[skin=seznam] maslo-slide > * {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+  maslo-deck[skin=seznam] maslo-slide > ul,
+  maslo-deck[skin=seznam] maslo-slide > ol {
+    margin-left: 0;
+    padding-left: 80px;
+  }
 }
 @page {
   margin: 0;
