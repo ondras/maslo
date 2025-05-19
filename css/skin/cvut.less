@@ -2,81 +2,83 @@
 
 .google-font("Ubuntu");
 
-maslo-deck[skin=cvut] {
-	--footer-height: 32px;
-	--color: rgb(0, 99, 168);
-	--aspect-ratio: 16 / 9;
-	--padding-lr: 40px;
-	font-family: Ubuntu, sans-serif;
+@layer maslo {
+	maslo-deck[skin=cvut] {
+		--footer-height: 32px;
+		--color: rgb(0, 99, 168);
+		--aspect-ratio: 16 / 9;
+		--padding-lr: 40px;
+		font-family: Ubuntu, sans-serif;
 
-	maslo-slide {
-		font-size: 20px;
-	}
+		maslo-slide {
+			font-size: 20px;
+		}
 
-	maslo-slide > * { margin-bottom: 0; }
-	li + li, li ul, li ol, h1 { margin-top: 0.5em; }
+		maslo-slide > * { margin-bottom: 0; }
+		li + li, li ul, li ol, h1 { margin-top: 0.5em; }
 
-	.padding-lr(var(--padding-lr));
+		.padding-lr(var(--padding-lr));
 
-	h1 {
-		background-color: #231F20;
-		color: var(--bg);
-		padding-top: 12px;
-		padding-bottom: 12px;
-		margin: 0;
-		line-height: 1;
-		font-size: 150%;
-	}
+		h1 {
+			background-color: #231F20;
+			color: var(--bg);
+			padding-top: 12px;
+			padding-bottom: 12px;
+			margin: 0;
+			line-height: 1;
+			font-size: 150%;
+		}
 
-	h1, maslo-slide::after {
-		padding-left: var(--padding-lr);
-		padding-right: var(--padding-lr);
-	}
+		h1, maslo-slide::after {
+			padding-left: var(--padding-lr);
+			padding-right: var(--padding-lr);
+		}
 
-	maslo-slide::before {
-		content: "";
-		background-image: url("img/cvut.png");
-		background-repeat: no-repeat;
-		position: absolute;
-		width: 131px;
-		height: 100px;
-		right: 8px;
-		bottom: calc(var(--footer-height) + 8px);
-	}
-
-	maslo-slide::after {
-		content: "ondrej.zara@firma.seznam.cz";
-		margin-top: auto;
-		display: flex;
-		flex: none;
-		align-items: center;
-		height: var(--footer-height);
-		background-color: var(--color);
-		color: var(--bg);
-		font-size: 70%;
-	}
-
-	pre {
-		background-color: #e0e0e0;
-		border-radius: 8px;
-		padding: 8px 0;
-		div:hover { background-color: #d0d0d0; }
-	}
-
-	@version: "11.10.0";
-	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/atom-one-light.min.css");
-
-	@media screen {
-		&::after {
+		maslo-slide::before {
 			content: "";
-			position: fixed;
-			left: 0;
-			bottom: 0;
-			height: 3px;
-			background-color: #fff;
-			transition: width 1s;
-			box-shadow: 0 0 2px 1px #fff;
-			width: calc(100% * var(--current) / var(--total));
+			background-image: url("img/cvut.png");
+			background-repeat: no-repeat;
+			position: absolute;
+			width: 131px;
+			height: 100px;
+			right: 8px;
+			bottom: calc(var(--footer-height) + 8px);
+		}
+
+		maslo-slide::after {
+			content: "ondrej.zara@firma.seznam.cz";
+			margin-top: auto;
+			display: flex;
+			flex: none;
+			align-items: center;
+			height: var(--footer-height);
+			background-color: var(--color);
+			color: var(--bg);
+			font-size: 70%;
+		}
+
+		pre {
+			background-color: #e0e0e0;
+			border-radius: 8px;
+			padding: 8px 0;
+			div:hover { background-color: #d0d0d0; }
+		}
+
+		@version: "11.10.0";
+		@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/atom-one-light.min.css");
+
+		@media screen {
+			&::after {
+				content: "";
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				height: 3px;
+				background-color: #fff;
+				transition: width 1s;
+				box-shadow: 0 0 2px 1px #fff;
+				width: calc(100% * var(--current) / var(--total));
+			}
 		}
 	}
 }

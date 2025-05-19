@@ -2,44 +2,46 @@
 
 .google-font("Ubuntu");
 
-maslo-deck[skin=dark] {
-	--bg: #000;
-	--color: hsl(180, 50%, 50%);
-	color: #eee;
-	font-family: Ubuntu, sans-serif;
+@layer maslo {
+	maslo-deck[skin=dark] {
+		--bg: #000;
+		--color: hsl(180, 50%, 50%);
+		color: #eee;
+		font-family: Ubuntu, sans-serif;
 
-	@version: "11.10.0";
-	@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/vs2015.min.css");
+		@version: "11.10.0";
+		@import (less) url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/@{version}/styles/vs2015.min.css");
 
-	::marker, pre div::before  { color: rgba(255 255 255 / 0.6); }
+		::marker, pre div::before  { color: rgba(255 255 255 / 0.6); }
 
-	maslo-slide > * { margin-bottom: 0; }
-	li + li, li ul, li ol, h1 { margin-top: 0.5em; }
+		maslo-slide > * { margin-bottom: 0; }
+		li + li, li ul, li ol, h1 { margin-top: 0.5em; }
 
-	h1 {
-		color: var(--color);
-		font-size: 200%;
-		line-height: 1;
+		h1 {
+			color: var(--color);
+			font-size: 200%;
+			line-height: 1;
+		}
+
+		pre {
+			box-shadow: -4px 0 0 var(--color);
+			--tint: rgba(255, 255, 255, 0.1);
+			background-color: var(--tint);
+			div:hover { background-color: var(--tint); }
+		}
+
+		maslo-slide {
+			@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px;
+
+			background-image:
+				radial-gradient(rgb(0 0 0 / 0.75), rgb(0 0 0 / 1)),
+				repeating-linear-gradient(to right, @pattern),
+				repeating-linear-gradient(to bottom, @pattern)
+			;
+		}
+
+		.fancy-link(var(--color), inherit);
+		.progress(var(--color));
+		.padding-lr(80px);
 	}
-
-	pre {
-		box-shadow: -4px 0 0 var(--color);
-		--tint: rgba(255, 255, 255, 0.1);
-		background-color: var(--tint);
-		div:hover { background-color: var(--tint); }
-	}
-
-	maslo-slide {
-		@pattern: var(--color) 0, var(--color) 1px, transparent 1px, transparent 16px;
-
-		background-image:
-			radial-gradient(rgb(0 0 0 / 0.75), rgb(0 0 0 / 1)),
-			repeating-linear-gradient(to right, @pattern),
-			repeating-linear-gradient(to bottom, @pattern)
-		;
-	}
-
-	.fancy-link(var(--color), inherit);
-	.progress(var(--color));
-	.padding-lr(80px);
 }

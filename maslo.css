@@ -1,7 +1,7 @@
+@import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
 @layer maslo {
-  @import url("https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&subset=latin,latin-ext");
-  @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
-  @import url("https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700,700i&subset=latin,latin-ext");
   maslo-deck {
     --width: 1024px;
     --aspect-ratio: 4 / 3;
@@ -184,6 +184,8 @@
   body:has(maslo-canvas .cursor) {
     cursor: none;
   }
+}
+@layer maslo {
   maslo-deck[skin=light] {
     --bg: #ed9;
     --color: hsl(20, 100%, 20%);
@@ -331,6 +333,8 @@
       right: 0;
     }
   }
+}
+@layer maslo {
   maslo-deck[skin=dark] {
     --bg: #000;
     --color: hsl(180, 50%, 50%);
@@ -500,6 +504,84 @@
     margin-left: 0;
     padding-left: 80px;
   }
+}
+@layer maslo {
+  maslo-deck[skin=seznam] {
+    --bg: #fff;
+    --seznam: #de0000;
+    --footer-height: 40px;
+    color: #141313;
+    font-family: Arial, sans-serif;
+  }
+  maslo-deck[skin=seznam] a {
+    color: #00e;
+    text-decoration: none;
+  }
+  maslo-deck[skin=seznam] li + li,
+  maslo-deck[skin=seznam] li ul,
+  maslo-deck[skin=seznam] li ol {
+    margin-top: 0.5em;
+  }
+  maslo-deck[skin=seznam] h1 {
+    color: var(--seznam);
+    font-size: 150%;
+    line-height: 1;
+    margin: 1em 0;
+  }
+  maslo-deck[skin=seznam] maslo-slide::after {
+    content: "";
+    margin-top: auto;
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: var(--footer-height);
+    padding: 0 80px;
+    font-size: 50%;
+    background-color: var(--seznam);
+    color: var(--bg);
+  }
+  maslo-deck[skin=seznam] maslo-slide:not(:first-of-type)::after {
+    content: "www.seznam.cz";
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type {
+    background: url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat, url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 336px no-repeat;
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type h1 {
+    font-size: 200%;
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type h2 {
+    font-size: 100%;
+  }
+  maslo-deck[skin=seznam] maslo-slide:first-of-type h3 {
+    font-size: 24px;
+    line-height: 2;
+    color: #3c3c3c;
+    font-weight: normal;
+  }
+  maslo-deck[skin=seznam] maslo-slide:last-of-type {
+    background: url(img/seznam-2.png) 50% no-repeat;
+  }
+  maslo-deck[skin=seznam] maslo-slide:last-of-type h1 {
+    color: inherit;
+    font-size: 100%;
+    order: 1;
+    margin-top: auto;
+  }
+  maslo-deck[skin=seznam] maslo-slide:last-of-type::after {
+    order: 1;
+    margin-top: 0;
+  }
+  maslo-deck[skin=seznam] maslo-slide > * {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+  maslo-deck[skin=seznam] maslo-slide > ul,
+  maslo-deck[skin=seznam] maslo-slide > ol {
+    margin-left: 0;
+    padding-left: 80px;
+  }
+}
+@layer maslo {
   maslo-deck[skin=cvut] {
     --footer-height: 32px;
     --color: #0063a8;
@@ -654,80 +736,6 @@
       box-shadow: 0 0 2px 1px #fff;
       width: calc(100% * var(--current) / var(--total));
     }
-  }
-  maslo-deck[skin=seznam] {
-    --bg: #fff;
-    --seznam: #de0000;
-    --footer-height: 40px;
-    color: #141313;
-    font-family: Arial, sans-serif;
-  }
-  maslo-deck[skin=seznam] a {
-    color: #00e;
-    text-decoration: none;
-  }
-  maslo-deck[skin=seznam] li + li,
-  maslo-deck[skin=seznam] li ul,
-  maslo-deck[skin=seznam] li ol {
-    margin-top: 0.5em;
-  }
-  maslo-deck[skin=seznam] h1 {
-    color: var(--seznam);
-    font-size: 150%;
-    line-height: 1;
-    margin: 1em 0;
-  }
-  maslo-deck[skin=seznam] maslo-slide::after {
-    content: "";
-    margin-top: auto;
-    display: flex;
-    flex: none;
-    align-items: center;
-    height: var(--footer-height);
-    padding: 0 80px;
-    font-size: 50%;
-    background-color: var(--seznam);
-    color: var(--bg);
-  }
-  maslo-deck[skin=seznam] maslo-slide:not(:first-of-type)::after {
-    content: "www.seznam.cz";
-  }
-  maslo-deck[skin=seznam] maslo-slide:first-of-type {
-    background: url(img/seznam-pes-1.png) 80px calc(100% - var(--footer-height)) no-repeat, url(img/seznam-1.png) calc(100% - 80px) calc(100% - 1.5 * var(--footer-height)) / 336px no-repeat;
-  }
-  maslo-deck[skin=seznam] maslo-slide:first-of-type h1 {
-    font-size: 200%;
-  }
-  maslo-deck[skin=seznam] maslo-slide:first-of-type h2 {
-    font-size: 100%;
-  }
-  maslo-deck[skin=seznam] maslo-slide:first-of-type h3 {
-    font-size: 24px;
-    line-height: 2;
-    color: #3c3c3c;
-    font-weight: normal;
-  }
-  maslo-deck[skin=seznam] maslo-slide:last-of-type {
-    background: url(img/seznam-2.png) 50% no-repeat;
-  }
-  maslo-deck[skin=seznam] maslo-slide:last-of-type h1 {
-    color: inherit;
-    font-size: 100%;
-    order: 1;
-    margin-top: auto;
-  }
-  maslo-deck[skin=seznam] maslo-slide:last-of-type::after {
-    order: 1;
-    margin-top: 0;
-  }
-  maslo-deck[skin=seznam] maslo-slide > * {
-    margin-left: 80px;
-    margin-right: 80px;
-  }
-  maslo-deck[skin=seznam] maslo-slide > ul,
-  maslo-deck[skin=seznam] maslo-slide > ol {
-    margin-left: 0;
-    padding-left: 80px;
   }
 }
 @page {
