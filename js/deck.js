@@ -8,7 +8,7 @@ export default class Deck extends HTMLElement {
 	#internals = this.attachInternals();
 
 	get standalone() { return this.hasAttribute("standalone"); }
-	get slides() { return [...this.querySelectorAll("maslo-slide")]; }
+	get slides() { return [...this.querySelectorAll("maslo-slide:not([hidden])")]; }
 
 	constructor() {
 		super();
