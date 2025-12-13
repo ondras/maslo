@@ -4,7 +4,7 @@
 @font-face { font-family: input; font-weight: bold; font-style: italic; src: url(font/Input-BoldItalic.ttf); }
 
 maslo-slide {
-	display: flex;
+	&:not([hidden]) { display: flex; }
 	flex-direction: column;
 
 	width: var(--width);
